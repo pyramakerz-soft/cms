@@ -41,7 +41,8 @@
 
                                                             <div class="col-md-12">
                                                                 <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                                                                    <li><button type="submit"
+                                                                    <li>
+                                                                        <button type="submit"
                                                                             class="btn btn-primary">create</button>
                                                                     </li>
 

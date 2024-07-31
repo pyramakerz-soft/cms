@@ -52,10 +52,10 @@
                                 class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
                                 class="nk-menu-text">School</span></a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="add-school.php" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="{{route("schools.create")}}" class="nk-menu-link"><span
                                         class="nk-menu-text">Add School
                                     </span></a></li>
-                            <li class="nk-menu-item"><a href="schools-list.php" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="{{route("schools.index")}}" class="nk-menu-link"><span
                                         class="nk-menu-text">Schools
                                         List</span></a></li>
 
