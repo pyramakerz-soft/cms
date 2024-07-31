@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class StudentController extends Controller
+class CourseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('dashboard.students.index');
+        return view('dashboard.course.index');
+
     }
 
     /**
@@ -20,7 +21,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('dashboard.students.create');
+        return view('dashboard.course.create');
 
     }
 

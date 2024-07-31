@@ -22,10 +22,30 @@
                                 class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
                                 class="nk-menu-text">Courses</span></a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="category.html" class="nk-menu-link"><span
-                                        class="nk-menu-text">Catagories</span></a></li>
-                            <li class="nk-menu-item"><a href="courses.html" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="{{ route('courses.create') }}" class="nk-menu-link"><span
+                                        class="nk-menu-text">Add Course</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('courses.index') }}" class="nk-menu-link"><span
                                         class="nk-menu-text">Course List</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
+                                class="nk-menu-text">Stage</span></a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item"><a href="{{ route('stages.create') }}" class="nk-menu-link"><span
+                                        class="nk-menu-text">Add Stage</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('stages.index') }}" class="nk-menu-link"><span
+                                        class="nk-menu-text">Stage List</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
+                                class="nk-menu-text">Program</span></a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item"><a href="{{ route('programs.create') }}" class="nk-menu-link"><span
+                                        class="nk-menu-text">Add Program</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('programs.index') }}" class="nk-menu-link"><span
+                                        class="nk-menu-text">Program List</span></a></li>
                         </ul>
                     </li>
                     <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
@@ -42,12 +62,13 @@
 
                         </ul>
                     </li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
+                    <li class="nk-menu-item has-sub"><a href="{{ route('students.index') }}"
+                            class="nk-menu-link nk-menu-toggle"><span class="nk-menu-icon"><em
+                                    class="icon ni ni-user-fill"></em></span><span
                                 class="nk-menu-text">Students</span></a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="add-student.php" class="nk-menu-link"><span
-                                        class="nk-menu-text">Add Students
+                            <li class="nk-menu-item"><a href="{{ route('students.create') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text">Add Students
                                     </span></a></li>
                             <li class="nk-menu-item"><a href="students-list.php" class="nk-menu-link"><span
                                         class="nk-menu-text">Students
