@@ -129,7 +129,8 @@
                                                                                 class="dot dot-warning d-md-none ms-1"></span></span><span>ashley@softnio.com</span>
                                                                     </div>
                                                                 </div>
-                                                            </a></div>
+                                                            </a>
+                                                        </div>
                                                         <div class="nk-tb-col tb-col-mb"><span
                                                                 class="tb-lead d-lg-flex d-none">mindbuzz
                                                             </span>

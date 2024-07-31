@@ -41505,9 +41505,6 @@ button.close {
     vertical-align: middle
 }
 
-.nk-tb-item:not(:last-child) .nk-tb-col {
-    border-bottom: 1px solid rgba(219, 223, 234, .9)
-}
 
 .nk-tb-head .nk-tb-col {
     padding-top: .5rem;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 
 class StageController extends Controller
@@ -12,7 +13,9 @@ class StageController extends Controller
      */
     public function index()
     {
-        return view('dashboard.stage.index');
+        $stages = Stage::simplePaginate(10);
+
+        return view('dashboard.stage.index', compact('stages'));
     }
 
     /**
@@ -29,7 +32,13 @@ class StageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        $stage = Stage::create([
+            'name' => $request->name,
+        ]);
+        return redirect()->route('stages.create')->with('success', 'Stage created successfully!');
     }
 
     /**
@@ -45,7 +54,8 @@ class StageController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $stages = Stage::findOrFail($id);
+        return view("dashboard.stage.edit", compact("stages"));
     }
 
     /**
@@ -53,7 +63,16 @@ class StageController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $stage = Stage::findOrFail($id);
+        $stage->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('stages.edit', $id)->with('success', 'Stage updated successfully!');
     }
 
     /**
@@ -61,6 +80,8 @@ class StageController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $stage = Stage::findOrFail($id);
+        $stage->delete();
+        return redirect()->route('stages.index')->with('success', 'Stage deleted successfully!');
     }
 }
