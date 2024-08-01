@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
+use App\Models\Program;
+use App\Models\School;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller
@@ -12,7 +16,8 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        return view('dashboard.program.index');
+        $programs = Program::all();
+        return view('dashboard.program.index', compact('programs'));
 
     }
 
@@ -21,7 +26,10 @@ class ProgramController extends Controller
      */
     public function create()
     {
-        return view('dashboard.program.create');
+        $schools = School::all();
+        $courses = Course::all();
+        $stages = Stage::all();
+        return view('dashboard.program.create', compact(['schools', 'courses', 'stages']));
 
     }
 
@@ -30,7 +38,22 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'school_id' => 'required|exists:schools,id',
+            'course_id' => 'required|exists:courses,id',
+            'stage_id' => 'required|exists:stages,id',
+        ]);
+
+        Program::create([
+            'name' => $request->name,
+            'school_id' => $request->school_id,
+            'course_id' => $request->course_id,
+            'stage_id' => $request->stage_id,
+        ]);
+
+        return redirect()->route('programs.create')->with('success', 'Program created successfully!');
+
     }
 
     /**
@@ -46,7 +69,11 @@ class ProgramController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $schools = School::all();
+        $courses = Course::all();
+        $stages = Stage::all();
+        $program = Program::findOrFail($id);
+        return view('dashboard.program.edit', compact(['program', 'schools', 'courses', 'stages']));
     }
 
     /**
@@ -54,7 +81,23 @@ class ProgramController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'school_id' => 'required|exists:schools,id',
+            'course_id' => 'required|exists:courses,id',
+            'stage_id' => 'required|exists:stages,id',
+        ]);
+
+        $program = Program::findOrFail($id);
+
+        $program->update([
+            'name' => $request->name,
+            'school_id' => $request->school_id,
+            'course_id' => $request->course_id,
+            'stage_id' => $request->stage_id,
+        ]);
+
+        return redirect()->route('programs.edit', $program->id)->with('success', 'Program updated successfully!');
     }
 
     /**
@@ -62,6 +105,10 @@ class ProgramController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $program = Program::findOrFail($id);
+        $program->delete();
+
+        return redirect()->route('programs.index')->with('success', 'Program deleted successfully!');
+
     }
 }

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('teacher_programs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('teacher_id')->nullable()->index('teacher_programs_teacher_id_foreign');
+            $table->unsignedBigInteger('program_id')->nullable()->index('teacher_programs_program_id_foreign');
+            $table->unsignedBigInteger('grade_id')->nullable()->index('teacher_programs_grade_id_foreign');
+
             $table->timestamps();
         });
     }

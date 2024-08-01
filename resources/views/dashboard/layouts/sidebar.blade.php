@@ -52,26 +52,39 @@
                                 class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
                                 class="nk-menu-text">School</span></a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{route("schools.create")}}" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="{{ route('schools.create') }}" class="nk-menu-link"><span
                                         class="nk-menu-text">Add School
                                     </span></a></li>
-                            <li class="nk-menu-item"><a href="{{route("schools.index")}}" class="nk-menu-link"><span
+                            <li class="nk-menu-item"><a href="{{ route('schools.index') }}" class="nk-menu-link"><span
                                         class="nk-menu-text">Schools
                                         List</span></a></li>
 
 
                         </ul>
                     </li>
-                    <li class="nk-menu-item has-sub"><a href="{{ route('students.index') }}"
-                            class="nk-menu-link nk-menu-toggle"><span class="nk-menu-icon"><em
-                                    class="icon ni ni-user-fill"></em></span><span
+                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
+                                class="nk-menu-text">Class</span></a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item"><a href="{{ route('classes.create') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text">Add Class
+                                    </span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('classes.index') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text">Classes
+                                        List</span></a></li>
+
+
+                        </ul>
+                    </li>
+                    <li class="nk-menu-item has-sub"><a href="" class="nk-menu-link nk-menu-toggle"><span
+                                class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
                                 class="nk-menu-text">Students</span></a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="{{ route('students.create') }}"
                                     class="nk-menu-link"><span class="nk-menu-text">Add Students
                                     </span></a></li>
-                            <li class="nk-menu-item"><a href="students-list.php" class="nk-menu-link"><span
-                                        class="nk-menu-text">Students
+                            <li class="nk-menu-item"><a href="{{ route('students.index') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text">Students
                                         List</span></a></li>
                             <!-- <li class="nk-menu-item"><a href="instructor-details.html"
                                                 class="nk-menu-link"><span class="nk-menu-text">Students
@@ -83,11 +96,11 @@
                                 class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
                                 class="nk-menu-text">Instructors</span></a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="add-instructor.php" class="nk-menu-link"><span
-                                        class="nk-menu-text">Add Instructors
+                            <li class="nk-menu-item"><a href="{{ route('instructors.create') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text">Add Instructors
                                     </span></a></li>
-                            <li class="nk-menu-item"><a href="instructor-list.php" class="nk-menu-link"><span
-                                        class="nk-menu-text">Instructor
+                            <li class="nk-menu-item"><a href="{{ route('instructors.index') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text">Instructor
                                         List</span></a></li>
                             <!-- <li class="nk-menu-item"><a href="instructor-details.html"
                                                 class="nk-menu-link"><span class="nk-menu-text">Instructor

@@ -32,7 +32,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label" for="full-name">Name</label>
-                                                                    <input type="text" class="form-control" id="full-name" placeholder="First name" name="name" value="{{ $schools->name }}" required>
+                                                                    <input type="text" class="form-control" id="full-name" placeholder="First name" name="name" value="{{ $program->name }}" required>
                                                                     @error('name')
                                                                         <div class="text-danger">{{ $message }}</div>
                                                                     @enderror

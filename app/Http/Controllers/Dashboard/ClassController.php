@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Group;
+use App\Models\School;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
@@ -12,7 +14,8 @@ class ClassController extends Controller
      */
     public function index()
     {
-        return view('dashboard.class.index');
+        $classes = Group::all();
+        return view('dashboard.class.index', compact("classes"));
 
     }
 
@@ -21,7 +24,9 @@ class ClassController extends Controller
      */
     public function create()
     {
-        return view('dashboard.class.create');
+        $schools = School::all();
+
+        return view('dashboard.class.create', compact('schools'));
 
     }
 
@@ -30,7 +35,18 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'school_id' => 'required|exists:schools,id',
+
+        ]);
+
+        $class = Group::create([
+            'name' => $request->name,
+            'school_id' => $request->school_id,
+        ]);
+
+        return redirect()->route('classes.create')->with('success', 'Class created successfully.');
     }
 
     /**
@@ -46,7 +62,9 @@ class ClassController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $class = Group::findOrFail($id);
+        $schools = School::all();
+        return view("dashboard.class.edit", compact(["class", 'schools']));
     }
 
     /**
@@ -54,7 +72,23 @@ class ClassController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'school_id' => 'required|exists:schools,id',
+
+        ]);
+
+        $class = Group::findOrFail($id);
+        $class->update([
+            'name' => $request->name,
+
+            'school_id' => $request->school_id
+        ]);
+
+
+
+        return redirect()->route('classes.index')->with('success', 'Class updated successfully.');
+
     }
 
     /**
@@ -62,6 +96,10 @@ class ClassController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $class = Group::findOrFail($id);
+
+        $class->delete();
+
+        return redirect()->route('classes.index')->with('success', 'Class deleted successfully.');
     }
 }

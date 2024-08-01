@@ -3,28 +3,25 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Imports\UsersImport;
 use App\Models\Group;
-use App\Models\GroupStudent;
 use App\Models\Program;
 use App\Models\School;
 use App\Models\Stage;
+use App\Models\TeacherProgram;
 use App\Models\User;
-use App\Models\UserCourse;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Maatwebsite\Excel\Facades\Excel;
 
-class StudentController extends Controller
+class InstructorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $query = User::with(['details.stage', 'userCourses.program', 'groups'])
-            ->where('role', '1');
+        $query = User::with(['details.stage', 'teacher_programs.program'])
+            ->where('role', '2');
 
         if ($request->filled('school')) {
             $query->whereHas('details', function ($q) use ($request) {
@@ -33,7 +30,7 @@ class StudentController extends Controller
         }
 
         if ($request->filled('program')) {
-            $query->whereHas('userCourses', function ($q) use ($request) {
+            $query->whereHas('teacher_programs', function ($q) use ($request) {
                 $q->where('program_id', $request->input('program'));
             });
         }
@@ -43,23 +40,20 @@ class StudentController extends Controller
                 $q->where('stage_id', $request->input('grade'));
             });
         }
-
         if ($request->filled('group')) {
             $query->whereHas('groups', function ($q) use ($request) {
                 $q->where('group_id', $request->input('group'));
             });
         }
 
-        $students = $query->simplePaginate(10);
+        $instructors = $query->simplePaginate(10);
 
         $schools = School::all();
         $programs = Program::all();
         $grades = Stage::all();
         $classes = Group::all();
 
-        return view('dashboard.students.index', compact('students', 'schools', 'programs', 'grades', 'classes'));
-
-
+        return view('dashboard.instructors.index', compact('instructors', 'schools', 'programs', 'grades', 'classes'));
     }
 
     /**
@@ -71,8 +65,7 @@ class StudentController extends Controller
         $programs = Program::all();
         $stages = Stage::all();
         $groups = Group::all();
-        return view('dashboard.students.create', compact('schools', 'programs', 'stages', 'groups'));
-
+        return view('dashboard.instructors.create', compact('schools', 'programs', 'stages', 'groups'));
     }
 
     /**
@@ -98,13 +91,14 @@ class StudentController extends Controller
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'school_id' => $request->school_id,
-            'role' => '1',
-            'is_student' => 1
+            'role' => '2',
+            'is_student' => 0
         ]);
 
-        UserCourse::create([
-            'user_id' => $user->id,
-            'program_id' => $request->program_id
+        TeacherProgram::create([
+            'teacher_id' => $user->id,
+            'program_id' => $request->program_id,
+            'grade_id' => $request->stage_id
         ]);
 
         UserDetail::create([
@@ -113,30 +107,13 @@ class StudentController extends Controller
             'stage_id' => $request->stage_id
         ]);
 
-        GroupStudent::create([
-            'group_id' => $request->group_id,
-            'student_id' => $user->id
-        ]);
-
         if ($request->hasFile('parent_image')) {
             $imagePath = $request->file('parent_image')->store('images', 'public');
             $user->parent_image = $imagePath;
             $user->save();
         }
 
-        return redirect()->route('students.index')->with('success', 'Student created successfully.');
-
-
-    }
-    public function import(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx',
-        ]);
-
-        Excel::import(new UsersImport, $request->file('file'));
-
-        return redirect()->back()->with('success', 'Users imported successfully.');
+        return redirect()->route('instructors.index')->with('success', 'Teacher created successfully.');
     }
 
     /**
@@ -152,13 +129,12 @@ class StudentController extends Controller
      */
     public function edit(string $id)
     {
-        $student = User::findOrFail($id);
+        $instructor = User::findOrFail($id);
         $schools = School::all();
         $programs = Program::all();
         $stages = Stage::all();
         $groups = Group::all();
-        return view('dashboard.students.edit', compact('student', 'schools', 'programs', 'stages', 'groups'));
-
+        return view('dashboard.instructors.edit', compact('instructor', 'schools', 'programs', 'stages', 'groups'));
     }
 
     /**
@@ -177,35 +153,32 @@ class StudentController extends Controller
             'parent_image' => 'nullable|image|max:2048'
         ]);
 
-        $student = User::findOrFail($id);
-        $student->update([
+        $instructor = User::findOrFail($id);
+        $instructor->update([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'school_id' => $request->school_id
         ]);
 
-        UserCourse::where('user_id', $student->id)->update([
-            'program_id' => $request->program_id
+        TeacherProgram::where('teacher_id', $instructor->id)->update([
+            'program_id' => $request->program_id,
+            'grade_id' => $request->grade_id
         ]);
 
-        UserDetail::where('user_id', $student->id)->update([
+        UserDetail::where('user_id', $instructor->id)->update([
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
         ]);
 
-        GroupStudent::where('student_id', $student->id)->update([
-            'group_id' => $request->group_id
-        ]);
 
         if ($request->hasFile('parent_image')) {
             $imagePath = $request->file('parent_image')->store('images', 'public');
-            $student->parent_image = $imagePath;
-            $student->save();
+            $instructor->parent_image = $imagePath;
+            $instructor->save();
         }
 
-        return redirect()->route('students.index')->with('success', 'Student updated successfully.');
-
+        return redirect()->route('instructors.index')->with('success', 'Teacher updated successfully.');
     }
 
     /**
@@ -213,11 +186,10 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        $student = User::findOrFail($id);
+        $instructor = User::findOrFail($id);
 
-        $student->delete();
+        $instructor->delete();
 
-        return redirect()->route('students.index')->with('success', 'Student deleted successfully.');
-
+        return redirect()->route('instructors.index')->with('success', 'Teacher deleted successfully.');
     }
 }

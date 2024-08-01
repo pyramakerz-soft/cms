@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Dashboard\ClassController;
 use App\Http\Controllers\Dashboard\CourseController;
+use App\Http\Controllers\Dashboard\InstructorController;
 use App\Http\Controllers\Dashboard\ProgramController;
 use App\Http\Controllers\Dashboard\SchoolController;
 use App\Http\Controllers\Dashboard\StageController;
 use App\Http\Controllers\Dashboard\StudentController;
 use Illuminate\Support\Facades\Route;
+
 // use App\Http\Controllers\Dashboard\StudentController;
 
 /*
@@ -26,6 +28,9 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'dashboard'], function () {
     Route::resource('students', StudentController::class);
+    Route::post('/import-users', [StudentController::class, 'import'])->name('import.users');
+
+    Route::resource('instructors', InstructorController::class);
     Route::resource('schools', SchoolController::class);
     Route::resource('courses', CourseController::class);
     Route::resource('stages', StageController::class);

@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['admin', 'teacher', 'student']);
+            $table->enum('role', ['0', '1', '2', '3', '4', '5']);
             $table->bigInteger('school_id')->nullable()->unsigned();
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
             $table->boolean('is_student')->default(false);
