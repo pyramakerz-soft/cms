@@ -108,16 +108,20 @@
 
                         </ul>
                     </li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-property-add"></em></span><span
-                                class="nk-menu-text">Enrolment</span></a>
+                    <li class="nk-menu-item has-sub"><a href="{{ route('reports.index') }}"
+                            class="nk-menu-link "></span><span class="nk-menu-text">Reports</span></a>
+
+                    </li>
+
+                    <li class="nk-menu-item has-sub"><a href=""
+                            class="nk-menu-link nk-menu-toggle"><span class="nk-menu-icon"><em
+                                    class="icon ni ni-property-add"></em></span><span class="nk-menu-text">select
+                                group</span></a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="enroll-history.html" class="nk-menu-link"><span
-                                        class="nk-menu-text">Enroll
-                                        History</span></a></li>
-                            <li class="nk-menu-item"><a href="enroll-student.html" class="nk-menu-link"><span
-                                        class="nk-menu-text">Enroll a
-                                        Student</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('select.group') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text">Completion report</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('class.mastery.report.web') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text">Mastery report</span></a></li>
                         </ul>
                     </li>
                     <li class="nk-menu-item"><a href="message.html" class="nk-menu-link"><span

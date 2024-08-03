@@ -47,6 +47,13 @@ Route::middleware([
     Route::get('/reports/numOfTrialsReport', [ReportController::class, 'numOfTrialsReport'])->name('reports.numOfTrialsReport');
     Route::get('/reports/skillReport', [ReportController::class, 'skillReport'])->name('reports.skillReport');
 
+    //////////////////////////// Start class reports//////////////////////////////
+    Route::get('/select-group', [ReportController::class, 'selectGroup'])->name('select.group');
+    Route::get('/class-completion-report', [ReportController::class, 'classCompletionReportWeb'])->name('class.completion.report.web');
+    Route::get('/class-mastery-report', [ReportController::class, 'classMasteryReportWeb'])->name('class.mastery.report.web');
+    Route::get('/class-num-of-trials-report', [ReportController::class, 'classNumOfTrialsReportWeb'])->name('class.num.of.trials.report.web');
+    //////////////////////////// End class reports//////////////////////////////
+
 
     Route::get('/get-courses/{id}', [StudentController::class, 'getCourses']);
 

@@ -3,20 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -37,8 +35,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
     ];
 
     /**
@@ -46,16 +42,89 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
     /**
-     * The accessors to append to the model's array form.
+     * Return a key value array, containing any custom claims to be added to the JWT.
      *
-     * @var array<int, string>
+     * @return array
      */
-    protected $appends = [
-        'profile_photo_url',
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
     ];
+    public function program()
+    {
+        return $this->hasMany(Program::class, 'program_id');
+    }
+    public function groups()
+    {
+        return $this->hasMany(GroupStudent::class, 'student_id');
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(School::class, 'school_id');
+    }
+
+    // public function role()
+    // {
+    //     return $this->belongsTo(Role::class);
+    // }
+
+    public function details()
+    {
+        return $this->hasMany(UserDetails::class, 'user_id');
+    }
+    public function teacher_programs()
+    {
+        return $this->hasMany(TeacherProgram::class, 'teacher_id');
+    }
+    public function userCourses()
+    {
+        return $this->hasMany(UserCourse::class);
+    }
+    public function getImageAttribute($val)
+    {
+        return ($val !== null) ? asset('uploads/users/' . $val) : "";
+    }
+    public function getParentImageAttribute($val)
+    {
+        return ($val !== null) ? asset('storage/profile_images/' . basename($val)) : "";
+    }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // dd(in_array('super_admin',$this->roles->pluck('name')->toArray()));
+
+        if ($panel->getId() === 'admin') {
+            if (
+                in_array('super-admin', $this->roles->pluck('name')->toArray()) ||
+                in_array('admin', $this->roles->pluck('name')->toArray())
+            ) {
+                return true;
+            } else {
+                return false;
+            }
+        } elseif ($panel->getId() === 'teacher') {
+            if (
+                in_array('super_admin', $this->roles->pluck('name')->toArray()) ||
+                in_array('admin', $this->roles->pluck('name')->toArray())
+                ||
+                in_array('Teacher', $this->roles->pluck('name')->toArray())
+            )
+                return true;
+        }
+        return false;
+    }
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
 }
