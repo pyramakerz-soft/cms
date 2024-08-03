@@ -70,7 +70,8 @@
                                                                     id="program_id">
                                                                     @foreach ($programs as $program)
                                                                         <option value="{{ $program->id }}">
-                                                                            {{ $program->name }}</option>
+                                                                            {{ $program->name . ' / ' . $program->course->name . ' / ' . $program->stage->name }}
+                                                                        </option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -119,7 +120,8 @@
                                                                         program</option>
                                                                     @foreach ($programs as $program)
                                                                         <option value="{{ $program->id }}">
-                                                                            {{ $program->name }}</option>
+                                                                            {{ $program->name . ' / ' . $program->course->name . ' / ' . $program->stage->name }}
+                                                                        </option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -183,7 +185,8 @@
                                                                     id="program_id">
                                                                     @foreach ($programs as $program)
                                                                         <option value="{{ $program->id }}">
-                                                                            {{ $program->name }}</option>
+                                                                            {{ $program->name . ' / ' . $program->course->name . ' / ' . $program->stage->name }}
+                                                                        </option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>

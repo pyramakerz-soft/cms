@@ -12,6 +12,7 @@ use App\Models\Stage;
 use App\Models\User;
 use App\Models\UserCourse;
 use App\Models\UserDetail;
+use App\Models\UserDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
@@ -155,7 +156,7 @@ class StudentController extends Controller
     {
         $student = User::findOrFail($id);
         $schools = School::all();
-        $programs = Program::where('stage_id',UserDetail::where('user_id',$id)->first()->stage_id)->get();
+        $programs = Program::where('stage_id',UserDetails::where('user_id',$id)->first()->stage_id)->get();
         $stages = Stage::all();
         $groups = Group::all();
         return view('dashboard.students.edit', compact('student', 'schools', 'programs', 'stages', 'groups'));

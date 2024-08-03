@@ -27,35 +27,35 @@ class ReportController extends Controller
     {
         $query = User::with(['details.stage', 'userCourses.program', 'groups'])
             ->where('role', '2');
-    
+
         if ($request->filled('school')) {
             $query->whereHas('details', function ($q) use ($request) {
                 $q->where('school_id', $request->input('school'));
             });
         }
-    
+
         if ($request->filled('program')) {
             $query->whereHas('userCourses', function ($q) use ($request) {
                 $q->where('program_id', $request->input('program'));
             });
         }
-    
+
         if ($request->filled('grade')) {
             $query->whereHas('details', function ($q) use ($request) {
                 $q->where('stage_id', $request->input('grade'));
             });
         }
-    
+
         if ($request->filled('group')) {
             $query->whereHas('groups', function ($q) use ($request) {
                 $q->where('group_id', $request->input('group'));
             });
         }
-    
+
         $students = $query->simplePaginate(10);
-    
+
         $schools = School::all();
-        $programs = Program::all();
+        $programs = Program::with('course' , 'stage')->get();
         $grades = Stage::all();
         $classes = Group::all();
         $units = Unit::all();
@@ -63,7 +63,7 @@ class ReportController extends Controller
         $games = Game::all();
         $skills = Skills::all();
         $testTypes = TestTypes::all();
-    
+
         // Initialize $response and $data with default values
         $response = [
             'skills' => [],
@@ -74,7 +74,7 @@ class ReportController extends Controller
             'trials' => [],
             'skillsData' => [],
         ];
-    
+
         $data = [
             'student_latest' => '',
             'counts' => [
@@ -93,10 +93,20 @@ class ReportController extends Controller
             'tprogress' => [],
 
         ];
-    
+
         return view('dashboard.reports.index', compact(
-            'students', 'schools', 'programs', 'games', 'response', 'lessons', 
-            'units', 'grades', 'classes', 'testTypes', 'data', 'skills'
+            'students',
+            'schools',
+            'programs',
+            'games',
+            'response',
+            'lessons',
+            'units',
+            'grades',
+            'classes',
+            'testTypes',
+            'data',
+            'skills'
         ));
     }
 
@@ -163,11 +173,11 @@ class ReportController extends Controller
         $unitId = $request->input('unit_id');
         $lessonId = $request->input('lesson_id');
         $gameId = $request->input('game_id');
-    
+
         $query = StudentProgress::where('student_id', $studentId)
             ->where('program_id', $programId)
             ->where('is_done', 1);
-    
+
         if ($unitId) {
             $query->where('unit_id', $unitId);
         }
@@ -179,23 +189,23 @@ class ReportController extends Controller
                 $q->where('game_id', $gameId);
             });
         }
-    
+
         $studentProgress = $query->get();
-    
+
         $unitsMastery = [];
         $lessonsMastery = [];
         $gamesMastery = [];
         $skillsMastery = [];
-    
+
         foreach ($studentProgress as $progress) {
             $test = Test::with(['game.gameTypes.skills.skill'])->where('lesson_id', $progress->lesson_id)->find($progress->test_id);
-    
+
             if (!$test || !$test->game || !$test->game->gameTypes) {
                 continue;
             }
-    
+
             $gameType = $test->game->gameTypes;
-    
+
             if (!isset($unitsMastery[$progress->unit_id])) {
                 $unitsMastery[$progress->unit_id] = [
                     'unit_id' => $progress->unit_id,
@@ -210,7 +220,7 @@ class ReportController extends Controller
                     'lessons' => [],
                 ];
             }
-    
+
             if (!isset($lessonsMastery[$progress->lesson_id])) {
                 $lessonsMastery[$progress->lesson_id] = [
                     'lesson_id' => $progress->lesson_id,
@@ -225,7 +235,7 @@ class ReportController extends Controller
                     'games' => [],
                 ];
             }
-    
+
             if (!isset($gamesMastery[$test->game_id])) {
                 $gamesMastery[$test->game_id] = [
                     'game_id' => $test->game_id,
@@ -239,7 +249,7 @@ class ReportController extends Controller
                     'mastery_percentage' => 0,
                 ];
             }
-    
+
             if (!isset($skillsMastery[$gameType->id])) {
                 $skillsMastery[$gameType->id] = [
                     'skill_id' => $gameType->id,
@@ -253,10 +263,10 @@ class ReportController extends Controller
                     'mastery_percentage' => 0,
                 ];
             }
-    
+
             foreach ($gameType->skills->unique() as $gameSkill) {
                 $skill = $gameSkill->skill;
-    
+
                 if (!isset($skillsMastery[$skill->id])) {
                     $skillsMastery[$skill->id] = [
                         'skill_id' => $skill->id,
@@ -270,7 +280,7 @@ class ReportController extends Controller
                         'mastery_percentage' => 0,
                     ];
                 }
-    
+
                 $skillsMastery[$skill->id]['total_attempts']++;
                 if ($progress->is_done) {
                     if ($progress->score >= 80) {
@@ -287,11 +297,11 @@ class ReportController extends Controller
                 }
                 $skillsMastery[$skill->id]['total_score'] += $progress->score;
             }
-    
+
             $unitsMastery[$progress->unit_id]['total_attempts']++;
             $lessonsMastery[$progress->lesson_id]['total_attempts']++;
             $gamesMastery[$test->game_id]['total_attempts']++;
-    
+
             if ($progress->is_done) {
                 if ($progress->score >= 80) {
                     $unitsMastery[$progress->unit_id]['mastered']++;
@@ -315,38 +325,38 @@ class ReportController extends Controller
                 $lessonsMastery[$progress->lesson_id]['failed']++;
                 $gamesMastery[$test->game_id]['failed']++;
             }
-    
+
             $unitsMastery[$progress->unit_id]['total_score'] += $progress->score;
             $lessonsMastery[$progress->lesson_id]['total_score'] += $progress->score;
             $gamesMastery[$test->game_id]['total_score'] += $progress->score;
         }
-    
+
         foreach ($unitsMastery as &$unit) {
             $unit['mastery_percentage'] = $unit['total_attempts'] > 0 ? ($unit['total_score'] / $unit['total_attempts']) : 0;
         }
-    
+
         foreach ($lessonsMastery as &$lesson) {
             $lesson['mastery_percentage'] = $lesson['total_attempts'] > 0 ? ($lesson['total_score'] / $lesson['total_attempts']) : 0;
         }
-    
+
         foreach ($gamesMastery as &$game) {
             $game['mastery_percentage'] = $game['total_attempts'] > 0 ? ($game['total_score'] / $game['total_attempts']) : 0;
         }
-    
+
         foreach ($skillsMastery as &$skill) {
             $skill['mastery_percentage'] = $skill['total_attempts'] > 0 ? ($skill['total_score'] / $skill['total_attempts']) : 0;
         }
-    
+
         $response = [
             'units' => array_values($unitsMastery),
             'lessons' => array_values($lessonsMastery),
             'games' => array_values($gamesMastery),
             'skills' => array_values($skillsMastery),
         ];
-    
+
         return response()->json($response);
     }
-    
+
 
 
     public function numOfTrialsReport(Request $request)

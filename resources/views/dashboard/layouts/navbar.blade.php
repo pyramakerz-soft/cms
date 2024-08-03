@@ -13,8 +13,8 @@
                 <ul class="nk-quick-nav">
 
 
-                    <li class="dropdown notification-dropdown"><a href="#" class="dropdown-toggle nk-quick-nav-icon"
-                            data-bs-toggle="dropdown">
+                    <li class="dropdown notification-dropdown"><a href="#"
+                            class="dropdown-toggle nk-quick-nav-icon" data-bs-toggle="dropdown">
                             <div class="icon-status icon-status-info"><em class="icon ni ni-bell"></em>
                             </div>
                         </a>
@@ -96,8 +96,9 @@
                             <div class="user-toggle">
                                 <div class="user-avatar sm"><em class="icon ni ni-user-alt"></em></div>
                                 <div class="user-info d-none d-xl-block">
-                                    <div class="user-status user-status-active">Administator</div>
-                                    <div class="user-name dropdown-indicator">Abu Bin Ishityak</div>
+                                    <div class="user-status user-status-active">
+                                        {{ Auth::user()->role == 2 ? 'student' : 'teacher' }}</div>
+                                    <div class="user-name dropdown-indicator">{{ Auth::user()->name }}</div>
                                 </div>
                             </div>
                         </a>
@@ -123,8 +124,21 @@
                             </div>
                             <div class="dropdown-inner">
                                 <ul class="link-list">
-                                    <li><a href="#"><em class="icon ni ni-signout"></em><span>Sign
-                                                out</span></a></li>
+                                    <li>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            style="display: none;">
+                                            @csrf
+                                        </form>
+
+                                        <a href="#"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <em class="icon ni ni-signout"></em><span>Sign
+                                                out</span>
+                                        </a>
+
+
+
+                                    </li>
                                 </ul>
                             </div>
                         </div>

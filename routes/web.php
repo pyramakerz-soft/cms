@@ -8,9 +8,10 @@ use App\Http\Controllers\Dashboard\SchoolController;
 use App\Http\Controllers\Dashboard\StageController;
 use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\ReportController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
-// use App\Http\Controllers\Dashboard\StudentController;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,31 +19,52 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
 
 Route::get('/', function () {
-    return view('dashboard.index');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
-Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-Route::get('/reports/completionReport', [ReportController::class, 'completionReport'])->name('reports.completionReport');
-Route::get('/reports/masteryReport', [ReportController::class, 'masteryReport'])->name('reports.masteryReport');
-Route::get('/reports/numOfTrialsReport', [ReportController::class, 'numOfTrialsReport'])->name('reports.numOfTrialsReport');
-Route::get('/reports/skillReport', [ReportController::class, 'skillReport'])->name('reports.skillReport');
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard.index');
+    });
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/completionReport', [ReportController::class, 'completionReport'])->name('reports.completionReport');
+    Route::get('/reports/masteryReport', [ReportController::class, 'masteryReport'])->name('reports.masteryReport');
+    Route::get('/reports/numOfTrialsReport', [ReportController::class, 'numOfTrialsReport'])->name('reports.numOfTrialsReport');
+    Route::get('/reports/skillReport', [ReportController::class, 'skillReport'])->name('reports.skillReport');
 
 
-Route::get('/get-courses/{id}', [StudentController::class,'getCourses']);
+    Route::get('/get-courses/{id}', [StudentController::class, 'getCourses']);
 
-Route::group(['prefix' => 'dashboard'], function () {
-    Route::resource('students', StudentController::class);
-    Route::post('/import-users', [StudentController::class, 'import'])->name('import.users');
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::resource('students', StudentController::class);
+        Route::post('/import-users', [StudentController::class, 'import'])->name('import.users');
 
-    Route::resource('instructors', InstructorController::class);
-    Route::resource('schools', SchoolController::class);
-    Route::resource('courses', CourseController::class);
-    Route::resource('stages', StageController::class);
-    Route::resource('classes', ClassController::class);
-    Route::resource('programs', ProgramController::class);
+        Route::resource('instructors', InstructorController::class);
+        Route::resource('schools', SchoolController::class);
+        Route::resource('courses', CourseController::class);
+        Route::resource('stages', StageController::class);
+        Route::resource('classes', ClassController::class);
+        Route::resource('programs', ProgramController::class);
+    });
 });
+
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/'); // Redirect to the homepage or login page
+})->name('logout');
