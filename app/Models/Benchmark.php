@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Benchmark extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
     public function program()
     {
@@ -18,4 +19,5 @@ class Benchmark extends Model
     {
         return $this->belongsTo(Test::class, 'test_id');
     }
+    
 }

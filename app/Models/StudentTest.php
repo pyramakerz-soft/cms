@@ -25,4 +25,5 @@ class StudentTest extends Model
     {
         return ($val !== null) ? asset('test_image/' . $val) : "";
     }
+
 }

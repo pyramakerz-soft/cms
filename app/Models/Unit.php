@@ -14,12 +14,14 @@ class Unit extends Model
     {
         return $this->belongsTo(Program::class, 'program_id');
     }
+    
     public function lessons()
     {
         return $this->hasMany(Lesson::class, 'unit_id');
     }
-    public function getImageAttribute($val)
+     public function  getImageAttribute($val)
     {
         return ($val !== null) ? asset('storage/' . $val) : "";
     }
+
 }

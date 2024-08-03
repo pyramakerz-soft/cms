@@ -25,21 +25,22 @@
                                                         <div class="tab-pane active" id="student-info">
                                                             <div class="row gy-4">
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label class="form-label"
+                                                                    <div class="form-group">
+                                                                        <label class="form-label"
                                                                             for="full-name">Name</label>
                                                                         <input type="text" class="form-control"
                                                                             id="full-name" placeholder="First name"
                                                                             name="name">
-
                                                                         @error('name')
                                                                             <div class="text-danger">{{ $message }}</div>
                                                                         @enderror
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label class="form-label"
-                                                                            for="email">Email Address</label><input
-                                                                            type="email" class="form-control"
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" for="email">Email
+                                                                            Address</label>
+                                                                        <input type="email" class="form-control"
                                                                             id="email" name="email"
                                                                             placeholder="Email Address">
                                                                         @error('email')
@@ -48,9 +49,10 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label class="form-label"
-                                                                            for="phone-no">Phone Number</label><input
-                                                                            type="text" class="form-control"
+                                                                    <div class="form-group">
+                                                                        <label class="form-label" for="phone-no">Phone
+                                                                            Number</label>
+                                                                        <input type="text" class="form-control"
                                                                             id="phone-no" placeholder="Phone Number"
                                                                             name="phone">
                                                                         @error('phone')
@@ -59,8 +61,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label
-                                                                            class="form-label">School</label>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">School</label>
                                                                         <div class="form-control-wrap">
                                                                             <select class="form-select js-select2"
                                                                                 name="school_id"
@@ -78,31 +80,14 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label
-                                                                            class="form-label">Program</label>
-                                                                        <div class="form-control-wrap"><select
-                                                                                class="form-select js-select2"
-                                                                                name="program_id"
-                                                                                data-placeholder="Select multiple options">
-                                                                                @foreach ($programs as $program)
-                                                                                    <option value="{{ $program->id }}">
-                                                                                        {{ $program->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                            @error('program_id')
-                                                                                <div class="text-danger">{{ $message }}
-                                                                                </div>
-                                                                            @enderror
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group"><label
-                                                                            class="form-label">Grade</label>
-                                                                        <div class="form-control-wrap"><select
-                                                                                class="form-select js-select2"
-                                                                                name="stage_id"
-                                                                                data-placeholder="Select multiple options">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Grade</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <select class="form-select js-select2"
+                                                                                name="stage_id" id="stage_id"
+                                                                                data-placeholder="Select a stage">
+                                                                                <option value="" selected disabled>
+                                                                                    Select stage</option>
                                                                                 @foreach ($stages as $stage)
                                                                                     <option value="{{ $stage->id }}">
                                                                                         {{ $stage->name }}</option>
@@ -116,10 +101,26 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label
-                                                                            class="form-label">Class</label>
-                                                                        <div class="form-control-wrap"><select
-                                                                                class="form-select js-select2"
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Program</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <select class="form-select js-select2"
+                                                                                name="program_id[]" id="program_id" multiple
+                                                                                data-placeholder="Select multiple options">
+                                                                                <!-- Options will be populated by AJAX -->
+                                                                            </select>
+                                                                            @error('program_id')
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Class</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <select class="form-select js-select2"
                                                                                 name="group_id"
                                                                                 data-placeholder="Select multiple options">
                                                                                 @foreach ($groups as $group)
@@ -135,7 +136,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label class="form-label"
+                                                                    <div class="form-group">
+                                                                        <label class="form-label"
                                                                             for="password">Password</label>
                                                                         <input type="password" class="form-control"
                                                                             id="password" placeholder="Password"
@@ -146,7 +148,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label class="form-label"
+                                                                    <div class="form-group">
+                                                                        <label class="form-label"
                                                                             for="confirm-password">Confirm Password</label>
                                                                         <input type="password" class="form-control"
                                                                             id="confirm-password"
@@ -158,7 +161,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-12">
-                                                                    <div class="form-group"><label class="form-label"
+                                                                    <div class="form-group">
+                                                                        <label class="form-label"
                                                                             for="profile-picture">Profile Picture</label>
                                                                         <input type="file" id="profile-picture"
                                                                             name="parent_image">
@@ -170,10 +174,10 @@
                                                                 <div class="col-md-12">
                                                                     <ul
                                                                         class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                                                                        <li><button type="submit"
+                                                                        <li>
+                                                                            <button type="submit"
                                                                                 class="btn btn-primary">Create</button>
                                                                         </li>
-                                                                       
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -195,4 +199,33 @@
             </div>
         </div>
     </div>
+@endsection
+@section('page_js')
+    <script>
+        $(document).ready(function() {
+            $('#stage_id').change(function() {
+                var stageId = $(this).val();
+                console.log(stageId);
+                if (stageId) {
+                    $.ajax({
+                        url: '/get-courses/' + stageId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#program_id').empty();
+                            $.each(data, function(key, value) {
+                                $('#program_id').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error:', error);
+                        }
+                    });
+                } else {
+                    $('#program_id').empty();
+                }
+            });
+        });
+    </script>
 @endsection

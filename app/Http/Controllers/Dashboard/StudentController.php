@@ -101,11 +101,12 @@ class StudentController extends Controller
             'role' => '1',
             'is_student' => 1
         ]);
-
+        foreach($request->program_id as $program_id){
         UserCourse::create([
             'user_id' => $user->id,
-            'program_id' => $request->program_id
+            'program_id' => $program_id
         ]);
+    }
 
         UserDetail::create([
             'user_id' => $user->id,
@@ -154,7 +155,7 @@ class StudentController extends Controller
     {
         $student = User::findOrFail($id);
         $schools = School::all();
-        $programs = Program::all();
+        $programs = Program::where('stage_id',UserDetail::where('user_id',$id)->first()->stage_id)->get();
         $stages = Stage::all();
         $groups = Group::all();
         return view('dashboard.students.edit', compact('student', 'schools', 'programs', 'stages', 'groups'));
@@ -184,11 +185,20 @@ class StudentController extends Controller
             'phone' => $request->phone,
             'school_id' => $request->school_id
         ]);
-
-        UserCourse::where('user_id', $student->id)->update([
-            'program_id' => $request->program_id
-        ]);
-
+        UserCourse::where('user_id',$student->id)->delete();
+        foreach($request->program_id as $program_id){
+            // if(!UserCourse::where('user_id',$student->id)->where('program_id',$program_id)->first()){
+                UserCourse::create([
+                    'program_id' => $program_id,
+                    'user_id' => $student->id
+                ]);
+            // }
+    //         else{
+    //     UserCourse::where('user_id', $student->id)->where('program_id','!=',$program_id)->update([
+    //         'program_id' => $program_id
+    //     ]);
+    // }
+    }
         UserDetail::where('user_id', $student->id)->update([
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
@@ -220,4 +230,12 @@ class StudentController extends Controller
         return redirect()->route('students.index')->with('success', 'Student deleted successfully.');
 
     }
+
+    ///////////////////////////////////
+    //Getters
+    public function getCourses($id){
+        $courses = Program::where('stage_id',$id)->get();
+        return $courses;
+    }
+    ///////////////////////////////////
 }

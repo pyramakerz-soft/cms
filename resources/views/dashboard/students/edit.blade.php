@@ -85,7 +85,7 @@
                                                                             class="form-label">Program</label>
                                                                         <div class="form-control-wrap"><select
                                                                                 class="form-select js-select2"
-                                                                                name="program_id"
+                                                                                name="program_id[]" multiple
                                                                                 data-placeholder="Select multiple options">
                                                                                 @foreach ($programs as $program)
                                                                                     <option value="{{ $program->id }}"
