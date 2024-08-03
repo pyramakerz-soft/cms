@@ -106,6 +106,9 @@ class InstructorController extends Controller
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
         ]);
+        Group::create([
+
+        ]);
 
         if ($request->hasFile('parent_image')) {
             $imagePath = $request->file('parent_image')->store('images', 'public');

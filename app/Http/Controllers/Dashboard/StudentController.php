@@ -89,7 +89,7 @@ class StudentController extends Controller
             'program_id' => 'required|exists:programs,id',
             'stage_id' => 'required|exists:stages,id',
             'group_id' => 'nullable|exists:groups,id',
-            'parent_image' => 'nullable|image|max:2048'
+            'parent_image' => 'nullable|image'
         ]);
 
         $user = User::create([
@@ -174,7 +174,7 @@ class StudentController extends Controller
             'program_id' => 'required|exists:programs,id',
             'stage_id' => 'required|exists:stages,id',
             'group_id' => 'required|exists:groups,id',
-            'parent_image' => 'nullable|image|max:2048'
+            'parent_image' => 'nullable|image'
         ]);
 
         $student = User::findOrFail($id);
