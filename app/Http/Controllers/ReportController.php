@@ -1098,18 +1098,28 @@ class ReportController extends Controller
         // Return view with data
         return view('dashboard.reports.class.class_mastery_report', $data);
     }
-
     public function classNumOfTrialsReportWeb(Request $request)
     {
+        // Retrieve groups and programs for the filters
+        $groups = Group::all();
+        $programs = Program::all();
+
         // Get the student IDs for the given group ID
         $students = GroupStudent::where('group_id', $request->group_id)->pluck('student_id');
+
+        // Check if students exist for the given group
+        // if ($students->isEmpty()) {
+        //     return view('errors.404', ['message' => 'No students found for the selected group.']);
+        // }
 
         // Initialize query builder with student IDs and program ID
         $progressQuery = StudentProgress::whereIn('student_id', $students)
             ->where('program_id', $request->program_id);
 
-        if ($progressQuery->get()->isEmpty())
-            return view('errors.404', ['message' => 'No student progress found.']);
+        // Check if student progress exists for the given program
+        // if ($progressQuery->get()->isEmpty()) {
+        //     return view('errors.404', ['message' => 'No student progress found.']);
+        // }
 
         if ($request->filled(['from_date', 'to_date']) && $request->from_date != NULL && $request->to_date != NULL) {
             $from_date = Carbon::parse($request->from_date)->startOfDay();
@@ -1120,7 +1130,7 @@ class ReportController extends Controller
         // Filter by month of created_at date if provided
         if ($request->filled('month')) {
             $month = $request->month;
-            $progressQuery->whereMonth('student_progress.created_at', Carbon::parse($month)->month);
+            $progressQuery->whereMonth('created_at', Carbon::parse($month)->month);
         }
 
         // Filter by test_types if provided
@@ -1133,16 +1143,22 @@ class ReportController extends Controller
         // Filter by stars if provided
         if ($request->filled('stars')) {
             $stars = (array) $request->stars;
-            if ($request->stars == 2)
+            if ($request->stars == 2) {
                 $progressQuery->whereIn('mistake_count', range(2, 1000));
-            else
+            } else {
                 $progressQuery->whereIn('mistake_count', $stars);
+            }
         }
 
         // Get the progress data
         $progress = $progressQuery->orderBy('created_at', 'ASC')
             ->select('student_progress.*')
             ->get();
+
+        // Check if progress data is empty
+        // if ($progress->isEmpty()) {
+        //     return view('errors.404', ['message' => 'No student progress found after applying filters.']);
+        // }
 
         // Initialize arrays to hold the data
         $monthlyScores = [];
@@ -1257,10 +1273,12 @@ class ReportController extends Controller
             ];
         }
 
-        $test_types = TestTypes::all();
-        $data['test_types'] = $test_types;
+        $data['groups'] = $groups;
+        $data['programs'] = $programs;
+        $data['oneStarDisplayedPercentage'] = $oneStarDisplayedPercentage;
+        $data['twoStarDisplayedPercentage'] = $twoStarDisplayedPercentage;
+        $data['threeStarDisplayedPercentage'] = $threeStarDisplayedPercentage;
 
-        // Return view with data
         return view('dashboard.reports.class.class_num_of_trials_report', $data);
     }
 }
