@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\ClassController;
 use App\Http\Controllers\Dashboard\CourseController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\InstructorController;
 use App\Http\Controllers\Dashboard\ProgramController;
 use App\Http\Controllers\Dashboard\SchoolController;
@@ -38,9 +39,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard.index');
-    });
+
+    Route::get("/dashboard", [DashboardController::class, 'index'])->name("dashboard");
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/completionReport', [ReportController::class, 'completionReport'])->name('reports.completionReport');
     Route::get('/reports/masteryReport', [ReportController::class, 'masteryReport'])->name('reports.masteryReport');

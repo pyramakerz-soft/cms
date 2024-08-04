@@ -67,27 +67,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group"><label
-                                                                        class="form-label">Status</label>
-                                                                    <div class="form-control-wrap">
-                                                                        <select class="form-select js-select2"
-                                                                            name="status"
-                                                                            data-placeholder="Select multiple options"
-                                                                            required>
-                                                                            <option value="1">Active</option>
-                                                                            <option value="0">Inactive
-                                                                            </option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group"><label class="form-label"
-                                                                        for="description">Description</label>
-                                                                    <textarea class="form-control" id="description" rows="3" name="description"></textarea>
-                                                                </div>
-                                                            </div>
+                                                            
+                                                            
                                                             <div class="col-md-6">
                                                                 <div class="form-group"><label class="form-label"
                                                                         for="password">Password</label>
@@ -96,13 +77,7 @@
                                                                         placeholder="Password" required>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group"><label class="form-label"
-                                                                        for="profile-picture">Profile Picture</label>
-                                                                    <input type="file" class="form-control"
-                                                                        id="profile-picture" name="image">
-                                                                </div>
-                                                            </div>
+                                                           
                                                             <div class="col-md-12">
                                                                 <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                                                     <li><button type="submit"

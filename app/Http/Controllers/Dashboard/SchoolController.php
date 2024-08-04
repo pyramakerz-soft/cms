@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\School;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +16,7 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $schools = School::where('status', 1)->paginate(10);
+        $schools = School::simplePaginate(10);
         return view('dashboard.school.index', compact('schools'));
     }
 
@@ -34,25 +35,34 @@ class SchoolController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:schools',
+            'email' => 'required|email|unique:users',
             'phone' => 'required|string|max:15',
             'type' => 'required|string|in:national,international',
-            'status' => 'required',
-            'description' => 'nullable|string',
             'password' => 'required|string|min:6',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
-        $data = $request->all();
+        $school = School::create([
+            'name' => $request->name,
+            'type' => $request->type,
+        ]);
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 3,
+            'is_active' => 1,
+            'phone' => $request->phone,
+            'school_id' => $school->id,
+        ]);
 
-        if ($request->hasFile('image')) {
-            $file_extension = $request->image->getClientOriginalExtension();
-            $file_name = time() . '.' . $file_extension;
-            $path = 'images/school_images';
-            $request->image->move($path, $file_name);
-            $data['image'] = $path . '/' . $file_name;
-        }
+        // if ($request->hasFile('image')) {
+        //     $file_extension = $request->image->getClientOriginalExtension();
+        //     $file_name = time() . '.' . $file_extension;
+        //     $path = 'images/school_images';
+        //     $request->image->move($path, $file_name);
+        //     $data['image'] = $path . '/' . $file_name;
+        // }
 
-        School::create($data);
+
 
         return redirect()->route('schools.create')->with('success', 'School created successfully!');
     }
@@ -81,7 +91,7 @@ class SchoolController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:schools,email,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'required|string|max:15',
             'type' => 'required|string|in:national,international',
             'status' => 'required',

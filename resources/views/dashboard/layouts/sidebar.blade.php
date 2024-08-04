@@ -15,8 +15,8 @@
         <div class="nk-sidebar-content">
             <div class="nk-sidebar-menu" data-simplebar>
                 <ul class="nk-menu">
-                    <li class="nk-menu-item"><a href="index.php" class="nk-menu-link"><span class="nk-menu-icon"><em
-                                    class="icon ni ni-dashboard-fill"></em></span><span
+                    <li class="nk-menu-item"><a href="{{ route('dashboard') }}" class="nk-menu-link"><span
+                                class="nk-menu-icon"><em class="icon ni ni-dashboard-fill"></em></span><span
                                 class="nk-menu-text">Dashboard</span></a></li>
                     <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
                                 class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
@@ -76,22 +76,19 @@
 
                         </ul>
                     </li>
-                    <li class="nk-menu-item has-sub"><a href="" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
+                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span><span
                                 class="nk-menu-text">Students</span></a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="{{ route('students.create') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Add Students
-                                    </span></a></li>
+                                    class="nk-menu-link"><span class="nk-menu-text">Add Students</span></a>
+                            </li>
                             <li class="nk-menu-item"><a href="{{ route('students.index') }}"
                                     class="nk-menu-link"><span class="nk-menu-text">Students
                                         List</span></a></li>
-                            <!-- <li class="nk-menu-item"><a href="instructor-details.html"
-                                                class="nk-menu-link"><span class="nk-menu-text">Students
-                                                    Details</span></a></li> -->
-
                         </ul>
                     </li>
+
                     <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
                                 class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
                                 class="nk-menu-text">Instructors</span></a>
@@ -102,26 +99,21 @@
                             <li class="nk-menu-item"><a href="{{ route('instructors.index') }}"
                                     class="nk-menu-link"><span class="nk-menu-text">Instructor
                                         List</span></a></li>
-                            <!-- <li class="nk-menu-item"><a href="instructor-details.html"
-                                                class="nk-menu-link"><span class="nk-menu-text">Instructor
-                                                    Details</span></a></li> -->
-
                         </ul>
                     </li>
                     <li class="nk-menu-item has-sub"><a href="{{ route('reports.index') }}"
                             class="nk-menu-link "></span><span class="nk-menu-text">Reports</span></a>
 
                     </li>
-
-                    <li class="nk-menu-item has-sub"><a href=""
-                            class="nk-menu-link nk-menu-toggle"><span class="nk-menu-icon"><em
-                                    class="icon ni ni-property-add"></em></span><span class="nk-menu-text">select
-                                group</span></a>
+                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                class="nk-menu-icon"><em class="icon ni ni-property-add"></em></span><span
+                                class="nk-menu-text">Select
+                                Group</span></a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="{{ route('select.group') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Completion report</span></a></li>
+                                    class="nk-menu-link"><span class="nk-menu-text">Completion Report</span></a></li>
                             <li class="nk-menu-item"><a href="{{ route('class.mastery.report.web') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Mastery report</span></a></li>
+                                    class="nk-menu-link"><span class="nk-menu-text">Mastery Report</span></a></li>
                         </ul>
                     </li>
                     <li class="nk-menu-item"><a href="message.html" class="nk-menu-link"><span
@@ -130,18 +122,7 @@
                     <li class="nk-menu-item"><a href="admin-profile.html" class="nk-menu-link"><span
                                 class="nk-menu-icon"><em class="icon ni ni-account-setting-fill"></em></span><span
                                 class="nk-menu-text">Admin profile</span></a></li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span><span
-                                class="nk-menu-text">Invoice</span></a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="student-invoice-list.html" class="nk-menu-link"><span
-                                        class="nk-menu-text">Invoice List</span></a>
-                            </li>
-                            <li class="nk-menu-item"><a href="student-invoice-details.html"
-                                    class="nk-menu-link"><span class="nk-menu-text">Invoice
-                                        Details</span></a></li>
-                        </ul>
-                    </li>
+
                     <li class="nk-menu-item"><a href="settings.html" class="nk-menu-link"><span
                                 class="nk-menu-icon"><em class="icon ni ni-setting-alt-fill"></em></span><span
                                 class="nk-menu-text">Settings</span></a></li>
