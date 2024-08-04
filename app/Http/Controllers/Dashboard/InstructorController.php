@@ -9,7 +9,7 @@ use App\Models\School;
 use App\Models\Stage;
 use App\Models\TeacherProgram;
 use App\Models\User;
-use App\Models\UserDetail;
+use App\Models\UserDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,7 +21,7 @@ class InstructorController extends Controller
     public function index(Request $request)
     {
         $query = User::with(['details.stage', 'teacher_programs.program'])
-            ->where('role', '2');
+            ->where('role', '1');
 
         if ($request->filled('school')) {
             $query->whereHas('details', function ($q) use ($request) {
@@ -67,6 +67,11 @@ class InstructorController extends Controller
         $groups = Group::all();
         return view('dashboard.instructors.create', compact('schools', 'programs', 'stages', 'groups'));
     }
+    public function getGroups($program_id)
+    {
+        $groups = Group::where('program_id', $program_id)->get();
+        return response()->json($groups);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -85,13 +90,13 @@ class InstructorController extends Controller
             'parent_image' => 'nullable|image|max:2048'
         ]);
 
-        $user = User::create([
+        $teacher = $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'school_id' => $request->school_id,
-            'role' => '2',
+            'role' => '1',
             'is_student' => 0
         ]);
 
@@ -101,12 +106,14 @@ class InstructorController extends Controller
             'grade_id' => $request->stage_id
         ]);
 
-        UserDetail::create([
+        UserDetails::create([
             'user_id' => $user->id,
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
         ]);
-        Group::create([
+        $group = Group::findOrFail($request->group_id);
+        $group->update([
+            'teacher_id' => $teacher->id,
 
         ]);
 

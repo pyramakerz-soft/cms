@@ -28,7 +28,6 @@
                                                 <div class="toggle-expand-content" data-content="more-options">
                                                     <form method="GET" action="{{ route('instructors.index') }}">
                                                         <ul class="nk-block-tools g-3">
-
                                                             <li>
                                                                 <div class="drodown">
                                                                     <a href="#"
@@ -172,7 +171,7 @@
                                                                 <span>{{ $instructor->phone }}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-lg">
-                                                                <span>{{ $instructor->details[0]->stage->name }}</span>
+                                                                <span>{{ $instructor->details[0]->stage->name ?? '-' }}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-mb"><span
                                                                     class="tb-lead d-lg-flex d-none"></span>

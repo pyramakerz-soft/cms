@@ -84,12 +84,34 @@
                                                                                 class="form-select js-select2"
                                                                                 name="program_id"
                                                                                 data-placeholder="Select multiple options">
+                                                                                <option value="" disabled selected>
+                                                                                    Select Program</option>
                                                                                 @foreach ($programs as $program)
                                                                                     <option value="{{ $program->id }}">
-                                                                                        {{ $program->name }}</option>
+                                                                                        {{ $program->name . '/' . $program->course->name }}
+                                                                                    </option>
                                                                                 @endforeach
                                                                             </select>
                                                                             @error('program_id')
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group"><label
+                                                                            class="form-label">Class</label>
+                                                                        <div class="form-control-wrap"><select
+                                                                                class="form-select js-select2"
+                                                                                name="group_id"
+                                                                                data-placeholder="Select multiple options">
+                                                                                {{-- @foreach ($groups as $group)
+                                                                                    <option value="{{ $group->id }}">
+                                                                                        {{ $group->name }}</option>
+                                                                                @endforeach --}}
+                                                                            </select>
+                                                                            @error('group_id')
                                                                                 <div class="text-danger">{{ $message }}
                                                                                 </div>
                                                                             @enderror
@@ -115,25 +137,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group"><label
-                                                                            class="form-label">Class</label>
-                                                                        <div class="form-control-wrap"><select
-                                                                                class="form-select js-select2"
-                                                                                name="group_id"
-                                                                                data-placeholder="Select multiple options">
-                                                                                @foreach ($groups as $group)
-                                                                                    <option value="{{ $group->id }}">
-                                                                                        {{ $group->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                            @error('group_id')
-                                                                                <div class="text-danger">{{ $message }}
-                                                                                </div>
-                                                                            @enderror
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+
                                                                 <div class="col-md-6">
                                                                     <div class="form-group"><label class="form-label"
                                                                             for="password">Password</label>
@@ -173,7 +177,7 @@
                                                                         <li><button type="submit"
                                                                                 class="btn btn-primary">Create</button>
                                                                         </li>
-                                                                       
+
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -195,4 +199,33 @@
             </div>
         </div>
     </div>
+@endsection
+@section('page_js')
+    <script>
+        $(document).ready(function() {
+            $('.js-select2').select2();
+
+            $('select[name="program_id"]').change(function() {
+                var programId = $(this).val();
+                if (programId) {
+                    $.ajax({
+                        url: '/get-groups/' + programId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('select[name="group_id"]').empty();
+                            $('select[name="group_id"]').append(
+                                '<option value="">Select a class</option>');
+                            $.each(data, function(key, value) {
+                                $('select[name="group_id"]').append('<option value="' +
+                                    value.id + '">' + value.sec_name + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('select[name="group_id"]').empty();
+                }
+            });
+        });
+    </script>
 @endsection

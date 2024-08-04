@@ -80,11 +80,11 @@
                         </tbody>
                     </table>
 
-                    <h2 style="font-size: 25px; margin-top: 25px">Star Counts</h2>
+                    <h2 style="font-size: 25px; margin-top: 25px">Trial Counts</h2>
                     <ul>
-                        <li>One Star: {{ $oneStarDisplayedPercentage }}%</li>
-                        <li>Two Stars: {{ $twoStarDisplayedPercentage }}%</li>
-                        <li>Three Stars: {{ $threeStarDisplayedPercentage }}%</li>
+                        <li>First Trial: {{ $oneStarDisplayedPercentage }}%</li>
+                        <li>Second Trial: {{ $twoStarDisplayedPercentage }}%</li>
+                        <li>Third Trial: {{ $threeStarDisplayedPercentage }}%</li>
                     </ul>
 
                     <h2 style="font-size: 25px; margin-top: 25px">Progress</h2>

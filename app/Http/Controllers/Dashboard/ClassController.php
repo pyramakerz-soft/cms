@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
+use App\Models\Program;
 use App\Models\School;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
@@ -25,8 +27,10 @@ class ClassController extends Controller
     public function create()
     {
         $schools = School::all();
+        $programs = Program::all();
+        $stages = Stage::all();
 
-        return view('dashboard.class.create', compact('schools'));
+        return view('dashboard.class.create', compact('schools', 'programs', 'stages'));
 
     }
 
@@ -37,13 +41,19 @@ class ClassController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'sec_name' => 'nullable|string|max:255',
             'school_id' => 'required|exists:schools,id',
+            'stage_id' => 'required|exists:stages,id',
+            'program_id' => 'required|exists:programs,id',
 
         ]);
 
         $class = Group::create([
             'name' => $request->name,
+            'sec_name' => $request->sec_name,
             'school_id' => $request->school_id,
+            'stage_id' => $request->stage_id,
+            'program_id' => $request->program_id,
         ]);
 
         return redirect()->route('classes.create')->with('success', 'Class created successfully.');
@@ -64,7 +74,9 @@ class ClassController extends Controller
     {
         $class = Group::findOrFail($id);
         $schools = School::all();
-        return view("dashboard.class.edit", compact(["class", 'schools']));
+        $programs = Program::all();
+        $stages = Stage::all();
+        return view("dashboard.class.edit", compact(["class", 'schools', 'stages', 'programs']));
     }
 
     /**
@@ -74,7 +86,10 @@ class ClassController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'sec_name' => 'nullable|string|max:255',
             'school_id' => 'required|exists:schools,id',
+            'stage_id' => 'required|exists:stages,id',
+            'program_id' => 'required|exists:programs,id',
 
         ]);
 
@@ -82,7 +97,10 @@ class ClassController extends Controller
         $class->update([
             'name' => $request->name,
 
-            'school_id' => $request->school_id
+            'school_id' => $request->school_id,
+            'sec_name' => $request->sec_name,
+            'stage_id' => $request->stage_id,
+            'program_id' => $request->program_id,
         ]);
 
 

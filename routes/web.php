@@ -56,7 +56,7 @@ Route::middleware([
 
 
     Route::get('/get-courses/{id}', [StudentController::class, 'getCourses']);
-
+    Route::get('/get-groups/{program_id}', [InstructorController::class, 'getGroups'])->name('getGroups');
     Route::group(['prefix' => 'dashboard'], function () {
         Route::resource('students', StudentController::class);
         Route::post('/import-users', [StudentController::class, 'import'])->name('import.users');

@@ -21,13 +21,30 @@
                                                 </div>
                                             @endif
                                             <div class="modal-body modal-body-md">
-                                                <h5 class="title">Add Courses</h5>
+                                                <h5 class="title">Add Class</h5>
 
                                                 <form action="{{ route('classes.store') }}" method="POST"
                                                     class="tab-content">
                                                     @csrf
                                                     <div class="tab-pane active" id="student-info">
                                                         <div class="row gy-4">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label" for="full-name">Name</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="full-name" name="name"
+                                                                        placeholder="Class name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label" for="full-name">Sec
+                                                                        Name</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="full-name" name="sec_name"
+                                                                        placeholder="Second name">
+                                                                </div>
+                                                            </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group"><label
                                                                         class="form-label">School</label>
@@ -50,12 +67,49 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label" for="full-name">Name</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="full-name" name="name"
-                                                                        placeholder="Course name">
+                                                                <div class="form-group"><label
+                                                                        class="form-label">Program</label>
+                                                                    <div class="form-control-wrap">
+                                                                        <select class="form-select js-select2"
+                                                                            data-placeholder="Select multiple options"
+                                                                            name="program_id" required>
+                                                                            <option value="0" selected disabled>Select
+                                                                                Program</option>
+
+                                                                            @foreach ($programs as $program)
+                                                                                <option value="{{ $program->id }}">
+                                                                                    {{ $program->name }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @error('program_id')
+                                                                            <div class="text-danger">{{ $message }}</div>
+                                                                        @enderror
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group"><label
+                                                                        class="form-label">Stage</label>
+                                                                    <div class="form-control-wrap">
+                                                                        <select class="form-select js-select2"
+                                                                            data-placeholder="Select multiple options"
+                                                                            name="stage_id" required>
+                                                                            <option value="0" selected disabled>Select
+                                                                                Stage</option>
+
+                                                                            @foreach ($stages as $stage)
+                                                                                <option value="{{ $stage->id }}">
+                                                                                    {{ $stage->name }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @error('stage_id')
+                                                                            <div class="text-danger">{{ $message }}</div>
+                                                                        @enderror
+                                                                    </div>
                                                                 </div>
                                                             </div>
 

@@ -8,17 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class UserDetails extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
-    public function user(){
-        return $this->belongsTo(User::class , 'user_id');
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function school(){
-        return $this->belongsTo(School::class , 'school_id');
+    public function school()
+    {
+        return $this->belongsTo(School::class, 'school_id');
     }
 
-    public function stage(){
-        return $this->belongsto(Stage::class,'stage_id');
+    public function stage()
+    {
+        return $this->belongsto(Stage::class, 'stage_id');
     }
 
 }

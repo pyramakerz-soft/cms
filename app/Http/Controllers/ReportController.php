@@ -1183,7 +1183,7 @@ class ReportController extends Controller
             // Add the test score to the respective month
             if (!isset($monthlyScores[$monthYear])) {
                 $monthlyScores[$monthYear] = [
-                    'month' => $createdDate->format('M'),
+                    'month' => $createdDate->format('F'),
                     'total_score' => 0,
                     'star' => $course->stars,
                     'tests' => [],
@@ -1252,11 +1252,11 @@ class ReportController extends Controller
                     ->where('program_id', $request->program_id)->count() / $division) * 100) ?? 0,
             ];
         } else {
-            $threestars = StudentProgress::where('mistake_count', 0)->whereIn('student_id', $students)->whereBetween('student_progress.created_at', [$from_date, $to_date])
+            $threestars = StudentProgress::where('mistake_count', 0)->whereIn('student_id', $students)->where('is_done',1)->whereBetween('student_progress.created_at', [$from_date, $to_date])
                 ->where('program_id', $request->program_id)->count();
-            $twostars = StudentProgress::where('mistake_count', 1)->whereIn('student_id', $students)->whereBetween('student_progress.created_at', [$from_date, $to_date])
+            $twostars = StudentProgress::where('mistake_count', 1)->whereIn('student_id', $students)->where('is_done',1)->whereBetween('student_progress.created_at', [$from_date, $to_date])
                 ->where('program_id', $request->program_id)->count();
-            $onestar = StudentProgress::whereIn('mistake_count', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11])->whereIn('student_id', $students)->whereBetween('student_progress.created_at', [$from_date, $to_date])
+            $onestar = StudentProgress::whereIn('mistake_count', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11])->where('is_done',1)->whereIn('student_id', $students)->whereBetween('student_progress.created_at', [$from_date, $to_date])
                 ->where('program_id', $request->program_id)->count();
 
             $division = StudentProgress::whereIn('student_id', $students)
@@ -1275,9 +1275,9 @@ class ReportController extends Controller
 
         $data['groups'] = $groups;
         $data['programs'] = $programs;
-        $data['oneStarDisplayedPercentage'] = $oneStarDisplayedPercentage;
-        $data['twoStarDisplayedPercentage'] = $twoStarDisplayedPercentage;
-        $data['threeStarDisplayedPercentage'] = $threeStarDisplayedPercentage;
+        $data['oneStarDisplayedPercentage'] = $data['reports_percentages']['first_trial'];
+        $data['twoStarDisplayedPercentage'] = $data['reports_percentages']['second_trial'];
+        $data['threeStarDisplayedPercentage'] = $data['reports_percentages']['third_trial'];
 
         return view('dashboard.reports.class.class_num_of_trials_report', $data);
     }

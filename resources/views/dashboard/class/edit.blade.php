@@ -21,14 +21,35 @@
                                                 </div>
                                             @endif
                                             <div class="modal-body modal-body-md">
-                                                <h5 class="title">Add Classes</h5>
+                                                <h5 class="title">Edit Classes</h5>
 
-                                                <form action="{{ route('classes.update' , $class->id) }}" method="POST"
+                                                <form action="{{ route('classes.update', $class->id) }}" method="POST"
                                                     class="tab-content">
                                                     @csrf
                                                     @method('put')
                                                     <div class="tab-pane active" id="student-info">
                                                         <div class="row gy-4">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label" for="full-name">Name</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="full-name" name="name"
+                                                                        placeholder="Class name"
+                                                                        value="{{ $class->name }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label" for="full-name">Sec
+                                                                        Name</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="full-name" name="sec_name"
+                                                                        placeholder="Second name"
+                                                                        value="{{ $class->sec_name }}">
+
+                                                                </div>
+                                                            </div>
+
                                                             <div class="col-md-6">
                                                                 <div class="form-group"><label
                                                                         class="form-label">School</label>
@@ -53,14 +74,52 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label" for="full-name">Name</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="full-name" name="name"
-                                                                        placeholder="Course name"
-                                                                        value="{{ $class->name }}">
+                                                                <div class="form-group"><label
+                                                                        class="form-label">Program</label>
+                                                                    <div class="form-control-wrap">
+                                                                        <select class="form-select js-select2"
+                                                                            data-placeholder="Select multiple options"
+                                                                            name="program_id" required>
+                                                                            <option value="0" selected disabled>Select
+                                                                                Program</option>
+
+                                                                            @foreach ($programs as $program)
+                                                                                <option value="{{ $program->id }}"
+                                                                                    {{ $class->program_id == $program->id ? 'selected' : '' }}>
+                                                                                    {{ $program->name . '/' . $program->course->name }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @error('program_id')
+                                                                            <div class="text-danger">{{ $message }}</div>
+                                                                        @enderror
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group"><label
+                                                                        class="form-label">Stage</label>
+                                                                    <div class="form-control-wrap">
+                                                                        <select class="form-select js-select2"
+                                                                            data-placeholder="Select multiple options"
+                                                                            name="stage_id" required>
+                                                                            <option value="0" selected disabled>Select
+                                                                                Stage</option>
+
+                                                                            @foreach ($stages as $stage)
+                                                                                <option value="{{ $stage->id }}"
+                                                                                    {{ $class->stage_id == $stage->id ? 'selected' : '' }}>
+                                                                                    {{ $stage->name }}
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        @error('stage_id')
+                                                                            <div class="text-danger">{{ $message }}</div>
+                                                                        @enderror
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
 
 
 
