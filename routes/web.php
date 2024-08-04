@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\SchoolController;
 use App\Http\Controllers\Dashboard\StageController;
 use App\Http\Controllers\Dashboard\StudentController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +55,7 @@ Route::middleware([
     Route::get('/class-num-of-trials-report', [ReportController::class, 'classNumOfTrialsReportWeb'])->name('class.num.of.trials.report.web');
     //////////////////////////// End class reports//////////////////////////////
 
-
+    Route::resource('roles', RoleController::class);
     Route::get('/get-courses/{id}', [StudentController::class, 'getCourses']);
     Route::get('/get-groups/{program_id}', [InstructorController::class, 'getGroups'])->name('getGroups');
     Route::group(['prefix' => 'dashboard'], function () {

@@ -30,6 +30,16 @@
                     </li>
                     <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
                                 class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
+                                class="nk-menu-text">Roles</span></a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item"><a href="{{ route('roles.create') }}" class="nk-menu-link"><span
+                                        class="nk-menu-text">Add Role</span></a></li>
+                            <li class="nk-menu-item"><a href="{{ route('roles.index') }}" class="nk-menu-link"><span
+                                        class="nk-menu-text">Roles List</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
                                 class="nk-menu-text">Stage</span></a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item"><a href="{{ route('stages.create') }}" class="nk-menu-link"><span
@@ -52,11 +62,11 @@
                                 class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
                                 class="nk-menu-text">School</span></a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('schools.create') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text">Add School
+                            <li class="nk-menu-item"><a href="{{ route('schools.create') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text">Add School
                                     </span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('schools.index') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text">Schools
+                            <li class="nk-menu-item"><a href="{{ route('schools.index') }}"
+                                    class="nk-menu-link"><span class="nk-menu-text">Schools
                                         List</span></a></li>
 
 
