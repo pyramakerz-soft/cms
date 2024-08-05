@@ -137,6 +137,27 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group">
+                                                                        <label class="form-label">Role</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <select name="roles[]" id="role"
+                                                                                class="form-select">
+                                                                                <option value="" disabled selected>
+                                                                                    Role</option>
+                                                                                @foreach ($roles as $role)
+                                                                                    <option value="{{ $role->name }}">
+                                                                                        {{ $role->name }}</option>
+                                                                                @endforeach
+
+                                                                            </select>
+                                                                            @error('group_id')
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
                                                                         <label class="form-label"
                                                                             for="password">Password</label>
                                                                         <input type="password" class="form-control"

@@ -14,7 +14,7 @@
                                 <div class="nk-block-head nk-block-head-sm">
                                     <div class="nk-block-between">
                                         <div class="nk-block-head-content">
-                                            <h3 class="nk-block-title page-title">Schools</h3>
+                                            <h3 class="nk-block-title page-title">Programs</h3>
                                         </div>
                                         <div class="nk-block-head-content">
                                             <div class="toggle-wrap nk-block-tools-toggle"><a href="#"
@@ -47,6 +47,7 @@
                                             <th scope="col">School</th>
                                             <th scope="col">Course</th>
                                             <th scope="col">Stage</th>
+                                            <th scope="col">Action</th>
 
                                         </tr>
                                     </thead>
@@ -58,7 +59,7 @@
                                                 <td>{{ $program->school->name }}</td>
                                                 <td>{{ $program->course->name }}</td>
                                                 <td>{{ $program->stage->name }}</td>
-                                                <td class="d-flex flex-row justify-content-end">
+                                                <td class="">
                                                     <a href="{{ route('programs.edit', $program->id) }}"
                                                         class="btn btn-warning me-1">Edit</a>
 
@@ -82,6 +83,11 @@
 
                                     </tbody>
                                 </table>
+                                <div class="mx-auto d-flex justify-content-center">
+                                    <div class="nk-block-between-md g-3">
+                                        {!! $programs->links() !!}
+                                    </div>
+                                </div>
                                 
                             </div>
                         </div>

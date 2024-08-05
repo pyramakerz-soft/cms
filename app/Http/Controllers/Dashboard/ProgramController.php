@@ -16,7 +16,7 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $programs = Program::all();
+        $programs = Program::simplePaginate(10);
         return view('dashboard.program.index', compact('programs'));
 
     }

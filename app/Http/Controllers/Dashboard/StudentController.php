@@ -15,6 +15,8 @@ use App\Models\UserDetail;
 use App\Models\UserDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+
 use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
@@ -72,7 +74,8 @@ class StudentController extends Controller
         $programs = Program::all();
         $stages = Stage::all();
         $groups = Group::all();
-        return view('dashboard.students.create', compact('schools', 'programs', 'stages', 'groups'));
+        $roles = Role::all();
+        return view('dashboard.students.create', compact('schools', 'programs', 'stages', 'groups', 'roles'));
 
     }
 
@@ -102,12 +105,12 @@ class StudentController extends Controller
             'role' => '1',
             'is_student' => 1
         ]);
-        foreach($request->program_id as $program_id){
-        UserCourse::create([
-            'user_id' => $user->id,
-            'program_id' => $program_id
-        ]);
-    }
+        foreach ($request->program_id as $program_id) {
+            UserCourse::create([
+                'user_id' => $user->id,
+                'program_id' => $program_id
+            ]);
+        }
 
         UserDetail::create([
             'user_id' => $user->id,
@@ -156,7 +159,7 @@ class StudentController extends Controller
     {
         $student = User::findOrFail($id);
         $schools = School::all();
-        $programs = Program::where('stage_id',UserDetails::where('user_id',$id)->first()->stage_id)->get();
+        $programs = Program::where('stage_id', UserDetails::where('user_id', $id)->first()->stage_id)->get();
         $stages = Stage::all();
         $groups = Group::all();
         return view('dashboard.students.edit', compact('student', 'schools', 'programs', 'stages', 'groups'));
@@ -186,20 +189,20 @@ class StudentController extends Controller
             'phone' => $request->phone,
             'school_id' => $request->school_id
         ]);
-        UserCourse::where('user_id',$student->id)->delete();
-        foreach($request->program_id as $program_id){
+        UserCourse::where('user_id', $student->id)->delete();
+        foreach ($request->program_id as $program_id) {
             // if(!UserCourse::where('user_id',$student->id)->where('program_id',$program_id)->first()){
-                UserCourse::create([
-                    'program_id' => $program_id,
-                    'user_id' => $student->id
-                ]);
+            UserCourse::create([
+                'program_id' => $program_id,
+                'user_id' => $student->id
+            ]);
             // }
-    //         else{
-    //     UserCourse::where('user_id', $student->id)->where('program_id','!=',$program_id)->update([
-    //         'program_id' => $program_id
-    //     ]);
-    // }
-    }
+            //         else{
+            //     UserCourse::where('user_id', $student->id)->where('program_id','!=',$program_id)->update([
+            //         'program_id' => $program_id
+            //     ]);
+            // }
+        }
         UserDetail::where('user_id', $student->id)->update([
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
@@ -234,8 +237,9 @@ class StudentController extends Controller
 
     ///////////////////////////////////
     //Getters
-    public function getCourses($id){
-        $courses = Program::where('stage_id',$id)->get();
+    public function getCourses($id)
+    {
+        $courses = Program::where('stage_id', $id)->get();
         return $courses;
     }
     ///////////////////////////////////

@@ -24,8 +24,12 @@ class RoleController extends Controller
     }
     public function index()
     {
-        $roles = Role::orderBy('id', 'DESC')->paginate(5);
-        return view('dashboard.roles.index', compact('roles'));
+        // $roles = Role::orderBy('id', 'DESC')->paginate(5);
+
+        $roles = Role::orderBy('id', 'DESC')->with('permissions')->paginate(20);
+        $permissions = Permission::get();
+
+        return view('dashboard.roles.index', compact('roles', 'permissions'));
     }
 
     /**
@@ -73,12 +77,16 @@ class RoleController extends Controller
     public function edit(string $id)
     {
         $role = Role::find($id);
-        $permission = Permission::get();
+        $permissions = Permission::get();
         $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id", $id)
             ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
             ->all();
+        // $role = Role::find($id);
+        // $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
+        //     ->where("role_has_permissions.role_id", $id)
+        //     ->get();
 
-        return view('dashboard.roles.edit', compact('role', 'permission', 'rolePermissions'));
+        return view('dashboard.roles.edit', compact('role','permissions', 'rolePermissions'));
     }
 
     /**

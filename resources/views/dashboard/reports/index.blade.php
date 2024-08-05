@@ -63,9 +63,9 @@
                                                 <div class="filter-form-container">
                                                     <form class="filter-form" method="GET"
                                                         action="{{ route('reports.completionReport') }}">
-                                                        <div class="form-row">
-                                                            <div class="col-md-3">
-                                                                <label for="program_id">Program</label>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <label for="program_id"><b>Program</b></label>
                                                                 <select class="form-select js-select2" name="program_id"
                                                                     id="program_id">
                                                                     @foreach ($programs as $program)
@@ -75,18 +75,18 @@
                                                                     @endforeach
                                                                 </select>
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <label for="from_date">From Date</label>
+                                                            <div class="col-md-4">
+                                                                <label for="from_date"><b>From Date</b></label>
                                                                 <input type="date" class="form-control" name="from_date"
                                                                     id="from_date">
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <label for="to_date">To Date</label>
+                                                            <div class="col-md-4">
+                                                                <label for="to_date"><b>To Date</b></label>
                                                                 <input type="date" class="form-control" name="to_date"
                                                                     id="to_date">
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <label for="status">Status</label>
+                                                            <div class="col-md-4">
+                                                                <label for="status"><b>Status</b></label>
                                                                 <select class="form-select js-select2" name="status"
                                                                     id="status">
                                                                     <option value="Completed">Completed</option>
@@ -184,7 +184,7 @@
                                                 <div class="filter-form-container">
                                                     <form class="filter-form" method="GET"
                                                         action="{{ route('reports.numOfTrialsReport') }}">
-                                                        <div class="form-row">
+                                                        <div class="row">
                                                             <div class="col-md-3">
                                                                 <label for="program_id">Program</label>
                                                                 <select class="form-select js-select2" name="program_id"

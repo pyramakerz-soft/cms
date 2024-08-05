@@ -107,7 +107,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
+{{-- 
                                                 <div class="col-md-6">
                                                     <div class="card">
                                                         <div class="nk-ecwg nk-ecwg3">
@@ -131,7 +131,7 @@
                                                                     id="totalSells"></canvas></div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
                                             </div>
                                         </div>

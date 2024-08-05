@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     private $permissions = [
-        'role-list',
+        // 'role-list',
         'role-create',
         'role-edit',
         'role-delete',
@@ -40,8 +40,8 @@ class DatabaseSeeder extends Seeder
         // Create admin User and assign the role to him.
         $user = User::create([
             'name' => 'Prevail Ejimadu',
-            'email' => 'test@example.com',
-            'password' => Hash::make('password'),
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('123456'),
             'phone' => "123",
             'role' => 3,
         ]);
