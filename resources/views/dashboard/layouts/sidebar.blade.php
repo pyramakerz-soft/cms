@@ -86,18 +86,23 @@
 
                         </ul>
                     </li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span><span
-                                class="nk-menu-text">Students</span></a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('students.create') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Add Students</span></a>
-                            </li>
-                            <li class="nk-menu-item"><a href="{{ route('students.index') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Students
-                                        List</span></a></li>
-                        </ul>
-                    </li>
+                    @can('view_user')
+
+                        <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                    class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span><span
+                                    class="nk-menu-text">Students</span></a>
+                            <ul class="nk-menu-sub">
+                                @can('create_user')
+                                    <li class="nk-menu-item"><a href="{{ route('students.create') }}"
+                                            class="nk-menu-link"><span class="nk-menu-text">Add Students</span></a>
+                                    </li>
+                                @endcan
+                                <li class="nk-menu-item"><a href="{{ route('students.index') }}"
+                                        class="nk-menu-link"><span class="nk-menu-text">Students
+                                            List</span></a></li>
+                            </ul>
+                        </li>
+                    @endcan
 
                     <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
                                 class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span

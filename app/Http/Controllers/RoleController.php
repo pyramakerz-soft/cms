@@ -25,7 +25,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::orderBy('id', 'DESC')->paginate(5);
-        return view('roles.index', compact('roles'));
+        return view('dashboard.roles.index', compact('roles'));
     }
 
     /**
@@ -34,7 +34,7 @@ class RoleController extends Controller
     public function create()
     {
         $permission = Permission::get();
-        return view('roles.create', compact('permission'));
+        return view('dashboard.roles.create', compact('permission'));
     }
 
     /**
@@ -64,7 +64,7 @@ class RoleController extends Controller
             ->where("role_has_permissions.role_id", $id)
             ->get();
 
-        return view('roles.show', compact('role', 'rolePermissions'));
+        return view('dashboard.roles.show', compact('role', 'rolePermissions'));
     }
 
     /**
@@ -78,7 +78,7 @@ class RoleController extends Controller
             ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
             ->all();
 
-        return view('roles.edit', compact('role', 'permission', 'rolePermissions'));
+        return view('dashboard.roles.edit', compact('role', 'permission', 'rolePermissions'));
     }
 
     /**
