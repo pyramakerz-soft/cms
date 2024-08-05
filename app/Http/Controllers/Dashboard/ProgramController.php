@@ -16,7 +16,7 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $programs = Program::simplePaginate(10);
+        $programs = Program::with('course')->simplePaginate(10);
         return view('dashboard.program.index', compact('programs'));
 
     }
@@ -45,12 +45,17 @@ class ProgramController extends Controller
             'stage_id' => 'required|exists:stages,id',
         ]);
 
-        Program::create([
-            'name' => $request->name,
-            'school_id' => $request->school_id,
-            'course_id' => $request->course_id,
-            'stage_id' => $request->stage_id,
-        ]);
+        foreach ($request->course_id as $course_id) {
+
+            Program::create([
+                'name' => $request->name,
+                'school_id' => $request->school_id,
+                'course_id' => $course_id,
+                'stage_id' => $request->stage_id,
+            ]);
+        }
+
+
 
         return redirect()->route('programs.create')->with('success', 'Program created successfully!');
 
@@ -90,12 +95,17 @@ class ProgramController extends Controller
 
         $program = Program::findOrFail($id);
 
-        $program->update([
-            'name' => $request->name,
-            'school_id' => $request->school_id,
-            'course_id' => $request->course_id,
-            'stage_id' => $request->stage_id,
-        ]);
+        foreach ($request->course_id as $course_id) {
+
+            $program->update([
+                'name' => $request->name,
+                'school_id' => $request->school_id,
+                'course_id' => $course_id,
+                'stage_id' => $request->stage_id,
+            ]);
+        }
+
+
 
         return redirect()->route('programs.edit', $program->id)->with('success', 'Program updated successfully!');
     }

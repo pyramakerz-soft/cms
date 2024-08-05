@@ -157,7 +157,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-row mt-3">
+                                                        <div class="row mt-3">
                                                             <div class="col-md-3">
                                                                 <label for="from_date">From Date</label>
                                                                 <input type="date" class="form-control"
@@ -226,7 +226,7 @@
                                                 <div class="filter-form-container">
                                                     <form class="filter-form" method="GET"
                                                         action="{{ route('reports.skillReport') }}">
-                                                        <div class="form-row">
+                                                        <div class="row">
                                                             <div class="col-md-3">
                                                                 <label for="program_id">Program</label>
                                                                 <select class="form-select js-select2" name="program_id"

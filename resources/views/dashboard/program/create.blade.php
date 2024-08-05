@@ -22,7 +22,7 @@
                                             @endif
 
                                             <div class="modal-body modal-body-md">
-                                                <h5 class="title">Add Program</h5>
+                                                <h5 class="title">Add Cluster</h5>
 
                                                 <form action="{{ route('programs.store') }}" method="POST"
                                                     enctype="multipart/form-data" class="tab-content">
@@ -34,7 +34,7 @@
                                                                         for="full-name">
                                                                         Name</label>
                                                                     <input type="text" class="form-control"
-                                                                        id="full-name" placeholder="Program name"
+                                                                        id="full-name" placeholder="Cluster name"
                                                                         name="name" required>
                                                                     @error('name')
                                                                         <div class="text-danger">{{ $message }}</div>
@@ -71,11 +71,10 @@
                                                                     <div class="form-control-wrap">
 
                                                                         <select class="form-select js-select2"
-                                                                            name="course_id"
+                                                                            name="course_id[]"
                                                                             data-placeholder="Select multiple options"
-                                                                            required>
-                                                                            <option value="0" selected disabled>Select
-                                                                                Course</option>
+                                                                            required multiple>
+                                                                            
 
                                                                             @foreach ($courses as $course)
                                                                                 <option value="{{ $course->id }}">

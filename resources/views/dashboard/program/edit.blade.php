@@ -62,7 +62,7 @@
                                                                         class="form-label">Course</label>
                                                                     <div class="form-control-wrap">
                                                                         <select class="form-select js-select2"
-                                                                            name="course_id" required>
+                                                                            name="course_id[]" required>
                                                                             @foreach ($courses as $course)
                                                                                 <option value="{{ $course->id }}"
                                                                                     {{ $program->course_id == $course->id ? 'selected' : '' }}>
