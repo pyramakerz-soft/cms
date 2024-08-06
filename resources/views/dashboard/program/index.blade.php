@@ -46,36 +46,41 @@
                                             <th scope="col">Name</th>
                                             <th scope="col">School</th>
                                             <th scope="col">Course</th>
-                                            <th scope="col">Stage</th>
                                             <th scope="col">Action</th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($programs as $program)
+                                        @foreach ($programs as $programName => $groupedPrograms)
                                             <tr>
-                                                <th scope="row">{{ $program->id }}</th>
-                                                <td>{{ $program->name }}</td>
-                                                <td>{{ $program->school->name }}</td>
-                                                <td>{{ $program->course->name }}</td>
-                                                <td>{{ $program->stage->name }}</td>
-                                                <td class="">
-                                                    <a href="{{ route('programs.edit', $program->id) }}"
+                                                <th scope="row">{{ $groupedPrograms->first()->id }}</th>
+                                                <td>{{ $programName }}</td>
+                                                <td>{{ $groupedPrograms->first()->school->name }}</td>
+                                                <td>
+                                                    @foreach ($groupedPrograms->take(1) as $program)
+                                                        {{ $program->course->name }}/{{ $program->stage->name }}
+                                                    @endforeach
+                                                    @if ($groupedPrograms->count() > 1)
+                                                        <button class="btn btn-link view-more"
+                                                            data-program-name="{{ $programName }}">View More</button>
+                                                    @endif
+                                                    <div class="more-courses d-none"
+                                                        data-program-name="{{ $programName }}">
+                                                        @foreach ($groupedPrograms->skip(1) as $program)
+                                                            {{ $program->course->name }}/{{ $program->stage->name }}<br>
+                                                        @endforeach
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('programs.edit', $groupedPrograms->first()->id) }}"
                                                         class="btn btn-warning me-1">Edit</a>
-
-
-
-                                                    <form action="{{ route('programs.destroy', $program->id) }}"
+                                                    <form
+                                                        action="{{ route('programs.destroy', $groupedPrograms->first()->id) }}"
                                                         method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger"
                                                             onclick="return confirm('Are you sure you want to delete this program?')">Delete</button>
-
-                                                        <div class="d-lg-flex d-none">
-
-                                                        </div>
-
                                                     </form>
                                                 </td>
                                             </tr>
@@ -83,12 +88,12 @@
 
                                     </tbody>
                                 </table>
-                                <div class="mx-auto d-flex justify-content-center">
+                                {{-- <div class="mx-auto d-flex justify-content-center">
                                     <div class="nk-block-between-md g-3">
                                         {!! $programs->links() !!}
                                     </div>
-                                </div>
-                                
+                                </div> --}}
+
                             </div>
                         </div>
                     </div>
@@ -99,4 +104,22 @@
         </div>
     </div>
     </div>
+@endsection
+@section('page_js')
+    <script>
+        document.querySelectorAll('.view-more').forEach(button => {
+            button.addEventListener('click', function() {
+                const programName = this.getAttribute('data-program-name');
+                const moreCoursesDiv = document.querySelector(
+                    `.more-courses[data-program-name="${programName}"]`);
+                if (moreCoursesDiv.classList.contains('d-none')) {
+                    moreCoursesDiv.classList.remove('d-none');
+                    this.textContent = 'View Less';
+                } else {
+                    moreCoursesDiv.classList.add('d-none');
+                    this.textContent = 'View More';
+                }
+            });
+        });
+    </script>
 @endsection

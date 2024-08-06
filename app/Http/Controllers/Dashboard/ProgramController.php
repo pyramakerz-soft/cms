@@ -16,9 +16,8 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $programs = Program::with('course')->simplePaginate(10);
+        $programs = Program::with('course', 'stage', 'school')->get()->groupBy('name');
         return view('dashboard.program.index', compact('programs'));
-
     }
 
     /**
@@ -30,7 +29,6 @@ class ProgramController extends Controller
         $courses = Course::all();
         $stages = Stage::all();
         return view('dashboard.program.create', compact(['schools', 'courses', 'stages']));
-
     }
 
     /**
@@ -58,7 +56,6 @@ class ProgramController extends Controller
 
 
         return redirect()->route('programs.create')->with('success', 'Program created successfully!');
-
     }
 
     /**
@@ -119,6 +116,5 @@ class ProgramController extends Controller
         $program->delete();
 
         return redirect()->route('programs.index')->with('success', 'Program deleted successfully!');
-
     }
 }
