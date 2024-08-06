@@ -86,24 +86,21 @@ class ProgramController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'school_id' => 'required|exists:schools,id',
-            'course_id' => 'required|exists:courses,id',
+            'course_id' => 'required|array',
+            'course_id.*' => 'exists:courses,id',
             'stage_id' => 'required|exists:stages,id',
         ]);
-
+    
         $program = Program::findOrFail($id);
-
-        foreach ($request->course_id as $course_id) {
-
-            $program->update([
-                'name' => $request->name,
-                'school_id' => $request->school_id,
-                'course_id' => $course_id,
-                'stage_id' => $request->stage_id,
-            ]);
-        }
-
-
-
+    
+        $program->update([
+            'name' => $request->name,
+            'school_id' => $request->school_id,
+            'stage_id' => $request->stage_id,
+        ]);
+    
+        $program->courses()->sync($request->course_id);
+    
         return redirect()->route('programs.edit', $program->id)->with('success', 'Program updated successfully!');
     }
 

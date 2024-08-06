@@ -72,8 +72,8 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('programs.edit', $groupedPrograms->first()->id) }}"
-                                                        class="btn btn-warning me-1">Edit</a>
+                                                    {{-- <a href="{{ route('programs.edit', $groupedPrograms->first()->id) }}"
+                                                        class="btn btn-warning me-1">Edit</a> --}}
                                                     <form
                                                         action="{{ route('programs.destroy', $groupedPrograms->first()->id) }}"
                                                         method="POST" style="display:inline-block;">

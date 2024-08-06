@@ -22,7 +22,7 @@
                                                 </div>
                                             @endif
                                             <div class="modal-body modal-body-md">
-                                                <h5 class="title">Edit Program</h5>
+                                                <h5 class="title">Edit Cluster</h5>
 
                                                 <form action="{{ route('programs.update', $program->id) }}" method="POST"
                                                     enctype="multipart/form-data" class="tab-content">
@@ -62,7 +62,7 @@
                                                                         class="form-label">Course</label>
                                                                     <div class="form-control-wrap">
                                                                         <select class="form-select js-select2"
-                                                                            name="course_id[]" required>
+                                                                            name="course_id[]" multiple required>
                                                                             @foreach ($courses as $course)
                                                                                 <option value="{{ $course->id }}"
                                                                                     {{ $program->course_id == $course->id ? 'selected' : '' }}>
