@@ -28,14 +28,13 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         // $query = User::with(['details.stage', 'userCourses.program', 'groups'])
-        //     ->where('role', '2');
-        if (Auth::user()->role('admin')) {
-            $query = User::with(['details.stage', 'userCourses.program', 'groups'])
-                ->where('role', '2');
-
-        } else {
+        //     ->where('hasRole', '2');
+        if (Auth::user()->hasRole('school')) {
             $query = User::with(['details.stage', 'userCourses.program', 'groups'])
                 ->where('role', '2')->where("school_id", Auth::user()->school_id);
+        } else {
+            $query = User::with(['details.stage', 'userCourses.program', 'groups'])
+                ->where('role', '2');
         }
 
         if ($request->filled('school')) {
@@ -65,8 +64,8 @@ class ReportController extends Controller
         $students = $query->simplePaginate(10);
 
         $schools = School::all();
-        if (Auth::user()->role('school')) {
-            $programs = Program::with('course', 'stage')->when(Auth::user()->role('school'), function ($query) {
+        if (Auth::user()->hasRole('school')) {
+            $programs = Program::with('course', 'stage')->when(Auth::user()->hasRole('school'), function ($query) {
                 return $query->where('school_id', Auth::user()->school_id);
             })->get();
         } else {
@@ -74,8 +73,8 @@ class ReportController extends Controller
         }
         $grades = Stage::all();
 
-        if (Auth::user()->role('school')) {
-            $classes = Group::when(Auth::user()->role('school'), function ($query) {
+        if (Auth::user()->hasRole('school')) {
+            $classes = Group::when(Auth::user()->hasRole('school'), function ($query) {
                 return $query->where('school_id', Auth::user()->school_id);
             })->get();
         } else {
@@ -552,8 +551,8 @@ class ReportController extends Controller
 
     public function selectGroup()
     {
-        if (Auth::user()->role('school')) {
-            $groups = Group::when(Auth::user()->role('school'), function ($query) {
+        if (Auth::user()->hasRole('school')) {
+            $groups = Group::when(Auth::user()->hasRole('school'), function ($query) {
                 return $query->where('school_id', Auth::user()->school_id);
             })->get();
         } else {
@@ -688,15 +687,15 @@ class ReportController extends Controller
     public function classCompletionReportWeb(Request $request)
     {
         // $groups = Group::all();
-        if (Auth::user()->role('school')) {
-            $groups = Group::when(Auth::user()->role('school'), function ($query) {
+        if (Auth::user()->hasRole('school')) {
+            $groups = Group::when(Auth::user()->hasRole('school'), function ($query) {
                 return $query->where('school_id', Auth::user()->school_id);
             })->get();
         } else {
             $groups = Group::all();
         }
-        if (Auth::user()->role('school')) {
-            $programs = Program::when(Auth::user()->role('school'), function ($query) {
+        if (Auth::user()->hasRole('school')) {
+            $programs = Program::when(Auth::user()->hasRole('school'), function ($query) {
                 return $query->where('school_id', Auth::user()->school_id);
             })->get();
         } else {
@@ -816,15 +815,15 @@ class ReportController extends Controller
     {
         // Retrieve necessary data for filters
         // $groups = Group::all();
-        if (Auth::user()->role('school')) {
-            $groups = Group::when(Auth::user()->role('school'), function ($query) {
+        if (Auth::user()->hasRole('school')) {
+            $groups = Group::when(Auth::user()->hasRole('school'), function ($query) {
                 return $query->where('school_id', Auth::user()->school_id);
             })->get();
         } else {
             $groups = Group::all();
         }
-        if (Auth::user()->role('school')) {
-            $programs = Program::when(Auth::user()->role('school'), function ($query) {
+        if (Auth::user()->hasRole('school')) {
+            $programs = Program::when(Auth::user()->hasRole('school'), function ($query) {
                 return $query->where('school_id', Auth::user()->school_id);
             })->get();
         } else {
@@ -1161,15 +1160,15 @@ class ReportController extends Controller
     public function classNumOfTrialsReportWeb(Request $request)
     {
         // Retrieve groups and programs for the filters
-        if (Auth::user()->role('school')) {
-            $groups = Group::when(Auth::user()->role('school'), function ($query) {
+        if (Auth::user()->hasRole('school')) {
+            $groups = Group::when(Auth::user()->hasRole('school'), function ($query) {
                 return $query->where('school_id', Auth::user()->school_id);
             })->get();
         } else {
             $groups = Group::all();
         }
-        if (Auth::user()->role('school')) {
-            $programs = Program::when(Auth::user()->role('school'), function ($query) {
+        if (Auth::user()->hasRole('school')) {
+            $programs = Program::when(Auth::user()->hasRole('school'), function ($query) {
                 return $query->where('school_id', Auth::user()->school_id);
             })->get();
         } else {
