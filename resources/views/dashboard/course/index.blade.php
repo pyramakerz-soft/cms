@@ -44,6 +44,7 @@
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Course</th>
+                                            <th scope="col" class="text-center">Action</th>
 
                                         </tr>
                                     </thead>
@@ -52,7 +53,7 @@
                                             <tr>
                                                 <th scope="row">{{ $course->id }}</th>
                                                 <td>{{ $course->name }}</td>
-                                                <td class="d-flex flex-row justify-content-end">
+                                                <td class="d-flex flex-row justify-content-center">
                                                     <a href="{{ route('courses.edit', $course->id) }}"
                                                         class="btn btn-warning me-1">Edit</a>
 

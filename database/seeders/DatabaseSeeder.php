@@ -15,14 +15,38 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     private $permissions = [
-        // 'role-list',
+        'role-list',
         'role-create',
         'role-edit',
         'role-delete',
         'class-list',
         'class-create',
         'class-edit',
-        'class-delete'
+        'class-delete',
+        'program-list',
+        'program-create',
+        'program-edit',
+        'program-delete',
+        'course-list',
+        'course-create',
+        'course-edit',
+        'course-delete',
+        'stage-list',
+        'stage-create',
+        'stage-edit',
+        'stage-delete',
+        'school-list',
+        'school-create',
+        'school-edit',
+        'school-delete',
+        'student-list',
+        'student-create',
+        'student-edit',
+        'student-delete',
+        'instructor-list',
+        'instructor-create',
+        'instructor-edit',
+        'instructor-delete',
     ];
     public function run(): void
     {
@@ -39,7 +63,7 @@ class DatabaseSeeder extends Seeder
 
         // Create admin User and assign the role to him.
         $user = User::create([
-            'name' => 'Prevail Ejimadu',
+            'name' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('123456'),
             'phone' => "123",

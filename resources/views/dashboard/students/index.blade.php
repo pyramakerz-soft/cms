@@ -162,12 +162,14 @@
                                                         </div>
                                                         <div class="nk-tb-col tb-col-lg"><span
                                                                 class="sub-text">Program</span></div>
+                                                        <div class="nk-tb-col tb-col-lg"><span
+                                                                class="sub-text">Roles</span></div>
 
                                                     </div>
                                                     @foreach ($students as $student)
                                                         <div class="nk-tb-item">
 
-                                                            <div class="nk-tb-col"><a href="students-details.html">
+                                                            <div class="nk-tb-col"><a href="#">
                                                                     <div class="user-card">
                                                                         <div class="user-avatar"><img
                                                                                 src="../images/avatar/a-sm.jpg"
@@ -191,7 +193,12 @@
                                                                 <span>{{ $student->phone }}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-lg">
-                                                                <span>{{ $student->details[0]->stage->name }}</span>
+                                                                @if (isset($student->details[0]) && isset($student->details[0]->stage))
+                                                                    <span>{{ $student->details[0]->stage->name }}</span>
+                                                                @else
+                                                                    <span>N/A</span>
+                                                                    <!-- Or any default value you prefer -->
+                                                                @endif
                                                             </div>
                                                             <div class="nk-tb-col tb-col-mb"><span
                                                                     class="tb-lead d-lg-flex d-none"></span>
@@ -217,6 +224,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-lg">
+                                                                @if (!empty($student->getRoleNames()))
+                                                                    @foreach ($student->getRoleNames() as $v)
+                                                                        <label
+                                                                            class="badge badge-secondary text-dark">{{ $v }}</label>
+                                                                    @endforeach
+                                                                @endif
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <div class="dropdown">

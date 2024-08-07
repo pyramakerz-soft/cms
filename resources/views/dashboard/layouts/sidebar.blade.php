@@ -18,120 +18,166 @@
                     <li class="nk-menu-item"><a href="{{ route('dashboard') }}" class="nk-menu-link"><span
                                 class="nk-menu-icon"><em class="icon ni ni-dashboard-fill"></em></span><span
                                 class="nk-menu-text">Dashboard</span></a></li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
-                                class="nk-menu-text">Courses</span></a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('courses.create') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text">Add Course</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('courses.index') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text">Course List</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
-                                class="nk-menu-text">Roles</span></a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('roles.create') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text">Add Role</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('roles.index') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text">Roles List</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
-                                class="nk-menu-text">Stage</span></a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('stages.create') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text">Add Stage</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('stages.index') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text">Stage List</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
-                                class="nk-menu-text">Cluster</span></a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('programs.create') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text">Add Cluster</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('programs.index') }}" class="nk-menu-link"><span
-                                        class="nk-menu-text">Cluster List</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
-                                class="nk-menu-text">School</span></a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('schools.create') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Add School
-                                    </span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('schools.index') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Schools
-                                        List</span></a></li>
+                    @can('course-list')
+                        <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                    class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
+                                    class="nk-menu-text">Courses</span></a>
+                            <ul class="nk-menu-sub">
+                                @can('course-create')
+                                    <li class="nk-menu-item"><a href="{{ route('courses.create') }}" class="nk-menu-link"><span
+                                                class="nk-menu-text">Add Course</span></a></li>
+                                @endcan
+                                @can('course-list')
+                                    <li class="nk-menu-item"><a href="{{ route('courses.index') }}" class="nk-menu-link"><span
+                                                class="nk-menu-text">Course List</span></a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('role-list')
+                        <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                    class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
+                                    class="nk-menu-text">Roles</span></a>
+                            <ul class="nk-menu-sub">
+                                @can('role-create')
+                                    <li class="nk-menu-item"><a href="{{ route('roles.create') }}" class="nk-menu-link"><span
+                                                class="nk-menu-text">Add Role</span></a></li>
+                                @endcan
+                                @can('role-list')
+                                    <li class="nk-menu-item"><a href="{{ route('roles.index') }}" class="nk-menu-link"><span
+                                                class="nk-menu-text">Roles List</span></a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('stage-list')
+                        <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                    class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
+                                    class="nk-menu-text">Stage</span></a>
+                            <ul class="nk-menu-sub">
+                                @can('stage-create')
+                                    <li class="nk-menu-item"><a href="{{ route('stages.create') }}" class="nk-menu-link"><span
+                                                class="nk-menu-text">Add Stage</span></a></li>
+                                @endcan
+                                @can('stage-list')
+                                    <li class="nk-menu-item"><a href="{{ route('stages.index') }}" class="nk-menu-link"><span
+                                                class="nk-menu-text">Stage List</span></a></li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('program-list')
+
+                        <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                    class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
+                                    class="nk-menu-text">Cluster</span></a>
+                            <ul class="nk-menu-sub">
+                                @can('program-create')
+                                    <li class="nk-menu-item"><a href="{{ route('programs.create') }}" class="nk-menu-link"><span
+                                                class="nk-menu-text">Add Cluster</span></a></li>
+                                @endcan
+                                @can('program-list')
+                                    <li class="nk-menu-item"><a href="{{ route('programs.index') }}" class="nk-menu-link"><span
+                                                class="nk-menu-text">Cluster List</span></a></li>
+                                @endcan
+
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('school-list')
+                        <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                    class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
+                                    class="nk-menu-text">School</span></a>
+                            <ul class="nk-menu-sub">
+                                @can('school-create')
+                                    <li class="nk-menu-item"><a href="{{ route('schools.create') }}"
+                                            class="nk-menu-link"><span class="nk-menu-text">Add School
+                                            </span></a></li>
+                                @endcan
+                                @can('school-list')
+                                    <li class="nk-menu-item"><a href="{{ route('schools.index') }}"
+                                            class="nk-menu-link"><span class="nk-menu-text">Schools
+                                                List</span></a></li>
+                                @endcan
 
 
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
-                                class="nk-menu-text">Class</span></a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('classes.create') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Add Class
-                                    </span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('classes.index') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Classes
-                                        List</span></a></li>
+                            </ul>
+                        </li>
+                    @endcan
+                    @can('class-list')
+                        <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                    class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
+                                    class="nk-menu-text">Class</span></a>
+                            <ul class="nk-menu-sub">
+                                @can('class-create')
+                                    <li class="nk-menu-item"><a href="{{ route('classes.create') }}"
+                                            class="nk-menu-link"><span class="nk-menu-text">Add Class
+                                            </span></a></li>
+                                @endcan
+                                @can('class-list')
+                                    <li class="nk-menu-item"><a href="{{ route('classes.index') }}"
+                                            class="nk-menu-link"><span class="nk-menu-text">Classes
+                                                List</span></a></li>
+                                @endcan
 
 
-                        </ul>
-                    </li>
+                            </ul>
+                        </li>
+                    @endcan
                     {{-- @can('view_user') --}}
-
+                    @can('student-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
                                     class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span><span
                                     class="nk-menu-text">Students</span></a>
                             <ul class="nk-menu-sub">
-                                {{-- @can('create_user') --}}
+                                @can('student-create')
                                     <li class="nk-menu-item"><a href="{{ route('students.create') }}"
                                             class="nk-menu-link"><span class="nk-menu-text">Add Students</span></a>
                                     </li>
-                                {{-- @endcan --}}
+                                @endcan
                                 <li class="nk-menu-item"><a href="{{ route('students.index') }}"
                                         class="nk-menu-link"><span class="nk-menu-text">Students
                                             List</span></a></li>
                             </ul>
                         </li>
+                    @endcan
                     {{-- @endcan --}}
+                    @can('instructor-list')
+                        <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                    class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
+                                    class="nk-menu-text">Instructors</span></a>
+                            <ul class="nk-menu-sub">
+                                @can('instructor-create')
+                                    <li class="nk-menu-item"><a href="{{ route('instructors.create') }}"
+                                            class="nk-menu-link"><span class="nk-menu-text">Add Instructors
+                                            </span></a></li>
+                                @endcan
+                                <li class="nk-menu-item"><a href="{{ route('instructors.index') }}"
+                                        class="nk-menu-link"><span class="nk-menu-text">Instructor
+                                            List</span></a></li>
+                            </ul>
+                        </li>
+                    @endcan
 
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
-                                class="nk-menu-text">Instructors</span></a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('instructors.create') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Add Instructors
-                                    </span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('instructors.index') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Instructor
-                                        List</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item has-sub"><a href="{{ route('reports.index') }}"
-                            class="nk-menu-link "></span><span class="nk-menu-text">Reports</span></a>
+                    @can('student-list')
+                        <li class="nk-menu-item has-sub"><a href="{{ route('reports.index') }}"
+                                class="nk-menu-link "></span><span class="nk-menu-text">Reports</span></a>
 
-                    </li>
-                    <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                class="nk-menu-icon"><em class="icon ni ni-property-add"></em></span><span
-                                class="nk-menu-text">Select
-                                Group</span></a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item"><a href="{{ route('select.group') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Completion Report</span></a></li>
-                            <li class="nk-menu-item"><a href="{{ route('class.mastery.report.web') }}"
-                                    class="nk-menu-link"><span class="nk-menu-text">Mastery Report</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="nk-menu-item"><a href="message.html" class="nk-menu-link"><span
+                        </li>
+
+                        <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                    class="nk-menu-icon"><em class="icon ni ni-property-add"></em></span><span
+                                    class="nk-menu-text">Select
+                                    Group</span></a>
+                            <ul class="nk-menu-sub">
+                                <li class="nk-menu-item"><a href="{{ route('select.group') }}"
+                                        class="nk-menu-link"><span class="nk-menu-text">Completion Report</span></a></li>
+                                <li class="nk-menu-item"><a href="{{ route('class.mastery.report.web') }}"
+                                        class="nk-menu-link"><span class="nk-menu-text">Mastery Report</span></a></li>
+                            </ul>
+                        </li>
+                    @endcan
+                    {{-- <li class="nk-menu-item"><a href="message.html" class="nk-menu-link"><span
                                 class="nk-menu-icon"><em class="icon ni ni-chat-fill"></em></span><span
                                 class="nk-menu-text">Messages</span></a></li>
                     <li class="nk-menu-item"><a href="admin-profile.html" class="nk-menu-link"><span
@@ -150,7 +196,7 @@
                                 Dashboard</span></a></li>
                     <li class="nk-menu-item"><a href="../components.html" class="nk-menu-link"><span
                                 class="nk-menu-icon"><em class="icon ni ni-layers-fill"></em></span><span
-                                class="nk-menu-text">All Components</span></a></li>
+                                class="nk-menu-text">All Components</span></a></li> --}}
                 </ul>
             </div>
         </div>

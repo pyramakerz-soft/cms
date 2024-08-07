@@ -26,8 +26,10 @@
         </div>
     @endif
 
-    <form action="{{ route('roles.update', $role->id) }}" method="PATCH">
+    <form action="{{ route('roles.update', $role->id) }}" method="post">
         @csrf
+        @method('PUT')
+        {{-- @dd($role->id); --}}
         <div class="row">
             <div class="col-xs-12 mb-3">
                 <div class="form-group">
@@ -40,7 +42,7 @@
                 <div class="form-group">
                     <strong>Permission:</strong>
                     <br />
-                    @foreach ($permission as $value)
+                    @foreach ($permissions as $value)
                         <label>
                             <input type="checkbox" @if (in_array($value->id, $rolePermissions)) checked @endif name="permission[]"
                                 value="{{ $value->id }}" class="name">
@@ -50,7 +52,7 @@
                 </div>
             </div>
             <div class="col-xs-12 mb-3 text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <input type="submit" class="btn btn-primary" value="Submit">
             </div>
         </div>
     </form>

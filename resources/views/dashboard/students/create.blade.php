@@ -149,7 +149,7 @@
                                                                                 @endforeach
 
                                                                             </select>
-                                                                            @error('group_id')
+                                                                            @error('roles')
                                                                                 <div class="text-danger">{{ $message }}
                                                                                 </div>
                                                                             @enderror

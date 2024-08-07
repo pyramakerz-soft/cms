@@ -81,16 +81,17 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label
-                                                                            class="form-label">Program</label>
-                                                                        <div class="form-control-wrap"><select
-                                                                                class="form-select js-select2"
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Program</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <select class="form-select js-select2"
                                                                                 name="program_id[]" multiple
                                                                                 data-placeholder="Select multiple options">
                                                                                 @foreach ($programs as $program)
                                                                                     <option value="{{ $program->id }}"
-                                                                                        {{ $student->userCourses[0]->program->id == $program->id ? 'selected' : '' }}>
-                                                                                        {{ $program->name }}</option>
+                                                                                        @if (isset($student->userCourses[0]) && $student->userCourses[0]->program->id == $program->id) selected @endif>
+                                                                                        {{ $program->name }}
+                                                                                    </option>
                                                                                 @endforeach
                                                                             </select>
                                                                             @error('program_id')
@@ -162,6 +163,26 @@
                                                                         @enderror
                                                                     </div>
                                                                 </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Role</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <select name="roles[]" id="role"
+                                                                                class="form-select">
+
+                                                                                @foreach ($roles as $role)
+                                                                                    <option value="{{ $role }}">
+                                                                                        {{ $role }}</option>
+                                                                                @endforeach
+
+                                                                            </select>
+                                                                            @error('roles')
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 <div class="col-md-12">
                                                                     <div class="form-group"><label class="form-label"
                                                                             for="profile-picture">Profile Picture</label>
@@ -172,6 +193,7 @@
                                                                         @enderror
                                                                     </div>
                                                                 </div>
+
                                                                 <div class="col-md-12">
                                                                     <ul
                                                                         class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">

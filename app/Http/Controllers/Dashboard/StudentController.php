@@ -11,9 +11,9 @@ use App\Models\School;
 use App\Models\Stage;
 use App\Models\User;
 use App\Models\UserCourse;
-use App\Models\UserDetail;
 use App\Models\UserDetails;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -27,7 +27,7 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $query = User::with(['details.stage', 'userCourses.program', 'groups'])
-            ->where('role', '1');
+            ->where('role', '2');
 
         if ($request->filled('school')) {
             $query->whereHas('details', function ($q) use ($request) {
@@ -112,7 +112,7 @@ class StudentController extends Controller
             ]);
         }
 
-        UserDetail::create([
+        UserDetails::create([
             'user_id' => $user->id,
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
@@ -122,6 +122,7 @@ class StudentController extends Controller
             'group_id' => $request->group_id,
             'student_id' => $user->id
         ]);
+        $user->assignRole($request->input('roles'));
 
         if ($request->hasFile('parent_image')) {
             $imagePath = $request->file('parent_image')->store('images', 'public');
@@ -162,7 +163,8 @@ class StudentController extends Controller
         $programs = Program::where('stage_id', UserDetails::where('user_id', $id)->first()->stage_id)->get();
         $stages = Stage::all();
         $groups = Group::all();
-        return view('dashboard.students.edit', compact('student', 'schools', 'programs', 'stages', 'groups'));
+        $roles = Role::pluck('name', 'name')->all();
+        return view('dashboard.students.edit', compact('student', 'schools', 'programs', 'stages', 'groups', 'roles'));
 
     }
 
@@ -203,7 +205,7 @@ class StudentController extends Controller
             //     ]);
             // }
         }
-        UserDetail::where('user_id', $student->id)->update([
+        UserDetails::where('user_id', $student->id)->update([
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
         ]);
@@ -217,6 +219,9 @@ class StudentController extends Controller
             $student->parent_image = $imagePath;
             $student->save();
         }
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
+
+        $student->assignRole($request->input('roles'));
 
         return redirect()->route('students.index')->with('success', 'Student updated successfully.');
 
