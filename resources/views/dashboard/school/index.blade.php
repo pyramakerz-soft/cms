@@ -41,14 +41,17 @@
                                 </div>
                                 <table class="table">
                                     <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Phone</th>
-                                            <th scope="col">Type</th>
+                                        @if ($schools->count() > 0)
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Phone</th>
+                                                <th scope="col">Students</th>
+                                                <th scope="col">Action</th>
 
-                                        </tr>
+                                            </tr>
+                                        @endif
                                     </thead>
                                     <tbody>
                                         @foreach ($schools as $school)
@@ -57,7 +60,7 @@
                                                 <td>{{ $school->name }}</td>
                                                 <td>{{ $school->email }}</td>
                                                 <td>{{ $school->phone }}</td>
-                                                <td>{{ $school->type }}</td>
+                                                <td>{{ \App\Models\User::where('school_id',$school->id)->where('role',2)->count() }}</td>
                                                 <td class="d-flex flex-row justify-content-end">
                                                     @can('school-edit')
                                                         <a href="{{ route('schools.edit', $school->id) }}"

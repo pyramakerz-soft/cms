@@ -17,6 +17,7 @@ class ProgramController extends Controller
     public function index()
     {
         $programs = Program::with('course', 'stage', 'school')->get()->groupBy('name');
+        // dd($programs);
         return view('dashboard.program.index', compact('programs'));
     }
 

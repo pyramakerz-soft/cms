@@ -13,17 +13,30 @@ class DashboardController extends Controller
     public function index()
     {
         // if (Auth::check() && Auth::user()->school_id) {
-        $schoolId = Auth::user()->school_id;
+        if (Auth::user()->role('admin')) {
+            $studentsInSchool = User::
+                where('role', 2)
+                ->where('is_student', 1)
+                ->count();
 
-        $studentsInSchool = User::where('school_id', $schoolId)
-            ->where('role', 2)
-            ->where('is_student', 1)
-            ->count();
+            $teachersInSchool = User::
+                where('role', 1)
+                ->where('is_student', 0)
+                ->count();
+        } else {
+            $schoolId = Auth::user()->school_id;
 
-        $teachersInSchool = User::where('school_id', $schoolId)
-            ->where('role', 1)
-            ->where('is_student', 0)
-            ->count();
+            $studentsInSchool = User::where('school_id', $schoolId)
+                ->where('role', 2)
+                ->where('is_student', 1)
+                ->count();
+
+            $teachersInSchool = User::where('school_id', $schoolId)
+                ->where('role', 1)
+                ->where('is_student', 0)
+                ->count();
+        }
+
 
         return view('dashboard.index', compact('studentsInSchool', 'teachersInSchool'));
         // } else {

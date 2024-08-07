@@ -21,7 +21,7 @@ class InstructorController extends Controller
      */
     public function index(Request $request)
     {
-        if (Auth::user()->role('school')) {
+        if (Auth::user()->hasRole('school')) {
             $query = User::with(['details.stage', 'teacher_programs.program'])
                 ->where('role', '1')->where("school_id", Auth::user()->school_id);
         } else {
@@ -183,7 +183,7 @@ class InstructorController extends Controller
             'grade_id' => $request->grade_id
         ]);
 
-        UserDetail::where('user_id', $instructor->id)->update([
+        UserDetails::where('user_id', $instructor->id)->update([
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
         ]);

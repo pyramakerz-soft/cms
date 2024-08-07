@@ -23,8 +23,8 @@
                                             <div class="modal-body modal-body-md">
                                                 <h5 class="title">Edit School</h5>
 
-                                                <form action="{{ route('schools.update', $schools->school_id) }}" method="POST"
-                                                    enctype="multipart/form-data" class="tab-content">
+                                                <form action="{{ route('schools.update', $schools->school_id) }}"
+                                                    method="POST" enctype="multipart/form-data" class="tab-content">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="tab-pane active" id="student-info">
@@ -34,8 +34,7 @@
                                                                     <label class="form-label" for="full-name">Name</label>
                                                                     <input type="text" class="form-control"
                                                                         id="full-name" placeholder="First name"
-                                                                        name="name" value="{{ $schools->name }}"
-                                                                        >
+                                                                        name="name" value="{{ $school->name }}">
                                                                     @error('name')
                                                                         <div class="text-danger">{{ $message }}</div>
                                                                     @enderror
@@ -47,8 +46,7 @@
                                                                         Address</label>
                                                                     <input type="email" class="form-control"
                                                                         id="email" placeholder="Email Address"
-                                                                        name="email" value="{{ $schools->email }}"
-                                                                        >
+                                                                        name="email" value="{{ $schools->email }}">
                                                                     @error('email')
                                                                         <div class="text-danger">{{ $message }}</div>
                                                                     @enderror
@@ -60,8 +58,7 @@
                                                                         Number</label>
                                                                     <input type="text" class="form-control"
                                                                         id="phone-no" placeholder="Phone Number"
-                                                                        name="phone" value="{{ $schools->phone }}"
-                                                                        >
+                                                                        name="phone" value="{{ $schools->phone }}">
                                                                     @error('phone')
                                                                         <div class="text-danger">{{ $message }}</div>
                                                                     @enderror
@@ -73,7 +70,7 @@
                                                                     <div class="form-control-wrap">
                                                                         <select class="form-select js-select2"
                                                                             data-placeholder="Select multiple options"
-                                                                            name="type" >
+                                                                            name="type">
                                                                             <option value="national"
                                                                                 {{ $schools->type == 'national' ? 'selected' : '' }}>
                                                                                 National</option>
@@ -93,8 +90,7 @@
                                                                     <div class="form-control-wrap">
                                                                         <select class="form-select js-select2"
                                                                             name="status"
-                                                                            data-placeholder="Select multiple options"
-                                                                            >
+                                                                            data-placeholder="Select multiple options">
                                                                             <option value="1"
                                                                                 {{ $schools->status == '1' ? 'selected' : '' }}>
                                                                                 Active</option>
@@ -153,8 +149,10 @@
                                                                             class="form-select">
 
                                                                             @foreach ($roles as $role)
-                                                                                <option value="{{ $role }}">
-                                                                                    {{ $role }}</option>
+                                                                                <option value="{{ $role }}"
+                                                                                    {{ $role == $currentRole ? 'selected' : '' }}>
+                                                                                    {{ $role }}
+                                                                                </option>
                                                                             @endforeach
 
                                                                         </select>

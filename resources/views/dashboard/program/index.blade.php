@@ -52,10 +52,13 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($programs as $programName => $groupedPrograms)
+                                        {{-- @if(!isset($groupedPrograms->first()->school->name))
+                                        @dd($groupedPrograms)
+                                        @endif --}}
                                             <tr>
                                                 <th scope="row">{{ $groupedPrograms->first()->id }}</th>
                                                 <td>{{ $programName }}</td>
-                                                <td>{{ $groupedPrograms->first()->school->name }}</td>
+                                                <td>{{ $groupedPrograms->first()->school ? $groupedPrograms->first()->school->name : '-'}}</td>
                                                 <td>
                                                     @foreach ($groupedPrograms->take(1) as $program)
                                                         {{ $program->course->name }}/{{ $program->stage->name }}

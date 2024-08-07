@@ -18,7 +18,13 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $schools = School::simplePaginate(10);
+        $schools = DB::table('users')->where('is_active', 1)
+            ->join('schools', 'users.school_id', '=', 'schools.id')
+            ->select('schools.id', 'schools.name', 'users.email', 'users.phone', 'schools.type', 'users.id as user_id')
+            ->where('users.role', 3)
+            ->simplePaginate(10);
+
+
         return view('dashboard.school.index', compact('schools'));
     }
 
@@ -85,10 +91,13 @@ class SchoolController extends Controller
     {
         $roles = Role::pluck('name', 'name')->all();
 
-        // $schools = School::findOrFail($id);
-        $schools = User::where('school_id', $id)->firstOrFail();
+        $school = School::findOrFail($id);
+        // $school = School::simplePaginate(10);
 
-        return view("dashboard.school.edit", compact("schools", 'roles'));
+        $schools = User::where('school_id', $id)->firstOrFail();
+        $currentRole = $schools->role;
+
+        return view("dashboard.school.edit", compact("schools", 'roles', 'school', 'currentRole'));
     }
 
     /**
@@ -110,7 +119,7 @@ class SchoolController extends Controller
         // $school = School::findOrFail($id);
         $school = User::where('school_id', $id)->firstOrFail();
 
-        $data = $request->except(['type','status','description','roles']);
+        $data = $request->except(['type', 'status', 'description', 'roles']);
 
         if ($request->hasFile('image')) {
             if ($school->image) {
