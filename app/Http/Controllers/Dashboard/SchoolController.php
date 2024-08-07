@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\School;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
 class SchoolController extends Controller
 {
@@ -25,7 +27,8 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        return view('dashboard.school.create');
+        $roles = Role::all();
+        return view('dashboard.school.create', compact("roles"));
     }
 
     /**
@@ -44,7 +47,7 @@ class SchoolController extends Controller
             'name' => $request->name,
             'type' => $request->type,
         ]);
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -61,7 +64,7 @@ class SchoolController extends Controller
         //     $request->image->move($path, $file_name);
         //     $data['image'] = $path . '/' . $file_name;
         // }
-
+        $user->assignRole($request->input('roles'));
 
 
         return redirect()->route('schools.create')->with('success', 'School created successfully!');
@@ -80,8 +83,12 @@ class SchoolController extends Controller
      */
     public function edit(string $id)
     {
-        $schools = School::findOrFail($id);
-        return view("dashboard.school.edit", compact("schools"));
+        $roles = Role::pluck('name', 'name')->all();
+
+        // $schools = School::findOrFail($id);
+        $schools = User::where('school_id', $id)->firstOrFail();
+
+        return view("dashboard.school.edit", compact("schools", 'roles'));
     }
 
     /**
@@ -89,6 +96,7 @@ class SchoolController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request);
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
@@ -99,12 +107,12 @@ class SchoolController extends Controller
             'password' => 'nullable|string|min:6',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
+        // $school = School::findOrFail($id);
+        $school = User::where('school_id', $id)->firstOrFail();
 
-        $school = School::findOrFail($id);
-        $data = $request->all();
+        $data = $request->except(['type','status','description','roles']);
 
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
             if ($school->image) {
                 Storage::delete('public/' . $school->image);
             }
@@ -116,17 +124,18 @@ class SchoolController extends Controller
             $data['image'] = $path . '/' . $file_name;
         }
 
-        // Hash the password if it is provided
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
         } else {
-            // Exclude the password from the data array if it is not provided
             unset($data['password']);
         }
 
         $school->update($data);
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
 
-        return redirect()->route('schools.edit', $school->id)->with('success', 'School updated successfully!');
+        $school->assignRole($request->input('roles'));
+
+        return redirect()->route('schools.edit', $school->school_id)->with('success', 'School updated successfully!');
     }
 
 

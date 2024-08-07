@@ -11,6 +11,7 @@ use App\Models\TeacherProgram;
 use App\Models\User;
 use App\Models\UserDetails;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class InstructorController extends Controller
@@ -20,8 +21,14 @@ class InstructorController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::with(['details.stage', 'teacher_programs.program'])
-            ->where('role', '1');
+        if (Auth::user()->role('school')) {
+            $query = User::with(['details.stage', 'teacher_programs.program'])
+                ->where('role', '1')->where("school_id", Auth::user()->school_id);
+        } else {
+            $query = User::with(['details.stage', 'teacher_programs.program'])
+                ->where('role', '1');
+        }
+
 
         if ($request->filled('school')) {
             $query->whereHas('details', function ($q) use ($request) {

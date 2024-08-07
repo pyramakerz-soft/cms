@@ -21,13 +21,22 @@ use App\Models\TestTypes;
 use App\Models\User;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::with(['details.stage', 'userCourses.program', 'groups'])
-            ->where('role', '2');
+        // $query = User::with(['details.stage', 'userCourses.program', 'groups'])
+        //     ->where('role', '2');
+        if (Auth::user()->role('admin')) {
+            $query = User::with(['details.stage', 'userCourses.program', 'groups'])
+                ->where('role', '2');
+
+        } else {
+            $query = User::with(['details.stage', 'userCourses.program', 'groups'])
+                ->where('role', '2')->where("school_id", Auth::user()->school_id);
+        }
 
         if ($request->filled('school')) {
             $query->whereHas('details', function ($q) use ($request) {
@@ -56,9 +65,22 @@ class ReportController extends Controller
         $students = $query->simplePaginate(10);
 
         $schools = School::all();
-        $programs = Program::with('course', 'stage')->get();
+        if (Auth::user()->role('school')) {
+            $programs = Program::with('course', 'stage')->when(Auth::user()->role('school'), function ($query) {
+                return $query->where('school_id', Auth::user()->school_id);
+            })->get();
+        } else {
+            $programs = Program::with('course', 'stage')->get();
+        }
         $grades = Stage::all();
-        $classes = Group::all();
+
+        if (Auth::user()->role('school')) {
+            $classes = Group::when(Auth::user()->role('school'), function ($query) {
+                return $query->where('school_id', Auth::user()->school_id);
+            })->get();
+        } else {
+            $classes = Group::all();
+        }
         $units = Unit::all();
         $lessons = Lesson::all();
         $games = Game::all();
@@ -95,20 +117,23 @@ class ReportController extends Controller
 
         ];
 
-        return view('dashboard.reports.index', compact(
-            'students',
-            'schools',
-            'programs',
-            'games',
-            'response',
-            'lessons',
-            'units',
-            'grades',
-            'classes',
-            'testTypes',
-            'data',
-            'skills'
-        ));
+        return view(
+            'dashboard.reports.index',
+            compact(
+                'students',
+                'schools',
+                'programs',
+                'games',
+                'response',
+                'lessons',
+                'units',
+                'grades',
+                'classes',
+                'testTypes',
+                'data',
+                'skills'
+            )
+        );
     }
 
     public function completionReport(Request $request)
@@ -474,7 +499,8 @@ class ReportController extends Controller
 
                 if ($game->gameTypes) {
                     foreach ($game->gameTypes->skills->unique('skill') as $gameSkill) {
-                        if (!$gameSkill->skill) continue;
+                        if (!$gameSkill->skill)
+                            continue;
 
                         $skill = $gameSkill->skill;
                         $skillName = $skill->skill;
@@ -526,7 +552,13 @@ class ReportController extends Controller
 
     public function selectGroup()
     {
-        $groups = Group::all();
+        if (Auth::user()->role('school')) {
+            $groups = Group::when(Auth::user()->role('school'), function ($query) {
+                return $query->where('school_id', Auth::user()->school_id);
+            })->get();
+        } else {
+            $groups = Group::all();
+        }
         return view('dashboard.reports.class.select_group', compact('groups'));
     }
 
@@ -655,8 +687,22 @@ class ReportController extends Controller
 
     public function classCompletionReportWeb(Request $request)
     {
-        $groups = Group::all();
-        $programs = Program::all();
+        // $groups = Group::all();
+        if (Auth::user()->role('school')) {
+            $groups = Group::when(Auth::user()->role('school'), function ($query) {
+                return $query->where('school_id', Auth::user()->school_id);
+            })->get();
+        } else {
+            $groups = Group::all();
+        }
+        if (Auth::user()->role('school')) {
+            $programs = Program::when(Auth::user()->role('school'), function ($query) {
+                return $query->where('school_id', Auth::user()->school_id);
+            })->get();
+        } else {
+            $programs = Program::all();
+        }
+
         $assignmentTypes = TestTypes::all();
 
         $data = [
@@ -769,8 +815,22 @@ class ReportController extends Controller
     public function classMasteryReportWeb(Request $request)
     {
         // Retrieve necessary data for filters
-        $groups = Group::all();
-        $programs = Program::all();
+        // $groups = Group::all();
+        if (Auth::user()->role('school')) {
+            $groups = Group::when(Auth::user()->role('school'), function ($query) {
+                return $query->where('school_id', Auth::user()->school_id);
+            })->get();
+        } else {
+            $groups = Group::all();
+        }
+        if (Auth::user()->role('school')) {
+            $programs = Program::when(Auth::user()->role('school'), function ($query) {
+                return $query->where('school_id', Auth::user()->school_id);
+            })->get();
+        } else {
+            $programs = Program::all();
+        }
+
 
         $data = [
             'groups' => $groups,
@@ -1101,8 +1161,21 @@ class ReportController extends Controller
     public function classNumOfTrialsReportWeb(Request $request)
     {
         // Retrieve groups and programs for the filters
-        $groups = Group::all();
-        $programs = Program::all();
+        if (Auth::user()->role('school')) {
+            $groups = Group::when(Auth::user()->role('school'), function ($query) {
+                return $query->where('school_id', Auth::user()->school_id);
+            })->get();
+        } else {
+            $groups = Group::all();
+        }
+        if (Auth::user()->role('school')) {
+            $programs = Program::when(Auth::user()->role('school'), function ($query) {
+                return $query->where('school_id', Auth::user()->school_id);
+            })->get();
+        } else {
+            $programs = Program::all();
+        }
+
 
         // Get the student IDs for the given group ID
         $students = GroupStudent::where('group_id', $request->group_id)->pluck('student_id');
@@ -1252,11 +1325,11 @@ class ReportController extends Controller
                     ->where('program_id', $request->program_id)->count() / $division) * 100) ?? 0,
             ];
         } else {
-            $threestars = StudentProgress::where('mistake_count', 0)->whereIn('student_id', $students)->where('is_done',1)->whereBetween('student_progress.created_at', [$from_date, $to_date])
+            $threestars = StudentProgress::where('mistake_count', 0)->whereIn('student_id', $students)->where('is_done', 1)->whereBetween('student_progress.created_at', [$from_date, $to_date])
                 ->where('program_id', $request->program_id)->count();
-            $twostars = StudentProgress::where('mistake_count', 1)->whereIn('student_id', $students)->where('is_done',1)->whereBetween('student_progress.created_at', [$from_date, $to_date])
+            $twostars = StudentProgress::where('mistake_count', 1)->whereIn('student_id', $students)->where('is_done', 1)->whereBetween('student_progress.created_at', [$from_date, $to_date])
                 ->where('program_id', $request->program_id)->count();
-            $onestar = StudentProgress::whereIn('mistake_count', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11])->where('is_done',1)->whereIn('student_id', $students)->whereBetween('student_progress.created_at', [$from_date, $to_date])
+            $onestar = StudentProgress::whereIn('mistake_count', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11])->where('is_done', 1)->whereIn('student_id', $students)->whereBetween('student_progress.created_at', [$from_date, $to_date])
                 ->where('program_id', $request->program_id)->count();
 
             $division = StudentProgress::whereIn('student_id', $students)

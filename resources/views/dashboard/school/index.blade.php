@@ -59,23 +59,26 @@
                                                 <td>{{ $school->phone }}</td>
                                                 <td>{{ $school->type }}</td>
                                                 <td class="d-flex flex-row justify-content-end">
-                                                    <a href="{{ route('schools.edit', $school->id) }}"
-                                                        class="btn btn-warning me-1">Edit</a>
+                                                    @can('school-edit')
+                                                        <a href="{{ route('schools.edit', $school->id) }}"
+                                                            class="btn btn-warning me-1">Edit</a>
+                                                    @endcan
 
 
+                                                    @can('school-delete')
+                                                        <form action="{{ route('schools.destroy', $school->id) }}"
+                                                            method="POST" style="display:inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirm('Are you sure you want to delete this school?')">Delete</button>
 
-                                                    <form action="{{ route('schools.destroy', $school->id) }}"
-                                                        method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Are you sure you want to delete this school?')">Delete</button>
+                                                            <div class="d-lg-flex d-none">
 
-                                                        <div class="d-lg-flex d-none">
+                                                            </div>
 
-                                                        </div>
-
-                                                    </form>
+                                                        </form>
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -23,7 +23,7 @@
                                             <div class="modal-body modal-body-md">
                                                 <h5 class="title">Edit School</h5>
 
-                                                <form action="{{ route('schools.update', $schools->id) }}" method="POST"
+                                                <form action="{{ route('schools.update', $schools->school_id) }}" method="POST"
                                                     enctype="multipart/form-data" class="tab-content">
                                                     @csrf
                                                     @method('PUT')
@@ -32,7 +32,10 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label" for="full-name">Name</label>
-                                                                    <input type="text" class="form-control" id="full-name" placeholder="First name" name="name" value="{{ $program->name }}" required>
+                                                                    <input type="text" class="form-control"
+                                                                        id="full-name" placeholder="First name"
+                                                                        name="name" value="{{ $schools->name }}"
+                                                                        >
                                                                     @error('name')
                                                                         <div class="text-danger">{{ $message }}</div>
                                                                     @enderror
@@ -40,8 +43,12 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label class="form-label" for="email">Email Address</label>
-                                                                    <input type="email" class="form-control" id="email" placeholder="Email Address" name="email" value="{{ $schools->email }}" required>
+                                                                    <label class="form-label" for="email">Email
+                                                                        Address</label>
+                                                                    <input type="email" class="form-control"
+                                                                        id="email" placeholder="Email Address"
+                                                                        name="email" value="{{ $schools->email }}"
+                                                                        >
                                                                     @error('email')
                                                                         <div class="text-danger">{{ $message }}</div>
                                                                     @enderror
@@ -49,8 +56,12 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label class="form-label" for="phone-no">Phone Number</label>
-                                                                    <input type="text" class="form-control" id="phone-no" placeholder="Phone Number" name="phone" value="{{ $schools->phone }}" required>
+                                                                    <label class="form-label" for="phone-no">Phone
+                                                                        Number</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="phone-no" placeholder="Phone Number"
+                                                                        name="phone" value="{{ $schools->phone }}"
+                                                                        >
                                                                     @error('phone')
                                                                         <div class="text-danger">{{ $message }}</div>
                                                                     @enderror
@@ -60,9 +71,15 @@
                                                                 <div class="form-group">
                                                                     <label class="form-label">Type</label>
                                                                     <div class="form-control-wrap">
-                                                                        <select class="form-select js-select2" data-placeholder="Select multiple options" name="type" required>
-                                                                            <option value="national" {{ $schools->type == 'national' ? 'selected' : '' }}>National</option>
-                                                                            <option value="international" {{ $schools->type == 'international' ? 'selected' : '' }}>International</option>
+                                                                        <select class="form-select js-select2"
+                                                                            data-placeholder="Select multiple options"
+                                                                            name="type" >
+                                                                            <option value="national"
+                                                                                {{ $schools->type == 'national' ? 'selected' : '' }}>
+                                                                                National</option>
+                                                                            <option value="international"
+                                                                                {{ $schools->type == 'international' ? 'selected' : '' }}>
+                                                                                International</option>
                                                                         </select>
                                                                         @error('type')
                                                                             <div class="text-danger">{{ $message }}</div>
@@ -74,9 +91,16 @@
                                                                 <div class="form-group">
                                                                     <label class="form-label">Status</label>
                                                                     <div class="form-control-wrap">
-                                                                        <select class="form-select js-select2" name="status" data-placeholder="Select multiple options" required>
-                                                                            <option value="1" {{ $schools->status == '1' ? 'selected' : '' }}>Active</option>
-                                                                            <option value="0" {{ $schools->status == '0' ? 'selected' : '' }}>Inactive</option>
+                                                                        <select class="form-select js-select2"
+                                                                            name="status"
+                                                                            data-placeholder="Select multiple options"
+                                                                            >
+                                                                            <option value="1"
+                                                                                {{ $schools->status == '1' ? 'selected' : '' }}>
+                                                                                Active</option>
+                                                                            <option value="0"
+                                                                                {{ $schools->status == '0' ? 'selected' : '' }}>
+                                                                                Inactive</option>
                                                                         </select>
                                                                         @error('status')
                                                                             <div class="text-danger">{{ $message }}</div>
@@ -86,7 +110,8 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label class="form-label" for="description">Description</label>
+                                                                    <label class="form-label"
+                                                                        for="description">Description</label>
                                                                     <textarea class="form-control" id="description" rows="3" name="description">{{ $schools->description }}</textarea>
                                                                     @error('description')
                                                                         <div class="text-danger">{{ $message }}</div>
@@ -95,8 +120,11 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label class="form-label" for="password">Password</label>
-                                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                                                    <label class="form-label"
+                                                                        for="password">Password</label>
+                                                                    <input type="password" class="form-control"
+                                                                        id="password" name="password"
+                                                                        placeholder="Password">
                                                                     @error('password')
                                                                         <div class="text-danger">{{ $message }}</div>
                                                                     @enderror
@@ -104,20 +132,45 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
-                                                                    <label class="form-label" for="profile-picture">Profile Picture</label>
-                                                                    <input type="file" class="form-control" id="profile-picture" name="image">
+                                                                    <label class="form-label"
+                                                                        for="profile-picture">Profile Picture</label>
+                                                                    <input type="file" class="form-control"
+                                                                        id="profile-picture" name="image">
                                                                     @if ($schools->image)
-                                                                        <img src="{{ asset( $schools->image) }}" alt="{{ $schools->name }}" width="100">
+                                                                        <img src="{{ asset($schools->image) }}"
+                                                                            alt="{{ $schools->name }}" width="100">
                                                                     @endif
                                                                     @error('image')
                                                                         <div class="text-danger">{{ $message }}</div>
                                                                     @enderror
                                                                 </div>
                                                             </div>
-                                                            
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Role</label>
+                                                                    <div class="form-control-wrap">
+                                                                        <select name="roles[]" id="role"
+                                                                            class="form-select">
+
+                                                                            @foreach ($roles as $role)
+                                                                                <option value="{{ $role }}">
+                                                                                    {{ $role }}</option>
+                                                                            @endforeach
+
+                                                                        </select>
+                                                                        @error('roles')
+                                                                            <div class="text-danger">{{ $message }}
+                                                                            </div>
+                                                                        @enderror
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                             <div class="col-md-12">
-                                                                <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                                                                    <li><button type="submit" class="btn btn-primary">Update</button></li>
+                                                                <ul
+                                                                    class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                                                    <li><button type="submit"
+                                                                            class="btn btn-primary">Update</button></li>
                                                                 </ul>
                                                             </div>
                                                         </div>

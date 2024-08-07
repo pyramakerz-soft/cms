@@ -74,14 +74,16 @@
                                                 <td>
                                                     {{-- <a href="{{ route('programs.edit', $groupedPrograms->first()->id) }}"
                                                         class="btn btn-warning me-1">Edit</a> --}}
-                                                    <form
-                                                        action="{{ route('programs.destroy', $groupedPrograms->first()->id) }}"
-                                                        method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Are you sure you want to delete this program?')">Delete</button>
-                                                    </form>
+                                                    @can('program-delete')
+                                                        <form
+                                                            action="{{ route('programs.destroy', $groupedPrograms->first()->id) }}"
+                                                            method="POST" style="display:inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirm('Are you sure you want to delete this program?')">Delete</button>
+                                                        </form>
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach

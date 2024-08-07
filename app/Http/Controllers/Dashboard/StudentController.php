@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\UserCourse;
 use App\Models\UserDetails;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -26,8 +27,14 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $query = User::with(['details.stage', 'userCourses.program', 'groups'])
-            ->where('role', '2');
+        if (Auth::user()->role('school')) {
+            $query = User::with(['details.stage', 'userCourses.program', 'groups'])
+                ->where('role', '2')->where("school_id", Auth::user()->school_id);
+        } else {
+            $query = User::with(['details.stage', 'userCourses.program', 'groups'])
+                ->where('role', '2');
+        }
+
 
         if ($request->filled('school')) {
             $query->whereHas('details', function ($q) use ($request) {
@@ -56,9 +63,14 @@ class StudentController extends Controller
         $students = $query->simplePaginate(10);
 
         $schools = School::all();
-        $programs = Program::all();
+        $programs = Program::when(Auth::user()->role('school'), function ($query) {
+            return $query->where('school_id', Auth::user()->school_id);
+        })->get();
+        // $programs = Program::all();
         $grades = Stage::all();
-        $classes = Group::all();
+        $classes = Group::when(Auth::user()->role('school'), function ($query) {
+            return $query->where('school_id', Auth::user()->school_id);
+        })->get();
 
         return view('dashboard.students.index', compact('students', 'schools', 'programs', 'grades', 'classes'));
 
