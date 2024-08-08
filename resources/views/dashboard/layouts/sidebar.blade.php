@@ -170,9 +170,9 @@
                                     class="nk-menu-text">Select
                                     Group</span></a>
                             <ul class="nk-menu-sub">
-                                <li class="nk-menu-item"><a href="{{ route('select.group') }}"
+                                <li class="nk-menu-item"><a href="{{ route('reports.selectGroup') }}"
                                         class="nk-menu-link"><span class="nk-menu-text">Completion Report</span></a></li>
-                                <li class="nk-menu-item"><a href="{{ route('class.mastery.report.web') }}"
+                                <li class="nk-menu-item"><a href="{{ route('reports.classMasteryReportWeb') }}"
                                         class="nk-menu-link"><span class="nk-menu-text">Mastery Report</span></a></li>
                             </ul>
                         </li>

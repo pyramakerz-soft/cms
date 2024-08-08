@@ -26,96 +26,60 @@
                                                     class="btn btn-icon btn-trigger toggle-expand me-n1"
                                                     data-target="more-options"><em class="icon ni ni-more-v"></em></a>
                                                 <div class="toggle-expand-content" data-content="more-options">
+                                                   
                                                     <form method="GET" action="{{ route('instructors.index') }}">
-                                                        <ul class="nk-block-tools g-3">
+                                                        @csrf
+                                                        <ul class="nk-block-tools d-flex justify-content-between">
                                                             <li>
                                                                 <div class="drodown">
-                                                                    <a href="#"
-                                                                        class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white"
-                                                                        data-bs-toggle="dropdown">School</a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            @foreach ($schools as $school)
-                                                                                <li>
-                                                                                    <a href="#"
-                                                                                        onclick="document.querySelector('input[name=school]').value = '{{ $school->id }}'; document.querySelector('form').submit();">
-                                                                                        <span>{{ $school->name }}</span>
-                                                                                    </a>
-                                                                                </li>
-                                                                            @endforeach
-                                                                        </ul>
-                                                                        <input type="hidden" name="school"
-                                                                            value="{{ request('school') }}">
-                                                                    </div>
+                                                                    <select name="school" class="form-select" onchange="this.form.submit()">
+                                                                        <option value="">Select School</option>
+                                                                        @foreach ($schools as $school)
+                                                                            <option value="{{ $school->id }}" {{ request('school') == $school->id ? 'selected' : '' }}>
+                                                                                {{ $school->name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div class="drodown">
-                                                                    <a href="#"
-                                                                        class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white"
-                                                                        data-bs-toggle="dropdown">Program</a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            @foreach ($programs as $program)
-                                                                                <li>
-                                                                                    <a href="#"
-                                                                                        onclick="document.querySelector('input[name=program]').value = '{{ $program->id }}'; document.querySelector('form').submit();">
-                                                                                        <span>{{ $program->name }}</span>
-                                                                                    </a>
-                                                                                </li>
-                                                                            @endforeach
-                                                                        </ul>
-                                                                        <input type="hidden" name="program"
-                                                                            value="{{ request('program') }}">
-                                                                    </div>
+                                                                    <select name="program" class="form-select" onchange="this.form.submit()">
+                                                                        <option value="">Select Program</option>
+                                                                        @foreach ($programs as $program)
+                                                                            <option value="{{ $program->id }}" {{ request('program') == $program->id ? 'selected' : '' }}>
+                                                                                {{ $program->name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div class="drodown">
-                                                                    <a href="#"
-                                                                        class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white"
-                                                                        data-bs-toggle="dropdown">Grade</a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            @foreach ($grades as $grade)
-                                                                                <li>
-                                                                                    <a href="#"
-                                                                                        onclick="document.querySelector('input[name=grade]').value = '{{ $grade->id }}'; document.querySelector('form').submit();">
-                                                                                        <span>{{ $grade->name }}</span>
-                                                                                    </a>
-                                                                                </li>
-                                                                            @endforeach
-                                                                        </ul>
-                                                                        <input type="hidden" name="grade"
-                                                                            value="{{ request('grade') }}">
-                                                                    </div>
+                                                                    <select name="grade" class="form-select" onchange="this.form.submit()">
+                                                                        <option value="">Select Grade</option>
+                                                                        @foreach ($grades as $grade)
+                                                                            <option value="{{ $grade->id }}" {{ request('grade') == $grade->id ? 'selected' : '' }}>
+                                                                                {{ $grade->name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                             </li>
                                                             <li>
                                                                 <div class="drodown">
-                                                                    <a href="#"
-                                                                        class="dropdown-toggle dropdown-indicator btn btn-outline-light btn-white"
-                                                                        data-bs-toggle="dropdown">Class</a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            @foreach ($classes as $class)
-                                                                                <li>
-                                                                                    <a href="#"
-                                                                                        onclick="document.querySelector('input[name=group]').value = '{{ $class->id }}'; document.querySelector('form').submit();">
-                                                                                        <span>{{ $class->name }}</span>
-                                                                                    </a>
-                                                                                </li>
-                                                                            @endforeach
-                                                                        </ul>
-
-                                                                        <input type="hidden" name="group"
-                                                                            value="{{ request('group') }}">
-                                                                    </div>
+                                                                    <select name="group" class="form-select" onchange="this.form.submit()">
+                                                                        <option value="">Select Class</option>
+                                                                        @foreach ($classes as $class)
+                                                                            <option value="{{ $class->id }}" {{ request('group') == $class->id ? 'selected' : '' }}>
+                                                                                {{ $class->sec_name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                             </li>
                                                             <li class="nk-block-tools-opt">
-                                                                <button type="submit"
-                                                                    class="btn btn-primary">Filter</button>
+                                                                <button type="submit" class="btn btn-primary">Filter</button>
                                                             </li>
                                                         </ul>
                                                     </form>

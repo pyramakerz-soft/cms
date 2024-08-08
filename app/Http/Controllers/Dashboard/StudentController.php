@@ -27,14 +27,15 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        if (Auth::user()->role('school')) {
+        if (Auth::user()->hasRole('school')) {
             $query = User::with(['details.stage', 'userCourses.program', 'groups'])
-                ->where('role', '2')->where("school_id", Auth::user()->school_id);
+                ->where('role', '2')
+                ->where('is_student', 1)
+                ->where('school_id', Auth::user()->school_id);
         } else {
             $query = User::with(['details.stage', 'userCourses.program', 'groups'])
                 ->where('role', '2');
         }
-
 
         if ($request->filled('school')) {
             $query->whereHas('details', function ($q) use ($request) {
@@ -63,18 +64,15 @@ class StudentController extends Controller
         $students = $query->simplePaginate(10);
 
         $schools = School::all();
-        $programs = Program::when(Auth::user()->role('school'), function ($query) {
+        $programs = Program::when(Auth::user()->hasRole('school'), function ($query) {
             return $query->where('school_id', Auth::user()->school_id);
         })->get();
-        // $programs = Program::all();
         $grades = Stage::all();
-        $classes = Group::when(Auth::user()->role('school'), function ($query) {
+        $classes = Group::when(Auth::user()->hasRole('school'), function ($query) {
             return $query->where('school_id', Auth::user()->school_id);
         })->get();
 
         return view('dashboard.students.index', compact('students', 'schools', 'programs', 'grades', 'classes'));
-
-
     }
 
     /**
@@ -82,13 +80,22 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $schools = School::all();
-        $programs = Program::all();
+
+
+        $user = auth()->user();
         $stages = Stage::all();
         $groups = Group::all();
-        $roles = Role::all();
-        return view('dashboard.students.create', compact('schools', 'programs', 'stages', 'groups', 'roles'));
 
+        if ($user->hasRole('school')) {
+            $schoolId = $user->school->id;
+            $programs = Program::where('school_id', $schoolId)->get();
+            $schools = School::where('id', $schoolId)->get();
+        } else {
+            $schools = School::all();
+            $programs = Program::all();
+        }
+
+        return view('dashboard.students.create', compact('schools', 'programs', 'stages', 'groups'));
     }
 
     /**
@@ -134,7 +141,7 @@ class StudentController extends Controller
             'group_id' => $request->group_id,
             'student_id' => $user->id
         ]);
-        $user->assignRole($request->input('roles'));
+        // $user->assignRole($request->input('roles'));
 
         if ($request->hasFile('parent_image')) {
             $imagePath = $request->file('parent_image')->store('images', 'public');
@@ -175,8 +182,8 @@ class StudentController extends Controller
         $programs = Program::where('stage_id', UserDetails::where('user_id', $id)->first()->stage_id)->get();
         $stages = Stage::all();
         $groups = Group::all();
-        $roles = Role::pluck('name', 'name')->all();
-        return view('dashboard.students.edit', compact('student', 'schools', 'programs', 'stages', 'groups', 'roles'));
+        // $roles = Role::pluck('name', 'name')->all();
+        return view('dashboard.students.edit', compact('student', 'schools', 'programs', 'stages', 'groups'));
 
     }
 
@@ -231,9 +238,6 @@ class StudentController extends Controller
             $student->parent_image = $imagePath;
             $student->save();
         }
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
-
-        $student->assignRole($request->input('roles'));
 
         return redirect()->route('students.index')->with('success', 'Student updated successfully.');
 
@@ -256,8 +260,8 @@ class StudentController extends Controller
     //Getters
     public function getCourses($id)
     {
-        $courses = Program::where('stage_id', $id)->get();
-        return $courses;
+        $courses = Program::where('stage_id', $id)->get(['id', 'name']);
+        return response()->json($courses);
     }
     ///////////////////////////////////
 }

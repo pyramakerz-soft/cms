@@ -8,6 +8,7 @@ use App\Models\Program;
 use App\Models\School;
 use App\Models\Stage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProgramController extends Controller
 {
@@ -16,7 +17,17 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $programs = Program::with('course', 'stage', 'school')->get()->groupBy('name');
+        $user = auth()->user();
+
+        if (Auth::user()->hasRole('school')) {
+            $schoolId = $user->school->id;
+
+            $programs = Program::where('school_id', $schoolId)->with('course', 'stage', 'school')->get()->groupBy('name');
+
+        } else {
+            $programs = Program::with('course', 'stage', 'school')->get()->groupBy('name');
+
+        }
         // dd($programs);
         return view('dashboard.program.index', compact('programs'));
     }
@@ -91,17 +102,17 @@ class ProgramController extends Controller
             'course_id.*' => 'exists:courses,id',
             'stage_id' => 'required|exists:stages,id',
         ]);
-    
+
         $program = Program::findOrFail($id);
-    
+
         $program->update([
             'name' => $request->name,
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id,
         ]);
-    
+
         $program->courses()->sync($request->course_id);
-    
+
         return redirect()->route('programs.edit', $program->id)->with('success', 'Program updated successfully!');
     }
 

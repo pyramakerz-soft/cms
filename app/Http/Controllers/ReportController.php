@@ -551,7 +551,10 @@ class ReportController extends Controller
 
     public function selectGroup()
     {
-        if (Auth::user()->hasRole('school')) {
+        if (Auth::
+            
+            
+            user()->hasRole('school')) {
             $groups = Group::when(Auth::user()->hasRole('school'), function ($query) {
                 return $query->where('school_id', Auth::user()->school_id);
             })->get();

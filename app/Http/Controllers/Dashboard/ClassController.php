@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\Program;
 use App\Models\School;
 use App\Models\Stage;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ClassController extends Controller
@@ -16,7 +17,7 @@ class ClassController extends Controller
      */
     public function index()
     {
-        $classes = Group::all();
+        $classes = Group::simplePaginate(10);
         return view('dashboard.class.index', compact("classes"));
 
     }
@@ -47,7 +48,7 @@ class ClassController extends Controller
             'program_id' => 'required|exists:programs,id',
 
         ]);
-
+        // dd($request);
         $class = Group::create([
             'name' => $request->name,
             'sec_name' => $request->sec_name,
@@ -76,6 +77,7 @@ class ClassController extends Controller
         $schools = School::all();
         $programs = Program::all();
         $stages = Stage::all();
+
         return view("dashboard.class.edit", compact(["class", 'schools', 'stages', 'programs']));
     }
 
@@ -84,21 +86,20 @@ class ClassController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
             'sec_name' => 'nullable|string|max:255',
             'school_id' => 'required|exists:schools,id',
             'stage_id' => 'required|exists:stages,id',
             'program_id' => 'required|exists:programs,id',
-
         ]);
 
         $class = Group::findOrFail($id);
         $class->update([
             'name' => $request->name,
-
-            'school_id' => $request->school_id,
             'sec_name' => $request->sec_name,
+            'school_id' => $request->school_id,
             'stage_id' => $request->stage_id,
             'program_id' => $request->program_id,
         ]);
@@ -120,4 +121,12 @@ class ClassController extends Controller
 
         return redirect()->route('classes.index')->with('success', 'Class deleted successfully.');
     }
+    public function getStages($program_id)
+    {
+        $program = Program::findOrFail($program_id);
+        $stage = Stage::findOrFail($program->stage_id);
+        // dd($stage);
+        return $stage;
+    }
+
 }

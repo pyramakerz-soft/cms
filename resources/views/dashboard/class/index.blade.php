@@ -33,11 +33,13 @@
                                                                 class="btn btn-icon btn-primary d-md-none"
                                                                 data-bs-toggle="modal" href="#student-add"><em
                                                                     class="icon ni ni-plus"></em></a>
-                                                            <a href="{{ route('classes.create') }}"
-                                                                class="btn btn-primary d-none d-md-inline-flex">
-                                                                <em class="icon ni ni-plus"></em>
-                                                                <span>Add</span>
-                                                            </a>
+                                                            @can('class-create')
+                                                                <a href="{{ route('classes.create') }}"
+                                                                    class="btn btn-primary d-none d-md-inline-flex">
+                                                                    <em class="icon ni ni-plus"></em>
+                                                                    <span>Add</span>
+                                                                </a>
+                                                            @endcan
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -65,35 +67,41 @@
                                                 <th scope="row">{{ $class->id }}</th>
                                                 <td>{{ $class->name }}</td>
                                                 <td>{{ $class->sec_name }}</td>
-                                                <td>{{ $class->program->name }}</td>
+                                                <td>{{ $class->program->name . '/' . $class->program->course->name }}</td>
                                                 <td>{{ $class->stage->name }}</td>
                                                 <td>{{ $class->teacher->name ?? 'Na' }}</td>
                                                 <td>{{ $class->school->name }}</td>
 
                                                 <td class="d-flex flex-row justify-content-end">
-                                                    <a href="{{ route('classes.edit', $class->id) }}"
-                                                        class="btn btn-warning me-1">Edit</a>
+                                                    @can('class-edit')
+                                                        <a href="{{ route('classes.edit', $class->id) }}"
+                                                            class="btn btn-warning me-1">Edit</a>
+                                                    @endcan
+                                                    @can('class-delete')
+                                                        <form action="{{ route('classes.destroy', $class->id) }}"
+                                                            method="POST" style="display:inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirm('Are you sure you want to delete this class?')">Delete</button>
 
+                                                            <div class="d-lg-flex d-none">
 
+                                                            </div>
 
-                                                    <form action="{{ route('classes.destroy', $class->id) }}"
-                                                        method="POST" style="display:inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Are you sure you want to delete this class?')">Delete</button>
-
-                                                        <div class="d-lg-flex d-none">
-
-                                                        </div>
-
-                                                    </form>
+                                                        </form>
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach
 
                                     </tbody>
                                 </table>
+                                <div class="card-inner">
+                                    <div class="nk-block-between-md g-3">
+                                        {!! $classes->links() !!}
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
