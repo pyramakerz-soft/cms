@@ -42,30 +42,35 @@ class ProgramController extends Controller
         $stages = Stage::all();
         return view('dashboard.program.create', compact(['schools', 'courses', 'stages']));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'school_id' => 'required|exists:schools,id',
-            'course_id' => 'required|exists:courses,id',
+            'course_id' => 'required|array',
             'stage_id' => 'required|exists:stages,id',
         ]);
 
+        $school_id = $request->school_id;
+        $stage_id = $request->stage_id;
+
         foreach ($request->course_id as $course_id) {
+            $existingProgram = Program::where('school_id', $school_id)
+                ->where('course_id', $course_id)
+                ->where('stage_id', $stage_id)
+                ->first();
+
+            if ($existingProgram) {
+                return redirect()->back()->withErrors(['course_id' => 'The course is already assigned to this school and stage.']);
+            }
 
             Program::create([
                 'name' => $request->name,
-                'school_id' => $request->school_id,
+                'school_id' => $school_id,
                 'course_id' => $course_id,
-                'stage_id' => $request->stage_id,
+                'stage_id' => $stage_id,
             ]);
         }
-
-
 
         return redirect()->route('programs.create')->with('success', 'Program created successfully!');
     }
