@@ -17,7 +17,18 @@ class ClassController extends Controller
      */
     public function index()
     {
-        $classes = Group::simplePaginate(10);
+        $user = auth()->user();
+
+        if ($user->hasRole('school')) {
+            $schoolId = $user->school->id;
+            $classes = Group::where('school_id', $schoolId)->simplePaginate(10);
+
+
+        } else {
+            $classes = Group::simplePaginate(10);
+
+
+        }
         return view('dashboard.class.index', compact("classes"));
 
     }
@@ -27,8 +38,22 @@ class ClassController extends Controller
      */
     public function create()
     {
-        $schools = School::all();
-        $programs = Program::all();
+        $user = auth()->user();
+
+        if ($user->hasRole('school')) {
+            $schoolId = $user->school->id;
+            $schools = School::where('id', $schoolId)->get();
+            $programs = Program::where('school_id', $schoolId)->get();
+
+
+        } else {
+            $schools = School::all();
+            $programs = Program::all();
+            $classes = Group::simplePaginate(10);
+
+
+        }
+
         $stages = Stage::all();
 
         return view('dashboard.class.create', compact('schools', 'programs', 'stages'));

@@ -26,16 +26,18 @@
                                                     class="btn btn-icon btn-trigger toggle-expand me-n1"
                                                     data-target="more-options"><em class="icon ni ni-more-v"></em></a>
                                                 <div class="toggle-expand-content" data-content="more-options">
-                                                   
+
                                                     <form method="GET" action="{{ route('instructors.index') }}">
                                                         @csrf
                                                         <ul class="nk-block-tools d-flex justify-content-between">
                                                             <li>
                                                                 <div class="drodown">
-                                                                    <select name="school" class="form-select" onchange="this.form.submit()">
+                                                                    <select name="school" class="form-select"
+                                                                        onchange="this.form.submit()">
                                                                         <option value="">Select School</option>
                                                                         @foreach ($schools as $school)
-                                                                            <option value="{{ $school->id }}" {{ request('school') == $school->id ? 'selected' : '' }}>
+                                                                            <option value="{{ $school->id }}"
+                                                                                {{ request('school') == $school->id ? 'selected' : '' }}>
                                                                                 {{ $school->name }}
                                                                             </option>
                                                                         @endforeach
@@ -44,10 +46,12 @@
                                                             </li>
                                                             <li>
                                                                 <div class="drodown">
-                                                                    <select name="program" class="form-select" onchange="this.form.submit()">
+                                                                    <select name="program" class="form-select"
+                                                                        onchange="this.form.submit()">
                                                                         <option value="">Select Program</option>
                                                                         @foreach ($programs as $program)
-                                                                            <option value="{{ $program->id }}" {{ request('program') == $program->id ? 'selected' : '' }}>
+                                                                            <option value="{{ $program->id }}"
+                                                                                {{ request('program') == $program->id ? 'selected' : '' }}>
                                                                                 {{ $program->name }}
                                                                             </option>
                                                                         @endforeach
@@ -56,10 +60,12 @@
                                                             </li>
                                                             <li>
                                                                 <div class="drodown">
-                                                                    <select name="grade" class="form-select" onchange="this.form.submit()">
+                                                                    <select name="grade" class="form-select"
+                                                                        onchange="this.form.submit()">
                                                                         <option value="">Select Grade</option>
                                                                         @foreach ($grades as $grade)
-                                                                            <option value="{{ $grade->id }}" {{ request('grade') == $grade->id ? 'selected' : '' }}>
+                                                                            <option value="{{ $grade->id }}"
+                                                                                {{ request('grade') == $grade->id ? 'selected' : '' }}>
                                                                                 {{ $grade->name }}
                                                                             </option>
                                                                         @endforeach
@@ -68,10 +74,12 @@
                                                             </li>
                                                             <li>
                                                                 <div class="drodown">
-                                                                    <select name="group" class="form-select" onchange="this.form.submit()">
+                                                                    <select name="group" class="form-select"
+                                                                        onchange="this.form.submit()">
                                                                         <option value="">Select Class</option>
                                                                         @foreach ($classes as $class)
-                                                                            <option value="{{ $class->id }}" {{ request('group') == $class->id ? 'selected' : '' }}>
+                                                                            <option value="{{ $class->id }}"
+                                                                                {{ request('group') == $class->id ? 'selected' : '' }}>
                                                                                 {{ $class->sec_name }}
                                                                             </option>
                                                                         @endforeach
@@ -79,7 +87,8 @@
                                                                 </div>
                                                             </li>
                                                             <li class="nk-block-tools-opt">
-                                                                <button type="submit" class="btn btn-primary">Filter</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Filter</button>
                                                             </li>
                                                         </ul>
                                                     </form>
@@ -105,6 +114,8 @@
                                                         </div>
                                                         <div class="nk-tb-col tb-col-lg"><span
                                                                 class="sub-text">Program</span></div>
+                                                        <div class="nk-tb-col tb-col-lg"><span class="sub-text">Role</span>
+                                                        </div>
 
                                                     </div>
                                                     @foreach ($instructors as $instructor)
@@ -161,6 +172,14 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-lg">
+                                                                @if (!empty($instructor->getRoleNames()))
+                                                                    @foreach ($instructor->getRoleNames() as $v)
+                                                                        <label
+                                                                            class="badge badge-secondary text-dark">{{ $v }}</label>
+                                                                    @endforeach
+                                                                @endif
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools text-end">
                                                                 <div class="dropdown">

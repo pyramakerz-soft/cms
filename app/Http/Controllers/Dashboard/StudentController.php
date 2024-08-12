@@ -85,7 +85,6 @@ class StudentController extends Controller
         $user = auth()->user();
         $stages = Stage::all();
         $groups = Group::all();
-
         if ($user->hasRole('school')) {
             $schoolId = $user->school->id;
             $programs = Program::where('school_id', $schoolId)->get();
@@ -93,6 +92,7 @@ class StudentController extends Controller
         } else {
             $schools = School::all();
             $programs = Program::all();
+
         }
 
         return view('dashboard.students.create', compact('schools', 'programs', 'stages', 'groups'));
@@ -121,7 +121,7 @@ class StudentController extends Controller
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'school_id' => $request->school_id,
-            'role' => '1',
+            'role' => '2',
             'is_student' => 1
         ]);
         foreach ($request->program_id as $program_id) {
@@ -179,7 +179,15 @@ class StudentController extends Controller
     {
         $student = User::findOrFail($id);
         $schools = School::all();
-        $programs = Program::where('stage_id', UserDetails::where('user_id', $id)->first()->stage_id)->get();
+        $userDetails = UserDetails::where('user_id', $id)->first();
+        if ($userDetails && $userDetails->stage_id) {
+
+            $programs = Program::where('stage_id', $userDetails->stage_id)->get();
+        } else {
+
+            $programs = Program::all();
+        }
+        // $programs = Program::where('stage_id', UserDetails::where('user_id', $id)->first()->stage_id)->get();
         $stages = Stage::all();
         $groups = Group::all();
         // $roles = Role::pluck('name', 'name')->all();

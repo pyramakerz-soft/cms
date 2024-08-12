@@ -102,16 +102,17 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label
-                                                                            class="form-label">Grade</label>
-                                                                        <div class="form-control-wrap"><select
-                                                                                class="form-select js-select2"
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Grade</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <select class="form-select js-select2"
                                                                                 name="stage_id"
                                                                                 data-placeholder="Select multiple options">
                                                                                 @foreach ($stages as $stage)
                                                                                     <option value="{{ $stage->id }}"
-                                                                                        {{ $student->details[0]->stage->id == $stage->id ? 'selected' : '' }}>
-                                                                                        {{ $stage->name }}</option>
+                                                                                        @if (isset($student->details[0]->stage) && $student->details[0]->stage->id == $stage->id) selected @endif>
+                                                                                        {{ $stage->name }}
+                                                                                    </option>
                                                                                 @endforeach
                                                                             </select>
                                                                             @error('stage_id')
@@ -130,7 +131,7 @@
                                                                                 data-placeholder="Select multiple options">
                                                                                 @foreach ($groups as $group)
                                                                                     <option value="{{ $group->id }}">
-                                                                                        {{ $group->name }}</option>
+                                                                                        {{ $group->sec_name }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                             @error('group_id')
@@ -163,26 +164,7 @@
                                                                         @enderror
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label class="form-label">Role</label>
-                                                                        <div class="form-control-wrap">
-                                                                            <select name="roles[]" id="role"
-                                                                                class="form-select">
 
-                                                                                @foreach ($roles as $role)
-                                                                                    <option value="{{ $role }}">
-                                                                                        {{ $role }}</option>
-                                                                                @endforeach
-
-                                                                            </select>
-                                                                            @error('roles')
-                                                                                <div class="text-danger">{{ $message }}
-                                                                                </div>
-                                                                            @enderror
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
                                                                 <div class="col-md-12">
                                                                     <div class="form-group"><label class="form-label"
                                                                             for="profile-picture">Profile Picture</label>

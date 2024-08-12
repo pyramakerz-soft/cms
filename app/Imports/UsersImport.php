@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\UserCourse;
 use App\Models\GroupStudent;
+use App\Models\UserDetails;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -36,7 +37,7 @@ class UsersImport implements ToModel, WithHeadingRow
             'program_id' => $row['program_id'],
         ]);
 
-        UserDetail::create([
+        UserDetails::create([
             'user_id' => $user->id,
             'school_id' => $row['school_id'],
             'stage_id' => $row['stage_id'],

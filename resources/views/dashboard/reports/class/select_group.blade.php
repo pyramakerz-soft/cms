@@ -17,7 +17,7 @@
                                         <h5 class="title">Select Group for Reports</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form method="GET" action="{{ route('class.completion.report.web') }}">
+                                        <form method="GET" action="{{ route('reports.classCompletionReportWeb') }}">
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <label for="group_id">Select Group</label>

@@ -13,6 +13,7 @@ use App\Models\UserDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class InstructorController extends Controller
 {
@@ -72,7 +73,9 @@ class InstructorController extends Controller
         $programs = Program::all();
         $stages = Stage::all();
         $groups = Group::all();
-        return view('dashboard.instructors.create', compact('schools', 'programs', 'stages', 'groups'));
+        $roles = Role::all();
+
+        return view('dashboard.instructors.create', compact('schools', 'programs', 'stages', 'groups', 'roles'));
     }
     public function getGroups($program_id)
     {
@@ -123,6 +126,8 @@ class InstructorController extends Controller
             'teacher_id' => $teacher->id,
 
         ]);
+        $teacher->assignRole($request->input('roles'));
+
 
         if ($request->hasFile('parent_image')) {
             $imagePath = $request->file('parent_image')->store('images', 'public');

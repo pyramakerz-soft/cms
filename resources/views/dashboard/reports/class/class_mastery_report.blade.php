@@ -16,7 +16,7 @@
                         <div class="container-fluid">
                             <h1 style="font-size: 25px; margin-top: 30px">Class Mastery Report</h1>
 
-                            <form method="GET" action="{{ route('class.mastery.report.web') }}">
+                            <form method="GET" action="{{ route('reports.classMasteryReportWeb') }}">
                                 <div class="row">
                                     <!-- Group Filter -->
                                     <div class="col-md-4">
