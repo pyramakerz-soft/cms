@@ -83,74 +83,88 @@
                                 </div>
                             </div>
                             <div class="nk-block">
-                                <div class="card">
-                                    <div class="card-inner-group">
-                                        <div class="card-inner p-0">
-                                            <div class="nk-tb-list nk-tb-ulist">
-                                                <div class="nk-tb-item nk-tb-head">
-                                                    <div class="nk-tb-col"><span class="sub-text">Student</span></div>
-                                                    <div class="nk-tb-col tb-col-mb"><span class="sub-text d-lg-flex d-none">School</span></div>
-                                                    <div class="nk-tb-col tb-col-md"><span class="sub-text">Phone</span></div>
-                                                    <div class="nk-tb-col tb-col-lg"><span class="sub-text">Grade</span></div>
-                                                    <div class="nk-tb-col tb-col-lg"><span class="sub-text">Program</span></div>
-                                                    <div class="nk-tb-col tb-col-lg"><span class="sub-text">Roles</span></div>
-                                                </div>
+                         
+                                    <table class="table">
+                                             <thead class="thead-dark">
+                                                <tr>
+                                            <th scope="col">Student</th>
+                                            <th scope="col">School</th>
+                                            <th scope="col">Phone</th>
+                                            <th scope="col">Grade</th>
+                                            <th scope="col">Program</th>
+                                             <th scope="col" class="text-center">Action</th>
+                                            </tr>
+                                               </thead>
+                                    <tbody>
                                                 @foreach ($students as $student)
-                                                    <div class="nk-tb-item">
-                                                        <div class="nk-tb-col"><a href="#">
-                                                            <div class="user-card">
-                                                                <div class="user-avatar"><img src="../images/avatar/a-sm.jpg" alt=""></div>
-                                                                <div class="user-info"><span class="tb-lead">{{ $student->name }} <span class="dot dot-warning d-md-none ms-1"></span></span><span>{{ $student->email }}</span></div>
-                                                            </div></a>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-mb"><span class="tb-lead d-lg-flex d-none">{{ $student->school->name }}</span></div>
-                                                        <div class="nk-tb-col tb-col-md"><span>{{ $student->phone }}</span></div>
-                                                        <div class="nk-tb-col tb-col-lg">
+                                             
+                                                            <tr>
+                                                            <th scope="row">
+                                                          
+                                                                <div class="nk-tb-col"><a href="">
+                                                                    <div class="user-card">
+                                                                        <div class="user-avatar"><img
+                                                                                src="../images/avatar/a-sm.jpg"
+                                                                                alt="">
+                                                                        </div>
+                                                                        <div class="user-info"><span
+                                                                                class="tb-lead">{{ $student->name }}
+                                                                                <span
+                                                                                    class="dot dot-warning d-md-none ms-1"></span></span><br><span>{{ $student->email }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                            </th>
+                                                    
+                                                      <td>{{ $student->school->name }}</td>
+                                                      <td>{{ $student->phone }}</td>
+                                                      <td>
                                                             @if (isset($student->details[0]) && isset($student->details[0]->stage))
                                                                 <span>{{ $student->details[0]->stage->name }}</span>
                                                             @else
                                                                 <span>N/A</span>
                                                             @endif
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-lg">
+                                                              </td>
+                                                              <td>
                                                             @if (!empty($student->getRoleNames()))
                                                                 @foreach ($student->getRoleNames() as $v)
                                                                     <label class="badge badge-secondary text-dark">{{ $v }}</label>
                                                                 @endforeach
                                                             @endif
-                                                        </div>
-                                                        <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                            <div class="dropdown">
-                                                                <a href="#" class="btn btn-xs btn-outline-light btn-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    <em class="icon ni ni-more-h"></em>
-                                                                </a>
-                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                    <ul class="link-list-opt no-bdr">
-                                                                        <li><a href="{{ route('students.edit', $student->id) }}"><em class="icon ni ni-edit"></em><span>Edit</span></a></li>
-                                                                        <li>
-                                                                            <a href="#" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $student->id }}').submit();">
-                                                                                <em class="icon ni ni-trash"></em><span>Delete</span>
-                                                                            </a>
-                                                                        </li>
-                                                                        <form id="delete-form-{{ $student->id }}" action="{{ route('students.destroy', $student->id) }}" method="POST" style="display: none;">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                        </form>
-                                                                    </ul>
-                                                                </div>
+                                                        </td>
+                                                        <td class="d-flex flex-row justify-content-center">
+                                                    
+                                                        <a href="{{ route('students.edit', $student->id) }}"
+                                                            class="btn btn-warning me-1">Edit</a>
+                                                   
+                                                        <form action="{{ route('students.destroy', $student->id) }}"
+                                                            method="POST" style="display:inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirm('Are you sure you want to delete this class?')">Delete</button>
+
+                                                            <div class="d-lg-flex d-none">
+
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
+
+                                                        </form>
+                                                    </td>
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+                                                   
+                        
+                                       
                                         <div class="card-inner">
                                             <div class="nk-block-between-md g-3">
                                                 {!! $students->links() !!}
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

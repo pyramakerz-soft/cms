@@ -20,7 +20,7 @@
                                 class="nk-menu-text">Dashboard</span></a></li>
                     @can('course-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                    class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
+                                    class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span><span
                                     class="nk-menu-text">Courses</span></a>
                             <ul class="nk-menu-sub">
                                 @can('course-create')
@@ -86,7 +86,7 @@
                     @endcan
                     @can('school-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                    class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
+                                    class="nk-menu-icon"><em class="icon ni ni-building"></em></span><span
                                     class="nk-menu-text">School</span></a>
                             <ul class="nk-menu-sub">
                                 @can('school-create')
@@ -106,7 +106,7 @@
                     @endcan
                     @can('class-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                    class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
+                                    class="nk-menu-icon"><em class="icon ni ni-user-circle"></em></span><span
                                     class="nk-menu-text">Class</span></a>
                             <ul class="nk-menu-sub">
                                 @can('class-create')
@@ -127,7 +127,7 @@
                     {{-- @can('view_user') --}}
                     @can('student-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                    class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span><span
+                                    class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span><span
                                     class="nk-menu-text">Students</span></a>
                             <ul class="nk-menu-sub">
                                 @can('student-create')

@@ -57,7 +57,8 @@
 
                 @if (!empty($progress))
                     <h2 style="font-size: 25px; margin-top: 25px">Monthly Scores</h2>
-                    <table class="table">
+                       <table class="table">
+                                    <thead class="thead-dark">
                         <thead>
                             <tr>
                                 <th>Month</th>
@@ -88,7 +89,8 @@
                     </ul>
 
                     <h2 style="font-size: 25px; margin-top: 25px">Progress</h2>
-                    <table class="table">
+                       <table class="table">
+                                    <thead class="thead-dark">
                         <thead>
                             <tr>
                                 <th>Student ID</th>

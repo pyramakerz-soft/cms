@@ -24,7 +24,7 @@
                                                     <ul class="nk-block-tools g-3">
 
                                                         <li class="nk-block-tools-opt"><a
-                                                                class="btn btn-icon btn-primary d-md-none"
+                                                                class="btn btn-icon btn-warning d-md-none"
                                                                 data-bs-toggle="modal" href="#student-add"><em
                                                                     class="icon ni ni-plus"></em></a>
                                                             <a href="{{ route('courses.create') }}"
@@ -40,7 +40,7 @@
                                     </div>
                                 </div>
                                 <table class="table">
-                                    <thead>
+                                    <thead class="thead-dark">
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Course</th>
@@ -48,7 +48,7 @@
 
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="">
                                         @foreach ($courses as $course)
                                             <tr>
                                                 <th scope="row">{{ $course->id }}</th>

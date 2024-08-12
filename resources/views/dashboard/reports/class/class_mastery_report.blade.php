@@ -77,7 +77,8 @@
                                 <h2>Mastery Report</h2>
                                 @if (!empty($units))
                                     <h3>Units Mastery</h3>
-                                    <table class="table">
+                                       <table class="table">
+                                    <thead class="thead-dark">
                                         <thead>
                                             <tr>
                                                 <th>Unit</th>
@@ -105,7 +106,8 @@
 
                                 @if (!empty($lessons))
                                     <h3>Lessons Mastery</h3>
-                                    <table class="table">
+                                       <table class="table">
+                                    <thead class="thead-dark">
                                         <thead>
                                             <tr>
                                                 <th>Lesson</th>
@@ -133,7 +135,8 @@
 
                                 @if (!empty($games))
                                     <h3>Games Mastery</h3>
-                                    <table class="table">
+                                       <table class="table">
+                                    <thead class="thead-dark">
                                         <thead>
                                             <tr>
                                                 <th>Game</th>
@@ -161,7 +164,8 @@
 
                                 @if (!empty($skills))
                                     <h3>Skills Mastery</h3>
-                                    <table class="table">
+                                       <table class="table">
+                                    <thead class="thead-dark">
                                         <thead>
                                             <tr>
                                                 <th>Skill</th>

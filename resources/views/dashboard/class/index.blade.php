@@ -30,7 +30,7 @@
                                                     <ul class="nk-block-tools g-3">
 
                                                         <li class="nk-block-tools-opt"><a
-                                                                class="btn btn-icon btn-primary d-md-none"
+                                                                class="btn btn-icon btn-warning d-md-none"
                                                                 data-bs-toggle="modal" href="#student-add"><em
                                                                     class="icon ni ni-plus"></em></a>
                                                             @can('class-create')
@@ -47,8 +47,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table">
-                                    <thead>
+                                     <table class="table">
+                                    <thead class="thead-dark">
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Name</th>
@@ -57,6 +57,9 @@
                                             <th scope="col">Stage</th>
                                             <th scope="col">Teacher</th>
                                             <th scope="col">School</th>
+                                            <th scope="col" class="text-center">Action</th>
+                                            
+
 
 
                                         </tr>
@@ -72,7 +75,7 @@
                                                 <td>{{ $class->teacher->name ?? 'Na' }}</td>
                                                 <td>{{ $class->school->name }}</td>
 
-                                                <td class="d-flex flex-row justify-content-end">
+                                                <td class="d-flex flex-row justify-content-center">
                                                     @can('class-edit')
                                                         <a href="{{ route('classes.edit', $class->id) }}"
                                                             class="btn btn-warning me-1">Edit</a>

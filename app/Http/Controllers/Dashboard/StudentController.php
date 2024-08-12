@@ -121,7 +121,7 @@ class StudentController extends Controller
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'school_id' => $request->school_id,
-            'role' => '1',
+            'role' => '2',
             'is_student' => 1
         ]);
         foreach ($request->program_id as $program_id) {

@@ -89,26 +89,24 @@
                                     </div>
                                 </div>
                                 <div class="nk-block">
-                                    <div class="card">
-                                        <div class="card-inner-group">
-                                            <div class="card-inner p-0">
-                                                <div class="nk-tb-list nk-tb-ulist">
-                                                    <div class="nk-tb-item nk-tb-head">
-
-                                                        <div class="nk-tb-col"><span class="sub-text">Teacher</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-mb"><span
-                                                                class="sub-text d-lg-flex d-none">School</span></div>
-                                                        <div class="nk-tb-col tb-col-md"><span class="sub-text">Phone</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-lg"><span class="sub-text">Grade</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-lg"><span
-                                                                class="sub-text">Program</span></div>
-
-                                                    </div>
+                                   
+                                        <table class="table">
+                                             <thead class="thead-dark">
+                                                <tr>
+                                            <th scope="col">Teacher</th>
+                                            <th scope="col">School</th>
+                                            <th scope="col">Phone</th>
+                                            <th scope="col">Grade</th>
+                                            <th scope="col">Program</th>
+                                             <th scope="col" class="text-center">Action</th>
+                                            </tr>
+                                               </thead>
+                                    <tbody>
+                                  
                                                     @foreach ($instructors as $instructor)
-                                                        <div class="nk-tb-item">
+                                                    <tr>
+                                                            <th scope="row">
+                                                          
 
                                                             <div class="nk-tb-col"><a href="">
                                                                     <div class="user-card">
@@ -119,30 +117,27 @@
                                                                         <div class="user-info"><span
                                                                                 class="tb-lead">{{ $instructor->name }}
                                                                                 <span
-                                                                                    class="dot dot-warning d-md-none ms-1"></span></span><span>{{ $instructor->email }}</span>
+                                                                                    class="dot dot-warning d-md-none ms-1"></span></span><br><span>{{ $instructor->email }}</span>
                                                                         </div>
                                                                     </div>
                                                                 </a>
                                                             </div>
-                                                            <div class="nk-tb-col tb-col-mb"><span
-                                                                    class="tb-lead d-lg-flex d-none">{{ $instructor->school->name }}
-                                                                </span>
+                                                              </th>
+                                                          <td>{{ $instructor->school->name }}
+                                                             </td>
                                                                 <div class="d-lg-flex d-none">
 
                                                                 </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>{{ $instructor->phone }}</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-lg">
-                                                                <span>{{ $instructor->details[0]->stage->name ?? '-' }}</span>
-                                                            </div>
+                                                           
+                                                                <td>{{ $instructor->phone }}</td>
+                                                                <td>{{ $instructor->details[0]->stage->name ?? '-' }}</td>
+                                                                <td>
                                                             <div class="nk-tb-col tb-col-mb"><span
                                                                     class="tb-lead d-lg-flex d-none"></span>
                                                                 <div class="d-lg-flex d-none">
                                                                     <div class="drodown"><a href="#"
-                                                                            class="dropdown-toggle pt-1 text-info"
-                                                                            data-bs-toggle="dropdown"> <span>View
+                                                                            class="dropdown-toggle pt-1  btn btn-gray"
+                                                                            data-bs-toggle="dropdown "> <span>View
                                                                                 More</span> </a>
 
                                                                         <div class="dropdown-menu dropdown-menu-start">
@@ -162,52 +157,44 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                                <div class="dropdown">
-                                                                    <a href="#"
-                                                                        class="btn btn-xs btn-outline-light btn-icon dropdown-toggle"
-                                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                                        <em class="icon ni ni-more-h"></em>
-                                                                    </a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            <li><a
-                                                                                    href="{{ route('instructors.edit', $instructor->id) }}"><em
-                                                                                        class="icon ni ni-edit"></em><span>Edit</span></a>
-                                                                            </li>
-                                                                            <li>
-                                                                                <a href="#"
-                                                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $instructor->id }}').submit();"><em
-                                                                                        class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                            </li>
-                                                                            <form id="delete-form-{{ $instructor->id }}"
-                                                                                action="{{ route('instructors.destroy', $instructor->id) }}"
-                                                                                method="POST" style="display: none;">
-                                                                                @csrf
-                                                                                @method('DELETE')
-                                                                            </form>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                             </td>
+                                                   
+                                                            <td class="d-flex flex-row justify-content-center">
+                                                    
+                                                    <a href="{{ route('instructors.edit', $instructor->id) }}"
+                                                        class="btn btn-warning me-1">Edit</a>
+                                               
+                                                    <form action="{{ route('instructors.destroy', $instructor->id) }}"
+                                                        method="POST" style="display:inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger"
+                                                            onclick="return confirm('Are you sure you want to delete this class?')">Delete</button>
+
+                                                        <div class="d-lg-flex d-none">
+
+                                                        </div>
+
+                                                    </form>
+                                                </td>
+                                        </tr>
 
                                                         </div>
                                                     @endforeach
 
 
 
+                                                    </tbody>
+                                </table>
+                                         
 
-
-                                                </div>
-                                            </div>
-                                        </div>
+                                            
                                         <div class="card-inner">
                                             <div class="nk-block-between-md g-3">
                                                 {!! $instructors->links() !!}
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                  
                             </div>
                         </div>
                     </div>

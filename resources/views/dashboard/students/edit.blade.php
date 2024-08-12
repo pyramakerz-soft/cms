@@ -163,26 +163,7 @@
                                                                         @enderror
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label class="form-label">Role</label>
-                                                                        <div class="form-control-wrap">
-                                                                            <select name="roles[]" id="role"
-                                                                                class="form-select">
-
-                                                                                @foreach ($roles as $role)
-                                                                                    <option value="{{ $role }}">
-                                                                                        {{ $role }}</option>
-                                                                                @endforeach
-
-                                                                            </select>
-                                                                            @error('roles')
-                                                                                <div class="text-danger">{{ $message }}
-                                                                                </div>
-                                                                            @enderror
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                
                                                                 <div class="col-md-12">
                                                                     <div class="form-group"><label class="form-label"
                                                                             for="profile-picture">Profile Picture</label>
