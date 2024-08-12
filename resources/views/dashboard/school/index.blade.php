@@ -39,8 +39,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table">
-                                    <thead>
+                                     <table class="table">
+                                    <thead class="thead-dark">
                                         @if ($schools->count() > 0)
                                             <tr>
                                                 <th scope="col">#</th>
@@ -48,7 +48,7 @@
                                                 <th scope="col">Email</th>
                                                 <th scope="col">Phone</th>
                                                 <th scope="col">Students</th>
-                                                <th scope="col">Action</th>
+                                                <th scope="col" class="text-center">Action</th>
 
                                             </tr>
                                         @endif
@@ -61,7 +61,7 @@
                                                 <td>{{ $school->email }}</td>
                                                 <td>{{ $school->phone }}</td>
                                                 <td>{{ \App\Models\User::where('school_id',$school->id)->where('role',2)->count() }}</td>
-                                                <td class="d-flex flex-row justify-content-end">
+                                                <td class="d-flex flex-row justify-content-center">
                                                     @can('school-edit')
                                                         <a href="{{ route('schools.edit', $school->id) }}"
                                                             class="btn btn-warning me-1">Edit</a>

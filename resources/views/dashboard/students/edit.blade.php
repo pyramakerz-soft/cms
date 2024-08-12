@@ -164,7 +164,7 @@
                                                                         @enderror
                                                                     </div>
                                                                 </div>
-
+                                                                
                                                                 <div class="col-md-12">
                                                                     <div class="form-group"><label class="form-label"
                                                                             for="profile-picture">Profile Picture</label>

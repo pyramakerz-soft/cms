@@ -23,7 +23,8 @@
         </ul>
 
         <h2>Tests</h2>
-        <table class="table">
+           <table class="table">
+                                    <thead class="thead-dark">
             <thead>
                 <tr>
                     <th>Test Name</th>
@@ -141,7 +142,8 @@
                     </ul>
 
                     <h2 style="font-size: 25px; margin-top: 15px">Tests</h2>
-                    <table class="table">
+                       <table class="table">
+                                    <thead class="thead-dark">
                         <thead>
                             <tr>
                                 <th>Test Name</th>

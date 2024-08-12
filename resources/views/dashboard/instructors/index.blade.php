@@ -98,135 +98,118 @@
                                     </div>
                                 </div>
                                 <div class="nk-block">
-                                    <div class="card">
-                                        <div class="card-inner-group">
-                                            <div class="card-inner p-0">
-                                                <div class="nk-tb-list nk-tb-ulist">
-                                                    <div class="nk-tb-item nk-tb-head">
 
-                                                        <div class="nk-tb-col"><span class="sub-text">Teacher</span>
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Teacher</th>
+                                                <th scope="col">School</th>
+                                                <th scope="col">Phone</th>
+                                                <th scope="col">Grade</th>
+                                                <th scope="col">Program</th>
+                                                <th scope="col" class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach ($instructors as $instructor)
+                                                <tr>
+                                                    <th scope="row">
+
+
+                                                        <div class="nk-tb-col"><a href="">
+                                                                <div class="user-card">
+                                                                    <div class="user-avatar"><img
+                                                                            src="../images/avatar/a-sm.jpg" alt="">
+                                                                    </div>
+                                                                    <div class="user-info"><span
+                                                                            class="tb-lead">{{ $instructor->name }}
+                                                                            <span
+                                                                                class="dot dot-warning d-md-none ms-1"></span></span><br><span>{{ $instructor->email }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
                                                         </div>
-                                                        <div class="nk-tb-col tb-col-mb"><span
-                                                                class="sub-text d-lg-flex d-none">School</span></div>
-                                                        <div class="nk-tb-col tb-col-md"><span class="sub-text">Phone</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-lg"><span class="sub-text">Grade</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-lg"><span
-                                                                class="sub-text">Program</span></div>
-                                                        <div class="nk-tb-col tb-col-lg"><span class="sub-text">Role</span>
-                                                        </div>
+                                                    </th>
+                                                    <td>{{ $instructor->school->name }}
+                                                    </td>
+                                                    <div class="d-lg-flex d-none">
 
                                                     </div>
-                                                    @foreach ($instructors as $instructor)
-                                                        <div class="nk-tb-item">
 
-                                                            <div class="nk-tb-col"><a href="">
-                                                                    <div class="user-card">
-                                                                        <div class="user-avatar"><img
-                                                                                src="../images/avatar/a-sm.jpg"
-                                                                                alt="">
-                                                                        </div>
-                                                                        <div class="user-info"><span
-                                                                                class="tb-lead">{{ $instructor->name }}
-                                                                                <span
-                                                                                    class="dot dot-warning d-md-none ms-1"></span></span><span>{{ $instructor->email }}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb"><span
-                                                                    class="tb-lead d-lg-flex d-none">{{ $instructor->school->name }}
-                                                                </span>
-                                                                <div class="d-lg-flex d-none">
+                                                    <td>{{ $instructor->phone }}</td>
+                                                    <td>{{ $instructor->details[0]->stage->name ?? '-' }}</td>
+                                                    <td>
 
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>{{ $instructor->phone }}</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-lg">
-                                                                <span>{{ $instructor->details[0]->stage->name ?? '-' }}</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb"><span
-                                                                    class="tb-lead d-lg-flex d-none"></span>
-                                                                <div class="d-lg-flex d-none">
-                                                                    <div class="drodown"><a href="#"
-                                                                            class="dropdown-toggle pt-1 text-info"
-                                                                            data-bs-toggle="dropdown"> <span>View
-                                                                                More</span> </a>
+                                                        <div class="d-lg-flex d-none">
+                                                            <div class="drodown"><a href="#"
+                                                                    class="dropdown-toggle pt-1 text-info"
+                                                                    data-bs-toggle="dropdown"> <button
+                                                                        class="btn btn-gray">View
+                                                                        More</button> </a>
 
-                                                                        <div class="dropdown-menu dropdown-menu-start">
-                                                                            <ul class="link-list-opt no-bdr p-3">
-                                                                                @foreach ($instructor->teacher_programs as $course)
-                                                                                    <li class="tb-lead p-1">
-                                                                                        {{ $course->program->course->name ?? 'N/A' }}
-                                                                                        @if (!$loop->last)
-                                                                                            ,
-                                                                                        @endif
-                                                                                    </li>
-                                                                                @endforeach
-
-
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-lg">
-                                                                @if (!empty($instructor->getRoleNames()))
-                                                                    @foreach ($instructor->getRoleNames() as $v)
-                                                                        <label
-                                                                            class="badge badge-secondary text-dark">{{ $v }}</label>
-                                                                    @endforeach
-                                                                @endif
-                                                            </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                                <div class="dropdown">
-                                                                    <a href="#"
-                                                                        class="btn btn-xs btn-outline-light btn-icon dropdown-toggle"
-                                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                                        <em class="icon ni ni-more-h"></em>
-                                                                    </a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            <li><a
-                                                                                    href="{{ route('instructors.edit', $instructor->id) }}"><em
-                                                                                        class="icon ni ni-edit"></em><span>Edit</span></a>
+                                                                <div class="dropdown-menu dropdown-menu-start">
+                                                                    <ul class="link-list-opt no-bdr p-3">
+                                                                        @foreach ($instructor->teacher_programs as $course)
+                                                                            <li class="tb-lead p-1">
+                                                                                {{ $course->program->course->name ?? 'N/A' }}
+                                                                                @if (!$loop->last)
+                                                                                    ,
+                                                                                @endif
                                                                             </li>
-                                                                            <li>
-                                                                                <a href="#"
-                                                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $instructor->id }}').submit();"><em
-                                                                                        class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                            </li>
-                                                                            <form id="delete-form-{{ $instructor->id }}"
-                                                                                action="{{ route('instructors.destroy', $instructor->id) }}"
-                                                                                method="POST" style="display: none;">
-                                                                                @csrf
-                                                                                @method('DELETE')
-                                                                            </form>
-                                                                        </ul>
-                                                                    </div>
+                                                                        @endforeach
+
+
+                                                                    </ul>
                                                                 </div>
                                                             </div>
-
                                                         </div>
-                                                    @endforeach
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="row w-90">
+                                                            <div class="col-4 "><a
+                                                                    href="{{ route('instructors.edit', $instructor->id) }}"
+                                                                    class="btn btn-warning me-2">Edit</a></div>
+                                                                    <div class="col-1"></div>
+                                                            <div class="col-5 ">
+                                                                <form
+                                                                    action="{{ route('instructors.destroy', $instructor->id) }}"
+                                                                    method="POST" style="display:inline-block;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger"
+                                                                        onclick="return confirm('Are you sure you want to delete this class?')">Delete</button>
+
+                                                                    <div class="d-lg-flex d-none">
+
+                                                                    </div>
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
 
 
 
+                                                    </td>
+                                                </tr>
+
+                                </div>
+                                @endforeach
 
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-inner">
-                                            <div class="nk-block-between-md g-3">
-                                                {!! $instructors->links() !!}
-                                            </div>
-                                        </div>
+
+                                </tbody>
+                                </table>
+
+
+
+                                <div class="card-inner">
+                                    <div class="nk-block-between-md g-3">
+                                        {!! $instructors->links() !!}
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

@@ -2,10 +2,10 @@
 @section('content')
     <div class="nk-app-root">
         <div class="nk-main ">
-            @include('dashboard.layouts.sidebar')
+        @include('dashboard.layouts.sidebar')
 
-            <div class="nk-wrap ">
-                @include('dashboard.layouts.navbar')
+          <div class="nk-wrap ">
+             @include('dashboard.layouts.navbar')
 
                 <div class="nk-content ">
                     <div class="container-fluid">
@@ -13,8 +13,7 @@
                             <div class="nk-content-body">
                                 <div class="" role="dialog" id="student-add">
                                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                        <div class="modal-content"><a href="#" class="close"
-                                                data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
+                                        <div class="modal-content">
                                             @if (session('success'))
                                                 <div class="alert alert-success">
                                                     {{ session('success') }}

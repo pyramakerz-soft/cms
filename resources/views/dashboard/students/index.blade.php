@@ -21,30 +21,6 @@
                                                     <em class="icon ni ni-more-v"></em>
                                                 </a>
                                                 <div class="toggle-expand-content " data-content="more-options">
-                                                    <div class="row">
-                                                        <div class="col-12 mb-4">
-                                                            <form action="{{ route('import.users') }}" method="POST"
-                                                                enctype="multipart/form-data">
-                                                                @csrf
-                                                                <div class="row">
-                                                                    <div class="col-7">
-                                                                        <div class="form-group">
-                                                                            {{-- <label for="file">Upload Excel File</label> --}}
-                                                                            <input type="file" name="file"
-                                                                                class="form-control" required>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-5">
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Import
-                                                                            Users</button>
-                                                                    </div>
-                                                                </div>
-
-
-                                                            </form>
-                                                        </div>
-                                                    </div>
                                                     <form method="GET" action="{{ route('students.index') }}">
                                                         @csrf
                                                         <ul class="nk-block-tools d-flex justify-content-between">
@@ -117,136 +93,121 @@
                                     </div>
                                 </div>
                                 <div class="nk-block">
-                                    <div class="card">
-                                        <div class="card-inner-group">
-                                            <div class="card-inner p-0">
-                                                <div class="nk-tb-list nk-tb-ulist">
-                                                    <div class="nk-tb-item nk-tb-head">
-                                                        <div class="nk-tb-col"><span class="sub-text">Student</span></div>
-                                                        <div class="nk-tb-col tb-col-mb"><span
-                                                                class="sub-text d-lg-flex d-none">School</span></div>
-                                                        <div class="nk-tb-col tb-col-md"><span class="sub-text">Phone</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-lg"><span class="sub-text">Grade</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-lg"><span
-                                                                class="sub-text">Program</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-lg"><span class="sub-text">Class</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-lg"><span class="sub-text">Roles</span>
-                                                        </div>
-                                                    </div>
-                                                    @foreach ($students as $student)
-                                                        <div class="nk-tb-item">
-                                                            <div class="nk-tb-col"><a href="#">
-                                                                    <div class="user-card">
-                                                                        <div class="user-avatar"><img
-                                                                                src="../images/avatar/a-sm.jpg"
-                                                                                alt=""></div>
-                                                                        <div class="user-info"><span class="tb-lead">
-                                                                                {{ $student->name }} <span
-                                                                                    class="dot dot-warning d-md-none ms-1"></span></span><span>{{ $student->email }}</span>
-                                                                        </div>
+
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Student</th>
+                                                <th scope="col">School</th>
+                                                <th scope="col">Phone</th>
+                                                <th scope="col">Grade</th>
+                                                <th scope="col">Program</th>
+                                                <th scope="col" class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($students as $student)
+                                                <tr>
+                                                    <th scope="row">
+
+                                                        <div class="nk-tb-col"><a href="">
+                                                                <div class="user-card">
+                                                                    <div class="user-avatar"><img
+                                                                            src="../images/avatar/a-sm.jpg" alt="">
                                                                     </div>
-                                                                </a>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb"><span
-                                                                    class="tb-lead d-lg-flex d-none">
-                                                                    @if (isset($student->school->name))
-                                                                        {{ $student->school->name }}
-                                                                    @else
-                                                                        Not found
-                                                                    @endif
-                                                                </span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-md">
-                                                                <span>{{ $student->phone }}</span>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-lg">
-                                                                @if (isset($student->details[0]) && isset($student->details[0]->stage))
-                                                                    <span>{{ $student->details[0]->stage->name }}</span>
-                                                                @else
-                                                                    <span>N/A</span>
-                                                                @endif
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-mb"><span
-                                                                    class="tb-lead d-lg-flex d-none"></span>
-                                                                <div class="d-lg-flex d-none">
-                                                                    <div class="drodown"><a href="#"
-                                                                            class="dropdown-toggle pt-1 text-info"
-                                                                            data-bs-toggle="dropdown"> <span>View
-                                                                                More</span> </a>
-
-                                                                        <div class="dropdown-menu dropdown-menu-start">
-                                                                            <ul class="link-list-opt no-bdr p-3">
-                                                                                @foreach ($student->userCourses as $course)
-                                                                                    <li class="tb-lead p-1">
-                                                                                        {{ $course->program->course->name ?? 'N/A' }}
-                                                                                        @if (!$loop->last)
-                                                                                            ,
-                                                                                        @endif
-                                                                                    </li>
-                                                                                @endforeach
-
-
-                                                                            </ul>
-                                                                        </div>
+                                                                    <div class="user-info"><span
+                                                                            class="tb-lead">{{ $student->name }}
+                                                                            <span
+                                                                                class="dot dot-warning d-md-none ms-1"></span></span><br><span>{{ $student->email }}</span>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-lg">
-                                                                {{-- @if (isset($student->groups[0]) && isset($student->details[0]->stage)) --}}
-                                                                <span>{{ $student->groups->group->name }}</span>
-                                                                {{-- @else
-                                                                    <span>N/A</span>
-                                                                @endif --}}
-                                                            </div>
-                                                            <div class="nk-tb-col tb-col-lg">
-                                                                <label
-                                                                    class="badge badge-secondary text-dark">Student</label>
-                                                            </div>
-                                                            <div class="nk-tb-col nk-tb-col-tools text-end">
-                                                                <div class="dropdown">
-                                                                    <a href="#"
-                                                                        class="btn btn-xs btn-outline-light btn-icon dropdown-toggle"
-                                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                                        <em class="icon ni ni-more-h"></em>
-                                                                    </a>
-                                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                                        <ul class="link-list-opt no-bdr">
-                                                                            <li><a
-                                                                                    href="{{ route('students.edit', $student->id) }}"><em
-                                                                                        class="icon ni ni-edit"></em><span>Edit</span></a>
+                                                            </a>
+                                                        </div>
+                                                    </th>
+
+                                                    <td>{{ $student->school->name }}</td>
+                                                    <td>{{ $student->phone }}</td>
+                                                    <td>
+                                                        @if (isset($student->details[0]) && isset($student->details[0]->stage))
+                                                            <span>{{ $student->details[0]->stage->name }}</span>
+                                                        @else
+                                                            <span>N/A</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+
+                                                        <div class="d-lg-flex d-none">
+                                                            <div class="drodown"><a href="#"
+                                                                    class="dropdown-toggle pt-1 text-info"
+                                                                    data-bs-toggle="dropdown"> <button
+                                                                        class="btn btn-gray">View
+                                                                        More</button> </a>
+
+                                                                <div class="dropdown-menu dropdown-menu-start">
+                                                                    <ul class="link-list-opt no-bdr p-3">
+                                                                        @foreach ($student->userCourses as $course)
+                                                                            <li class="tb-lead p-1">
+                                                                                {{ $course->program->course->name ?? 'N/A' }}
+                                                                                @if (!$loop->last)
+                                                                                    ,
+                                                                                @endif
                                                                             </li>
-                                                                            <li>
-                                                                                <a href="#"
-                                                                                    onclick="event.preventDefault(); document.getElementById('delete-form-{{ $student->id }}').submit();">
-                                                                                    <em
-                                                                                        class="icon ni ni-trash"></em><span>Delete</span>
-                                                                                </a>
-                                                                            </li>
-                                                                            <form id="delete-form-{{ $student->id }}"
-                                                                                action="{{ route('students.destroy', $student->id) }}"
-                                                                                method="POST" style="display: none;">
-                                                                                @csrf
-                                                                                @method('DELETE')
-                                                                            </form>
-                                                                        </ul>
-                                                                    </div>
+                                                                        @endforeach
+
+
+                                                                    </ul>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                            <div class="card-inner">
-                                                <div class="nk-block-between-md g-3">
-                                                    {!! $students->links() !!}
-                                                </div>
-                                            </div>
+                                                        {{-- @if (!empty($student->getRoleNames()))
+                                                                @foreach ($student->getRoleNames() as $v)
+                                                                    <label class="badge badge-secondary text-dark">{{ $v }}</label>
+                                                                @endforeach
+                                                            @endif --}}
+                                                    </td>
+                                                    <td class="">
+
+                                                        <div class="row w-90">
+                                                            <div class="col-4 ">
+                                                                <a href="{{ route('students.edit', $student->id) }}"
+                                                                    class="btn btn-warning me-1">Edit</a>
+
+                                                            </div>
+                                                            <div class="col-1"></div>
+                                                            <div class="col-5 ">
+                                                                <form
+                                                                    action="{{ route('students.destroy', $student->id) }}"
+                                                                    method="POST" style="display:inline-block;">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="btn btn-danger"
+                                                                        onclick="return confirm('Are you sure you want to delete this class?')">Delete</button>
+
+                                                                    <div class="d-lg-flex d-none">
+
+                                                                    </div>
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+
+                                        </tbody>
+                                    </table>
+
+
+
+                                    <div class="card-inner">
+                                        <div class="nk-block-between-md g-3">
+                                            {!! $students->links() !!}
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

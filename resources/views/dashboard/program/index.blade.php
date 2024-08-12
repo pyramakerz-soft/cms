@@ -41,14 +41,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table">
-                                    <thead>
+                                     <table class="table">
+                                    <thead class="thead-dark">
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">School</th>
                                             <th scope="col">Course</th>
-                                            <th scope="col">Action</th>
+                                            <th scope="col" class="text-center">Action</th>
 
                                         </tr>
                                     </thead>
@@ -67,7 +67,7 @@
                                                         {{ $program->course->name }}/{{ $program->stage->name }}
                                                     @endforeach
                                                     @if ($groupedPrograms->count() > 1)
-                                                        <button class="btn btn-link view-more"
+                                                        <button class="btn btn-gray view-more d-flex flex-row justify-content-end "
                                                             data-program-name="{{ $programName }}">View More</button>
                                                     @endif
                                                     <div class="more-courses d-none"
@@ -77,7 +77,7 @@
                                                         @endforeach
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td class="d-flex flex-row justify-content-center">
                                                     {{-- <a href="{{ route('programs.edit', $groupedPrograms->first()->id) }}"
                                                         class="btn btn-warning me-1">Edit</a> --}}
                                                     @can('program-delete')

@@ -16,7 +16,7 @@
                                     <h2>Role Management
                                         <div class="float-end">
                                             @can('role-create')
-                                                <a class="btn btn-success" href="{{ route('roles.create') }}"> Create New
+                                                <a class="btn btn-primary" href="{{ route('roles.create') }}"> Create New
                                                     Role</a>
                                             @endcan
                                         </div>
@@ -31,19 +31,20 @@
                             </div>
                         @endif
 
-                        <table class="table table-striped table-hover">
+                      <table class="table wrapper ">
+                            <thead class="thead-dark ">
                             <tr>
                                 <th>Name</th>
-                                <th width="280px">Action</th>
+                                <th class="text-center" width="50%">Action</th>
                             </tr>
                             @foreach ($roles as $key => $role)
-                                <tr>
-                                    <td>{{ $role->name }}</td>
-                                    <td>
+                                <tr  >
+                                    <td >{{ $role->name }}</td>
+                                    <td class="d-flex flex-row justify-content-center" >
                                         <form action="{{ route('roles.destroy', $role->id) }}" method="POST">
-                                            <a class="btn btn-info" href="{{ route('roles.show', $role->id) }}">Show</a>
+                                            <a class="btn btn-gray" href="{{ route('roles.show', $role->id) }}">Show</a>
                                             @can('role-edit')
-                                                <a class="btn btn-primary" href="{{ route('roles.edit', $role->id) }}">Edit</a>
+                                                <a class="btn btn-warning" href="{{ route('roles.edit', $role->id) }}">Edit</a>
                                             @endcan
 
 

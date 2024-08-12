@@ -39,11 +39,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table">
-                                    <thead>
+                                     <table class="table">
+                                    <thead class="thead-dark">
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Stage</th>
+                                            <th class="text-center" >Action</th>
 
                                         </tr>
                                     </thead>
@@ -51,8 +52,8 @@
                                         @foreach ($stages as $stage)
                                             <tr>
                                                 <th scope="row">{{ $stage->id }}</th>
-                                                <td>{{ $stage->name }}</td>
-                                                <td class="d-flex flex-row justify-content-end">
+                                                <td >{{ $stage->name }}</td>
+                                                <td class="d-flex flex-row justify-content-center">
                                                     <a href="{{ route('stages.edit', $stage->id) }}"
                                                         class="btn btn-warning me-1">Edit</a>
 

@@ -19,7 +19,7 @@
                     <li class="nk-menu-item"><a href="{{ route('dashboard') }}" class="nk-menu-link"><span
                                 class="nk-menu-icon"><em class="icon ni ni-dashboard-fill"></em></span><span
                                 class="nk-menu-text">Dashboard</span></a></li>
-                    @can('school-list')
+                    {{-- @can('school-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
                                     class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
                                     class="nk-menu-text">School</span></a>
@@ -38,10 +38,29 @@
 
                             </ul>
                         </li>
+                    @endcan --}}
+                    @can('school-list')
+                        <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                    class="nk-menu-icon"><em class="icon ni ni-building"></em></span><span
+                                    class="nk-menu-text">School</span></a>
+                            <ul class="nk-menu-sub">
+                                @can('school-create')
+                                    <li class="nk-menu-item"><a href="{{ route('schools.create') }}" class="nk-menu-link"><span
+                                                class="nk-menu-text">Add School
+                                            </span></a></li>
+                                @endcan
+                                @can('school-list')
+                                    <li class="nk-menu-item"><a href="{{ route('schools.index') }}" class="nk-menu-link"><span
+                                                class="nk-menu-text">Schools
+                                                List</span></a></li>
+                                @endcan
+                            </ul>
+                        </li>
+
                     @endcan
                     @can('course-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                    class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span
+                                    class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span><span
                                     class="nk-menu-text">Courses</span></a>
                             <ul class="nk-menu-sub">
                                 @can('course-create')
@@ -106,9 +125,10 @@
                         </li>
                     @endcan
 
+
                     @can('class-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                    class="nk-menu-icon"><em class="icon ni ni-user-fill"></em></span><span
+                                    class="nk-menu-icon"><em class="icon ni ni-user-circle"></em></span><span
                                     class="nk-menu-text">Class</span></a>
                             <ul class="nk-menu-sub">
                                 @can('class-create')
@@ -129,7 +149,7 @@
                     {{-- @can('view_user') --}}
                     @can('student-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
-                                    class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span><span
+                                    class="nk-menu-icon"><em class="icon ni ni-users-fill"></em></span><span
                                     class="nk-menu-text">Students</span></a>
                             <ul class="nk-menu-sub">
                                 @can('student-create')
@@ -173,9 +193,11 @@
                                     Group</span></a>
                             <ul class="nk-menu-sub">
                                 <li class="nk-menu-item"><a href="{{ route('reports.selectGroup') }}"
-                                        class="nk-menu-link"><span class="nk-menu-text">Completion Report</span></a></li>
+                                        class="nk-menu-link"><span class="nk-menu-text">Completion
+                                            Report</span></a></li>
                                 <li class="nk-menu-item"><a href="{{ route('reports.classMasteryReportWeb') }}"
-                                        class="nk-menu-link"><span class="nk-menu-text">Mastery Report</span></a></li>
+                                        class="nk-menu-link"><span class="nk-menu-text">Mastery Report</span></a>
+                                </li>
                             </ul>
                         </li>
                     @endcan
