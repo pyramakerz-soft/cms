@@ -57,8 +57,7 @@
                                             <th scope="col">Stage</th>
                                             <th scope="col">Teacher</th>
                                             <th scope="col">School</th>
-
-
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
