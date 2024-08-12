@@ -1,5 +1,5 @@
 <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
-<title>Dashboard | LMS | DashLite Admin Template</title>
+<title>Dashboard | Mindbuzz </title>
 <link rel="stylesheet" href="{{ asset('assets/css/dashlitee5ca.css?ver=3.2.3') }}">
 <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/themee5ca.css?ver=3.2.3') }}">
 <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
