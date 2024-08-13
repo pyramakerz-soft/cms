@@ -40,17 +40,19 @@ class DashboardController extends Controller
 
         // Calculate total schools, and breakdown by type
         $totalSchools = School::count();
-        $nationalSchools = School::where('type', 'National')->count();
-        $internationalSchools = School::where('type', 'International')->count();
+        $nationalSchools = School::where('type', 'national')->count();
+        $internationalSchools = School::where('type', 'international')->count();
 
-        return view('dashboard.index', compact(
-            'studentsInSchool',
-            'teachersInSchool',
-            'totalUsers',
-            'totalSchools',
-            'nationalSchools',
-            'internationalSchools'
-        )
+        return view(
+            'dashboard.index',
+            compact(
+                'studentsInSchool',
+                'teachersInSchool',
+                'totalUsers',
+                'totalSchools',
+                'nationalSchools',
+                'internationalSchools'
+            )
         );
     }
 

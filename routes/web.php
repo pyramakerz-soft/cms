@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
         Route::get('class-mastery-report', [ReportController::class, 'classMasteryReportWeb'])->name('classMasteryReportWeb');
         Route::get('class-num-of-trials-report', [ReportController::class, 'classNumOfTrialsReportWeb'])->name('classNumOfTrialsReportWeb');
     });
+    Route::get('/reports/fetch-mastery-data', [ReportController::class, 'fetchMasteryData'])->name('reports.fetchMasteryData');
 
     Route::resource('students', StudentController::class);
     Route::post('import-users', [StudentController::class, 'import'])->name('import.users');

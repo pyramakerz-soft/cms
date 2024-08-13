@@ -134,6 +134,7 @@ class ReportController extends Controller
             )
         );
     }
+    
 
     public function completionReport(Request $request)
     {

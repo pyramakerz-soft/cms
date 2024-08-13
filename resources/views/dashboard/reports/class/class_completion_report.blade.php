@@ -55,10 +55,10 @@
         @include('dashboard.layouts.sidebar')
         <div class="container">
             <div class="row">
-                <div class="col-8 mx-auto">
+                <div class="col-6 mx-auto">
                     <h1 style="font-size: 35px; margin-top: 15px">Class Completion Report</h1>
 
-                    <form method="GET" action="{{ route('class.completion.report.web') }}">
+                    <form method="GET" action="{{ route('reports.classCompletionReportWeb') }}">
                         <div class="row">
                             <!-- Group Filter -->
                             <div class="col-md-4">
