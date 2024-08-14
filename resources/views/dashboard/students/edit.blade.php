@@ -90,7 +90,7 @@
                                                                                 @foreach ($programs as $program)
                                                                                     <option value="{{ $program->id }}"
                                                                                         @if (isset($student->userCourses[0]) && $student->userCourses[0]->program->id == $program->id) selected @endif>
-                                                                                        {{ $program->name }}
+                                                                                        {{ $program->name.' / '.$program->course->name }}
                                                                                     </option>
                                                                                 @endforeach
                                                                             </select>

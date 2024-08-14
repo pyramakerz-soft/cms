@@ -49,7 +49,7 @@
                                                                                 @if ($program && $program->course)
                                                                                     {{ $program->name . '/' . $program->course->name }}
                                                                                 @else
-                                                                                {{ $program->name }}
+                                                                                    {{ $program->name }}
                                                                                 @endif
                                                                             </option>
                                                                         @endforeach
@@ -172,19 +172,16 @@
                                                             </div>
                                                             <div class="col-1"></div>
                                                             <div class="col-5 ">
-                                                                <form
+                                                                <form id="delete-form-{{ $student->id }}"
                                                                     action="{{ route('students.destroy', $student->id) }}"
-                                                                    method="POST" style="display:inline-block;">
+                                                                    method="POST" style="display: none;">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit" class="btn btn-danger"
-                                                                        onclick="return confirm('Are you sure you want to delete this class?')">Delete</button>
-
-                                                                    <div class="d-lg-flex d-none">
-
-                                                                    </div>
-
                                                                 </form>
+
+                                                                <button type="button" class="btn btn-danger"
+                                                                    onclick="confirmDelete({{ $student->id }})">Delete</button>
+
                                                             </div>
                                                         </div>
 
@@ -214,4 +211,23 @@
             </div>
         </div>
     </div>
+@endsection
+@section('page_js')
+    <script>
+        function confirmDelete(studentId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + studentId).submit();
+                }
+            })
+        }
+    </script>
 @endsection
