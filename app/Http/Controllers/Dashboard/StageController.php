@@ -33,7 +33,7 @@ class StageController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|unique:stages|max:255',
         ]);
         $stage = Stage::create([
             'name' => $request->name,
@@ -64,7 +64,7 @@ class StageController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|unique:stages|max:255',
         ]);
 
         $stage = Stage::findOrFail($id);

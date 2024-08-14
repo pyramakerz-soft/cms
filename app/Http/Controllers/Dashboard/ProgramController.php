@@ -72,7 +72,7 @@ class ProgramController extends Controller
             ]);
         }
 
-        return redirect()->route('programs.create')->with('success', 'Program created successfully!');
+        return redirect()->route('programs.create')->with('success', 'Cluster created successfully!');
     }
 
     /**
@@ -118,7 +118,7 @@ class ProgramController extends Controller
 
         $program->courses()->sync($request->course_id);
 
-        return redirect()->route('programs.edit', $program->id)->with('success', 'Program updated successfully!');
+        return redirect()->route('programs.edit', $program->id)->with('success', 'Cluster updated successfully!');
     }
 
     /**
@@ -129,6 +129,6 @@ class ProgramController extends Controller
         $program = Program::findOrFail($id);
         $program->delete();
 
-        return redirect()->route('programs.index')->with('success', 'Program deleted successfully!');
+        return redirect()->route('programs.index')->with('success', 'Cluster deleted successfully!');
     }
 }

@@ -34,7 +34,9 @@ class StudentController extends Controller
                 ->where('school_id', Auth::user()->school_id);
         } else {
             $query = User::with(['details.stage', 'userCourses.program', 'groups'])
-                ->where('role', '2');
+                ->where('role', '2')
+                ->where('is_student', 1)
+            ;
         }
 
         if ($request->filled('school')) {
@@ -64,7 +66,7 @@ class StudentController extends Controller
         $students = $query->simplePaginate(10);
 
         $schools = School::all();
-        $programs = Program::when(Auth::user()->hasRole('school'), function ($query) {
+        $programs = Program::with('course')->when(Auth::user()->hasRole('school'), function ($query) {
             return $query->where('school_id', Auth::user()->school_id);
         })->get();
         $grades = Stage::all();
@@ -112,7 +114,7 @@ class StudentController extends Controller
             'program_id' => 'required|exists:programs,id',
             'stage_id' => 'required|exists:stages,id',
             'group_id' => 'nullable|exists:groups,id',
-            'parent_image' => 'nullable|image'
+            'parent_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         $user = User::create([
@@ -208,7 +210,7 @@ class StudentController extends Controller
             'program_id' => 'required|exists:programs,id',
             'stage_id' => 'required|exists:stages,id',
             'group_id' => 'required|exists:groups,id',
-            'parent_image' => 'nullable|image'
+            'parent_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         $student = User::findOrFail($id);

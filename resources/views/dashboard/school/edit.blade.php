@@ -84,36 +84,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Status</label>
-                                                                    <div class="form-control-wrap">
-                                                                        <select class="form-select js-select2"
-                                                                            name="status"
-                                                                            data-placeholder="Select multiple options">
-                                                                            <option value="1"
-                                                                                {{ $schools->status == '1' ? 'selected' : '' }}>
-                                                                                Active</option>
-                                                                            <option value="0"
-                                                                                {{ $schools->status == '0' ? 'selected' : '' }}>
-                                                                                Inactive</option>
-                                                                        </select>
-                                                                        @error('status')
-                                                                            <div class="text-danger">{{ $message }}</div>
-                                                                        @enderror
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label"
-                                                                        for="description">Description</label>
-                                                                    <textarea class="form-control" id="description" rows="3" name="description">{{ $schools->description }}</textarea>
-                                                                    @error('description')
-                                                                        <div class="text-danger">{{ $message }}</div>
-                                                                    @enderror
-                                                                </div>
-                                                            </div>
+                                                           
+                                                            
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label"
@@ -126,43 +98,8 @@
                                                                     @enderror
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label"
-                                                                        for="profile-picture">Profile Picture</label>
-                                                                    <input type="file" class="form-control"
-                                                                        id="profile-picture" name="image">
-                                                                    @if ($schools->image)
-                                                                        <img src="{{ asset($schools->image) }}"
-                                                                            alt="{{ $schools->name }}" width="100">
-                                                                    @endif
-                                                                    @error('image')
-                                                                        <div class="text-danger">{{ $message }}</div>
-                                                                    @enderror
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label class="form-label">Role</label>
-                                                                    <div class="form-control-wrap">
-                                                                        <select name="roles[]" id="role"
-                                                                            class="form-select">
-
-                                                                            @foreach ($roles as $role)
-                                                                                <option value="{{ $role }}"
-                                                                                    {{ $role == $currentRole ? 'selected' : '' }}>
-                                                                                    {{ $role }}
-                                                                                </option>
-                                                                            @endforeach
-
-                                                                        </select>
-                                                                        @error('roles')
-                                                                            <div class="text-danger">{{ $message }}
-                                                                            </div>
-                                                                        @enderror
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            
+                                                            
 
                                                             <div class="col-md-12">
                                                                 <ul

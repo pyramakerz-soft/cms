@@ -21,7 +21,7 @@
                                                 </div>
                                             @endif
                                             <div class="modal-body modal-body-md">
-                                                <h5 class="title">Add Courses</h5>
+                                                <h5 class="title">Edit Courses</h5>
 
                                                 <form action="{{ route('courses.update', $courses->id) }}" method="POST"
                                                     class="tab-content">
@@ -36,6 +36,9 @@
                                                                         id="full-name" name="name"
                                                                         placeholder="Course name"
                                                                         value="{{ $courses->name }}">
+                                                                    @error('name')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
 
@@ -44,7 +47,7 @@
                                                             <div class="col-md-12">
                                                                 <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                                                     <li><button type="submit"
-                                                                            class="btn btn-warning">create</button>
+                                                                            class="btn btn-warning">Edit</button>
                                                                     </li>
 
 

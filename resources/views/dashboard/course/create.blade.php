@@ -33,6 +33,9 @@
                                                                     <input type="text" class="form-control"
                                                                         id="full-name" name="name"
                                                                         placeholder="Course name">
+                                                                        @error('name')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
 

@@ -34,6 +34,9 @@
                                                                         Name</label><input type="text"
                                                                         class="form-control" id="full-name"
                                                                         placeholder="School name" name="name" required>
+                                                                    @error('name')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
@@ -42,6 +45,9 @@
                                                                         Address</label><input type="email"
                                                                         class="form-control" id="email"
                                                                         placeholder="Email Address" name="email" required>
+                                                                    @error('email')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
@@ -51,6 +57,9 @@
                                                                     <input type="text" class="form-control"
                                                                         id="phone-no" placeholder="Phone Number"
                                                                         name="phone" required>
+                                                                    @error('phone')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
@@ -60,24 +69,32 @@
                                                                         <select class="form-select js-select2"
                                                                             data-placeholder="Select multiple options"
                                                                             name="type" required>
+                                                                            <option value="" disabled selected>Select
+                                                                                Type</option>
                                                                             <option value="national">National</option>
                                                                             <option value="international">International
                                                                             </option>
                                                                         </select>
+                                                                        @error('type')
+                                                                            <div class="text-danger">{{ $message }}</div>
+                                                                        @enderror
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
-                                                            
+
+
                                                             <div class="col-md-6">
                                                                 <div class="form-group"><label class="form-label"
                                                                         for="password">Password</label>
                                                                     <input type="password" class="form-control"
                                                                         id="password" name="password"
                                                                         placeholder="Password" required>
+                                                                    @error('password')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
-                                                           
+
                                                             <div class="col-md-12">
                                                                 <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                                                     <li><button type="submit"

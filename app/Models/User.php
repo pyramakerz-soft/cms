@@ -94,7 +94,7 @@ class User extends Authenticatable
     }
     public function getParentImageAttribute($val)
     {
-        return ($val !== null) ? asset('storage/profile_images/' . basename($val)) : "";
+        return ($val !== null) ? asset('storage/images/' . basename($val)) : "";
     }
     public function canAccessPanel(Panel $panel): bool
     {

@@ -7,6 +7,7 @@ use App\Models\School;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -25,6 +26,9 @@ class DashboardController extends Controller
                 ->where('role', 1)
                 ->where('is_student', 0)
                 ->count();
+            $totalSchools = null;
+            $nationalSchools = null;
+            $internationalSchools = null;
 
         } else {
             $studentsInSchool = User::where('role', 2)
@@ -34,14 +38,19 @@ class DashboardController extends Controller
             $teachersInSchool = User::where('role', 1)
                 ->where('is_student', 0)
                 ->count();
+                $totalSchools= DB::table('users')->where('is_active', 1)
+            ->join('schools', 'users.school_id', '=', 'schools.id')
+            
+            ->where('users.role', 3)->count();
+            $nationalSchools = School::where('type', 'national')->count();
+            $internationalSchools = School::where('type', 'international')->count();
+
+
         }
 
         $totalUsers = $studentsInSchool + $teachersInSchool;
 
-        // Calculate total schools, and breakdown by type
-        $totalSchools = School::count();
-        $nationalSchools = School::where('type', 'national')->count();
-        $internationalSchools = School::where('type', 'international')->count();
+
 
         return view(
             'dashboard.index',

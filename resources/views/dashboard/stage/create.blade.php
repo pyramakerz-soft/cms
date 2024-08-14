@@ -34,6 +34,9 @@
                                                                     <input type="text" class="form-control"
                                                                         id="full-name" name="name"
                                                                         placeholder="Stage name">
+                                                                        @error('name')
+                                                                            <div class="text-danger">{{ $message }}</div>
+                                                                        @enderror
                                                                 </div>
                                                             </div>
 

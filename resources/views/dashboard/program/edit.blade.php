@@ -37,6 +37,9 @@
                                                                         class="form-control" id="full-name"
                                                                         placeholder="Program name" name="name"
                                                                         value="{{ $program->name }}" required>
+                                                                    @error('name')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
 
@@ -53,6 +56,9 @@
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
+                                                                        @error('school_id')
+                                                                            <div class="text-danger">{{ $message }}</div>
+                                                                        @enderror
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -70,6 +76,9 @@
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
+                                                                        @error('course_id')
+                                                                            <div class="text-danger">{{ $message }}</div>
+                                                                        @enderror
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -87,6 +96,9 @@
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
+                                                                        @error('stage_id')
+                                                                            <div class="text-danger">{{ $message }}</div>
+                                                                        @enderror
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -101,7 +113,7 @@
                                                     </div>
                                                 </form>
 
-                                                
+
 
                                             </div>
                                         </div>

@@ -54,20 +54,22 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="card">
-                                                <div class="card-inner">
-                                                    <div class="card-title text-center">
-                                                        <h4 class="title">Total Schools</h4>
-                                                        <h2 class="fs-2 text-dark">{{ $totalSchools }}</h2>
-                                                    </div>
-                                                    <div>
-                                                        <canvas id="schoolsChart"
-                                                            style="display: block; box-sizing: border-box; height: 500px; width: 500px;"></canvas>
+                                        @if (!is_null($totalSchools))
+                                            <div class="col-md-6">
+                                                <div class="card">
+                                                    <div class="card-inner">
+                                                        <div class="card-title text-center">
+                                                            <h4 class="title">Total Schools</h4>
+                                                            <h2 class="fs-2 text-dark">{{ $totalSchools }}</h2>
+                                                        </div>
+                                                        <div>
+                                                            <canvas id="schoolsChart"
+                                                                style="display: block; box-sizing: border-box; height: 500px; width: 500px;"></canvas>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

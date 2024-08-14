@@ -42,11 +42,15 @@
                                                                 <div class="drodown">
                                                                     <select name="program" class="form-select"
                                                                         onchange="this.form.submit()">
-                                                                        <option value="">Select Program</option>
+                                                                        <option value="">Select Cluster</option>
                                                                         @foreach ($programs as $program)
                                                                             <option value="{{ $program->id }}"
                                                                                 {{ request('program') == $program->id ? 'selected' : '' }}>
+                                                                                @if ($program && $program->course)
+                                                                                    {{ $program->name . '/' . $program->course->name }}
+                                                                                @else
                                                                                 {{ $program->name }}
+                                                                                @endif
                                                                             </option>
                                                                         @endforeach
                                                                     </select>
@@ -80,10 +84,7 @@
                                                                     </select>
                                                                 </div>
                                                             </li>
-                                                            <li class="nk-block-tools-opt">
-                                                                <button type="submit"
-                                                                    class="btn btn-primary">Filter</button>
-                                                            </li>
+
                                                         </ul>
                                                     </form>
 
@@ -110,18 +111,18 @@
                                                 <tr>
                                                     <th scope="row">
 
-                                                        <div class="nk-tb-col"><a href="">
-                                                                <div class="user-card">
-                                                                    <div class="user-avatar"><img
-                                                                            src="../images/avatar/a-sm.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="user-info"><span
-                                                                            class="tb-lead">{{ $student->name }}
-                                                                            <span
-                                                                                class="dot dot-warning d-md-none ms-1"></span></span><br><span>{{ $student->email }}</span>
-                                                                    </div>
+                                                        <div class="nk-tb-col">
+                                                            <div class="user-card">
+                                                                <div class="user-avatar"><img
+                                                                        src="../images/avatar/a-sm.jpg" alt="">
                                                                 </div>
-                                                            </a>
+                                                                <div class="user-info"><span
+                                                                        class="tb-lead">{{ $student->name }}
+                                                                        <span
+                                                                            class="dot dot-warning d-md-none ms-1"></span></span><br><span>{{ $student->email }}</span>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </th>
 
@@ -141,7 +142,7 @@
                                                                     class="dropdown-toggle pt-1 text-info"
                                                                     data-bs-toggle="dropdown"> <button
                                                                         class="btn btn-gray">View
-                                                                        More</button> </a>
+                                                                    </button> </a>
 
                                                                 <div class="dropdown-menu dropdown-menu-start">
                                                                     <ul class="link-list-opt no-bdr p-3">
@@ -159,11 +160,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {{-- @if (!empty($student->getRoleNames()))
-                                                                @foreach ($student->getRoleNames() as $v)
-                                                                    <label class="badge badge-secondary text-dark">{{ $v }}</label>
-                                                                @endforeach
-                                                            @endif --}}
+
                                                     </td>
                                                     <td class="">
 

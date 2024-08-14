@@ -88,7 +88,7 @@
                                                                                     Select Program</option>
                                                                                 @foreach ($programs as $program)
                                                                                     <option value="{{ $program->id }}">
-                                                                                        {{ $program->name . '/' . $program->course->name }}
+                                                                                        {{ $program->name  }}
                                                                                     </option>
                                                                                 @endforeach
                                                                             </select>
@@ -118,7 +118,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-6">
+                                                                {{-- <div class="col-md-6">
                                                                     <div class="form-group">
                                                                         <label class="form-label">Role</label>
                                                                         <div class="form-control-wrap">
@@ -138,7 +138,7 @@
                                                                             @enderror
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> --}}
                                                                 <div class="col-md-6">
                                                                     <div class="form-group"><label
                                                                             class="form-label">Grade</label>

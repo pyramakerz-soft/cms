@@ -24,10 +24,10 @@ class InstructorController extends Controller
     {
         if (Auth::user()->hasRole('school')) {
             $query = User::with(['details.stage', 'teacher_programs.program'])
-                ->where('role', '1')->where("school_id", Auth::user()->school_id);
+                ->where('role', '1')->where('is_student', '0')->where("school_id", Auth::user()->school_id);
         } else {
             $query = User::with(['details.stage', 'teacher_programs.program'])
-                ->where('role', '1');
+                ->where('role', '1')->where('is_student', '0');
         }
 
 
@@ -73,9 +73,9 @@ class InstructorController extends Controller
         $programs = Program::all();
         $stages = Stage::all();
         $groups = Group::all();
-        $roles = Role::all();
+        // $roles = Role::all();
 
-        return view('dashboard.instructors.create', compact('schools', 'programs', 'stages', 'groups', 'roles'));
+        return view('dashboard.instructors.create', compact('schools', 'programs', 'stages', 'groups'));
     }
     public function getGroups($program_id)
     {
@@ -97,7 +97,7 @@ class InstructorController extends Controller
             'program_id' => 'required|exists:programs,id',
             'stage_id' => 'required|exists:stages,id',
             'group_id' => 'nullable|exists:groups,id',
-            'parent_image' => 'nullable|image|max:2048'
+            'parent_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         $teacher = $user = User::create([
@@ -126,7 +126,7 @@ class InstructorController extends Controller
             'teacher_id' => $teacher->id,
 
         ]);
-        $teacher->assignRole($request->input('roles'));
+        $teacher->assignRole('teacher');
 
 
         if ($request->hasFile('parent_image')) {
@@ -172,7 +172,7 @@ class InstructorController extends Controller
             'program_id' => 'required|exists:programs,id',
             'stage_id' => 'required|exists:stages,id',
             'group_id' => 'required|exists:groups,id',
-            'parent_image' => 'nullable|image|max:2048'
+            'parent_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
         $instructor = User::findOrFail($id);

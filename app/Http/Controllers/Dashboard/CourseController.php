@@ -33,7 +33,7 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|unique:courses|max:255',
         ]);
         $course = Course::create([
             'name' => $request->name,
@@ -65,7 +65,7 @@ class CourseController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|unique:courses|string|max:255',
         ]);
 
         $course = Course::findOrFail($id);

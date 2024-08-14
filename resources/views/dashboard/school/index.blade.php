@@ -39,7 +39,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                     <table class="table">
+                                <table class="table">
                                     <thead class="thead-dark">
                                         @if ($schools->count() > 0)
                                             <tr>
@@ -48,6 +48,7 @@
                                                 <th scope="col">Email</th>
                                                 <th scope="col">Phone</th>
                                                 <th scope="col">Students</th>
+                                                <th scope="col">Role</th>
                                                 <th scope="col" class="text-center">Action</th>
 
                                             </tr>
@@ -60,7 +61,11 @@
                                                 <td>{{ $school->name }}</td>
                                                 <td>{{ $school->email }}</td>
                                                 <td>{{ $school->phone }}</td>
-                                                <td>{{ \App\Models\User::where('school_id',$school->id)->where('role',2)->count() }}</td>
+                                                <td>{{ \App\Models\User::where('school_id', $school->id)->where('role', 2)->count() }}
+                                                </td>
+                                                <td>
+                                                    School
+                                                </td>
                                                 <td class="d-flex flex-row justify-content-center">
                                                     @can('school-edit')
                                                         <a href="{{ route('schools.edit', $school->id) }}"
@@ -88,6 +93,11 @@
 
                                     </tbody>
                                 </table>
+                                <div class="card-inner">
+                                    <div class="nk-block-between-md g-3">
+                                        {!! $schools->links() !!}
+                                    </div>
+                                </div>
                                 {{-- <div class="nk-block">
                                     <div class="card">
 

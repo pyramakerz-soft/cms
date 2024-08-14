@@ -52,7 +52,11 @@
                                                                         @foreach ($programs as $program)
                                                                             <option value="{{ $program->id }}"
                                                                                 {{ request('program') == $program->id ? 'selected' : '' }}>
+                                                                                @if ($program && $program->course)
+                                                                                    {{ $program->name . '/' . $program->course->name }}
+                                                                                @else
                                                                                 {{ $program->name }}
+                                                                                @endif
                                                                             </option>
                                                                         @endforeach
                                                                     </select>
@@ -86,10 +90,7 @@
                                                                     </select>
                                                                 </div>
                                                             </li>
-                                                            <li class="nk-block-tools-opt">
-                                                                <button type="submit"
-                                                                    class="btn btn-primary">Filter</button>
-                                                            </li>
+                                                            
                                                         </ul>
                                                     </form>
                                                 </div>
@@ -117,18 +118,21 @@
                                                     <th scope="row">
 
 
-                                                        <div class="nk-tb-col"><a href="">
-                                                                <div class="user-card">
-                                                                    <div class="user-avatar"><img
-                                                                            src="../images/avatar/a-sm.jpg" alt="">
-                                                                    </div>
-                                                                    <div class="user-info"><span
-                                                                            class="tb-lead">{{ $instructor->name }}
-                                                                            <span
-                                                                                class="dot dot-warning d-md-none ms-1"></span></span><br><span>{{ $instructor->email }}</span>
-                                                                    </div>
+                                                        <div class="nk-tb-col">
+                                                            <div class="user-card">
+                                                                <div class="user-avatar"> <img
+                                                                        src="{{$instructor->parent_image }}"
+                                                                        alt="">
+
+
                                                                 </div>
-                                                            </a>
+                                                                <div class="user-info"><span
+                                                                        class="tb-lead">{{ $instructor->name }}
+                                                                        <span
+                                                                            class="dot dot-warning d-md-none ms-1"></span></span><br><span>{{ $instructor->email }}</span>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                     </th>
                                                     <td>{{ $instructor->school->name }}
@@ -171,7 +175,7 @@
                                                             <div class="col-4 "><a
                                                                     href="{{ route('instructors.edit', $instructor->id) }}"
                                                                     class="btn btn-warning me-2">Edit</a></div>
-                                                                    <div class="col-1"></div>
+                                                            <div class="col-1"></div>
                                                             <div class="col-5 ">
                                                                 <form
                                                                     action="{{ route('instructors.destroy', $instructor->id) }}"

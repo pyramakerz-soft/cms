@@ -70,7 +70,7 @@
                                                 <th scope="row">{{ $class->id }}</th>
                                                 <td>{{ $class->name }}</td>
                                                 <td>{{ $class->sec_name }}</td>
-                                                <td>{{ $class->program->name . '/' . $class->program->course->name }}</td>
+                                                <td>{{ $class->program->name  }}</td>
                                                 <td>{{ $class->stage->name }}</td>
                                                 <td>{{ $class->teacher->name ?? 'Na' }}</td>
                                                 <td>{{ $class->school->name }}</td>

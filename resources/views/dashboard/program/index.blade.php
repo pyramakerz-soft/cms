@@ -41,7 +41,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                     <table class="table">
+                                <table class="table">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th scope="col">#</th>
@@ -67,49 +67,55 @@
                                                         {{ $program->course->name }}/{{ $program->stage->name }}
                                                     @endforeach
                                                     @if ($groupedPrograms->count() > 1)
-                                                        <button class="btn btn-gray view-more d-flex flex-row justify-content-end "
+                                                        <button
+                                                            class="btn btn-gray view-more d-flex flex-row justify-content-end "
                                                             data-program-name="{{ $programName }}">View More</button>
                                                     @endif
                                                     <div class="more-courses d-none"
-                                                        data-program-name="{{ $programName }}">
-                                                        @foreach ($groupedPrograms->skip(1) as $program)
-                                                            {{ $program->course->name }}/{{ $program->stage->name }}<br>
+                                                        @if (isset($groupedPrograms)) data-program-name="{{ $programName }}">
+        @foreach ($groupedPrograms->skip(1) as $program)
+            @if (isset($program->course) && isset($program->stage))
+                {{ $program->course->name }}/{{ $program->stage->name }}<br>
+            @else
+                <span>N/A</span> @endif
                                                         @endforeach
-                                                    </div>
-                                                </td>
-                                                <td class="d-flex flex-row justify-content-center">
-                                                    {{-- <a href="{{ route('programs.edit', $groupedPrograms->first()->id) }}"
+                                                    @else
+                                                        <span>N/A</span>
+                                        @endif
+                            </div>
+                            </td>
+                            <td class="">
+                                {{-- <a href="{{ route('programs.edit', $groupedPrograms->first()->id) }}"
                                                         class="btn btn-warning me-1">Edit</a> --}}
-                                                    @can('program-delete')
-                                                        <form
-                                                            action="{{ route('programs.destroy', $groupedPrograms->first()->id) }}"
-                                                            method="POST" style="display:inline-block;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger"
-                                                                onclick="return confirm('Are you sure you want to delete this program?')">Delete</button>
-                                                        </form>
-                                                    @endcan
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                @can('program-delete')
+                                    <form action="{{ route('programs.destroy', $groupedPrograms->first()->id) }}"
+                                        method="POST" style="display:inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('Are you sure you want to delete this program?')">Delete</button>
+                                    </form>
+                                @endcan
+                            </td>
+                            </tr>
+                            @endforeach
 
-                                    </tbody>
-                                </table>
-                                {{-- <div class="mx-auto d-flex justify-content-center">
+                            </tbody>
+                            </table>
+                            {{-- <div class="mx-auto d-flex justify-content-center">
                                     <div class="nk-block-between-md g-3">
                                         {!! $programs->links() !!}
                                     </div>
                                 </div> --}}
 
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            @include('dashboard.layouts.footer')
-
         </div>
+        @include('dashboard.layouts.footer')
+
+    </div>
     </div>
     </div>
 @endsection

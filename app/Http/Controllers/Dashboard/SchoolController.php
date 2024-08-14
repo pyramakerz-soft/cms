@@ -33,8 +33,7 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-        return view('dashboard.school.create', compact("roles"));
+        return view('dashboard.school.create');
     }
 
     /**
@@ -45,14 +44,16 @@ class SchoolController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'phone' => 'required|string|max:15',
+            'phone' => 'required|numeric|max:15',
             'type' => 'required|string|in:national,international',
             'password' => 'required|string|min:6',
         ]);
+        // dd($request->type);
         $school = School::create([
             'name' => $request->name,
             'type' => $request->type,
         ]);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -70,7 +71,7 @@ class SchoolController extends Controller
         //     $request->image->move($path, $file_name);
         //     $data['image'] = $path . '/' . $file_name;
         // }
-        $user->assignRole($request->input('roles'));
+        $user->assignRole('school');
 
 
         return redirect()->route('schools.create')->with('success', 'School created successfully!');
@@ -105,45 +106,37 @@ class SchoolController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request);
+        $school = User::where('school_id', $id)->firstOrFail();
+        // dd($school->id);
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $school->id,  // Correct the uniqueness rule
             'phone' => 'required|string|max:15',
             'type' => 'required|string|in:national,international',
-            'status' => 'required',
-            'description' => 'nullable|string',
             'password' => 'nullable|string|min:6',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
-        // $school = School::findOrFail($id);
-        $school = User::where('school_id', $id)->firstOrFail();
 
+        // Find the school by its ID in the users table
+
+        // Exclude fields that are not part of the update request
         $data = $request->except(['type', 'status', 'description', 'roles']);
 
-        if ($request->hasFile('image')) {
-            if ($school->image) {
-                Storage::delete('public/' . $school->image);
-            }
 
-            $file_extension = $request->image->getClientOriginalExtension();
-            $file_name = time() . '.' . $file_extension;
-            $path = 'images/school_images';
-            $request->image->move($path, $file_name);
-            $data['image'] = $path . '/' . $file_name;
-        }
 
+        // Handle password update if provided
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);
         } else {
             unset($data['password']);
         }
 
+        // Update the school (user)
         $school->update($data);
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
 
-        $school->assignRole($request->input('roles'));
 
+
+        // Redirect back with success message
         return redirect()->route('schools.edit', $school->school_id)->with('success', 'School updated successfully!');
     }
 

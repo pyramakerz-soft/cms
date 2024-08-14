@@ -36,6 +36,9 @@
                                                                         id="full-name" name="name"
                                                                         placeholder="Course name"
                                                                         value="{{ $stages->name }}">
+                                                                    @error('name')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
 
