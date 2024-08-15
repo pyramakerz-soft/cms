@@ -111,7 +111,9 @@ class SchoolController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $school->id,  // Correct the uniqueness rule
+
+
+            'email' => 'required|email',
             'phone' => 'required|string|max:15',
             'type' => 'required|string|in:national,international',
             'password' => 'nullable|string|min:6',
