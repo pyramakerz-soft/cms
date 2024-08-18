@@ -38,12 +38,14 @@ class DashboardController extends Controller
             $teachersInSchool = User::where('role', 1)
                 ->where('is_student', 0)
                 ->count();
-                $totalSchools= DB::table('users')->where('is_active', 1)
-            ->join('schools', 'users.school_id', '=', 'schools.id')
-            
-            ->where('users.role', 3)->count();
-            $nationalSchools = School::where('type', 'national')->count();
-            $internationalSchools = School::where('type', 'international')->count();
+            $totalSchools = DB::table('users')->where('is_active', 1)
+                ->join('schools', 'users.school_id', '=', 'schools.id')->where('type', 'national')->orWhere('type', 'international')
+
+                ->where('users.role', 3)->count();
+            $nationalSchools = DB::table('users')->where('role', 3)
+                ->join('schools', 'users.school_id', '=', 'schools.id')->where('type', 'national')->count();
+            $internationalSchools = DB::table('users')->where('role', 3)
+                ->join('schools', 'users.school_id', '=', 'schools.id')->where('type', 'international')->count();
 
 
         }

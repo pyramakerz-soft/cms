@@ -55,7 +55,7 @@
                                                                                 @if ($program && $program->course)
                                                                                     {{ $program->name . '/' . $program->course->name }}
                                                                                 @else
-                                                                                {{ $program->name }}
+                                                                                    {{ $program->name }}
                                                                                 @endif
                                                                             </option>
                                                                         @endforeach
@@ -90,7 +90,7 @@
                                                                     </select>
                                                                 </div>
                                                             </li>
-                                                            
+
                                                         </ul>
                                                     </form>
                                                 </div>
@@ -121,7 +121,7 @@
                                                         <div class="nk-tb-col">
                                                             <div class="user-card">
                                                                 <div class="user-avatar"> <img
-                                                                        src="{{$instructor->parent_image }}"
+                                                                        src="{{ $instructor->parent_image }}"
                                                                         alt="">
 
 
@@ -150,7 +150,7 @@
                                                                     class="dropdown-toggle pt-1 text-info"
                                                                     data-bs-toggle="dropdown"> <button
                                                                         class="btn btn-gray">View
-                                                                        More</button> </a>
+                                                                        </button> </a>
 
                                                                 <div class="dropdown-menu dropdown-menu-start">
                                                                     <ul class="link-list-opt no-bdr p-3">
@@ -177,19 +177,20 @@
                                                                     class="btn btn-warning me-2">Edit</a></div>
                                                             <div class="col-1"></div>
                                                             <div class="col-5 ">
-                                                                <form
+                                                                <form id="delete-form-{{ $instructor->id }}"
                                                                     action="{{ route('instructors.destroy', $instructor->id) }}"
                                                                     method="POST" style="display:inline-block;">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit" class="btn btn-danger"
-                                                                        onclick="return confirm('Are you sure you want to delete this class?')">Delete</button>
+
 
                                                                     <div class="d-lg-flex d-none">
 
                                                                     </div>
 
                                                                 </form>
+                                                                <button type="submit" class="btn btn-danger"
+                                                                    onclick="confirmDelete({{ $instructor->id }})">Delete</button>
                                                             </div>
                                                         </div>
 
@@ -223,4 +224,23 @@
             </div>
         </div>
     </div>
+@endsection
+@section('page_js')
+    <script>
+        function confirmDelete(instructorId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + instructorId).submit();
+                }
+            })
+        }
+    </script>
 @endsection

@@ -49,8 +49,10 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group"><label class="form-label"
-                                                                            for="phone-no">Phone Number</label><input
-                                                                            type="text" class="form-control"
+                                                                            for="phone-no">Phone Number</label>
+                                                                        <span>(Optional)</span>
+
+                                                                        <input type="text" class="form-control"
                                                                             id="phone-no" placeholder="Phone Number"
                                                                             name="phone">
                                                                         @error('phone')
@@ -63,8 +65,10 @@
                                                                             class="form-label">School</label>
                                                                         <div class="form-control-wrap">
                                                                             <select class="form-select js-select2"
-                                                                                name="school_id"
+                                                                                name="school_id" id="school_id"
                                                                                 data-placeholder="Select multiple options">
+                                                                                <option value="">
+                                                                                    Select School</option>
                                                                                 @foreach ($schools as $school)
                                                                                     <option value="{{ $school->id }}">
                                                                                         {{ $school->name }}</option>
@@ -78,19 +82,35 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="form-group"><label
-                                                                            class="form-label">Program</label>
-                                                                        <div class="form-control-wrap"><select
-                                                                                class="form-select js-select2"
-                                                                                name="program_id"
-                                                                                data-placeholder="Select multiple options">
-                                                                                <option value="" disabled selected>
-                                                                                    Select Program</option>
-                                                                                @foreach ($programs as $program)
-                                                                                    <option value="{{ $program->id }}">
-                                                                                        {{ $program->name  }}
-                                                                                    </option>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Grade</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <select class="form-select js-select2"
+                                                                                name="stage_id" id="stage_id"
+                                                                                data-placeholder="Select a stage" disabled>
+                                                                                <option value="" selected disabled>
+                                                                                    Select stage</option>
+                                                                                @foreach ($stages as $stage)
+                                                                                    <option value="{{ $stage->id }}">
+                                                                                        {{ $stage->name }}</option>
                                                                                 @endforeach
+                                                                            </select>
+                                                                            @error('stage_id')
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Program</label>
+                                                                        <div class="form-control-wrap">
+                                                                            <select class="form-select js-select2"
+                                                                                name="program_id[]" id="program_id" multiple
+                                                                                data-placeholder="Select multiple options"
+                                                                                disabled>
+                                                                                <!-- Options will be populated by AJAX -->
                                                                             </select>
                                                                             @error('program_id')
                                                                                 <div class="text-danger">{{ $message }}
@@ -104,8 +124,9 @@
                                                                             class="form-label">Class</label>
                                                                         <div class="form-control-wrap"><select
                                                                                 class="form-select js-select2"
-                                                                                name="group_id"
-                                                                                data-placeholder="Select multiple options">
+                                                                                id="class_id" name="group_id"
+                                                                                data-placeholder="Select multiple options"
+                                                                                disabled>
                                                                                 {{-- @foreach ($groups as $group)
                                                                                     <option value="{{ $group->id }}">
                                                                                         {{ $group->name }}</option>
@@ -139,25 +160,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div> --}}
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group"><label
-                                                                            class="form-label">Grade</label>
-                                                                        <div class="form-control-wrap"><select
-                                                                                class="form-select js-select2"
-                                                                                name="stage_id"
-                                                                                data-placeholder="Select multiple options">
-                                                                                @foreach ($stages as $stage)
-                                                                                    <option value="{{ $stage->id }}">
-                                                                                        {{ $stage->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                            @error('stage_id')
-                                                                                <div class="text-danger">{{ $message }}
-                                                                                </div>
-                                                                            @enderror
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+
 
                                                                 <div class="col-md-6">
                                                                     <div class="form-group"><label class="form-label"
@@ -185,6 +188,8 @@
                                                                 <div class="col-md-12">
                                                                     <div class="form-group"><label class="form-label"
                                                                             for="profile-picture">Profile Picture</label>
+                                                                        <span>(Optional)</span>
+                                                                        <br>
                                                                         <input type="file" id="profile-picture"
                                                                             name="parent_image">
                                                                         @error('parent_image')
@@ -226,7 +231,9 @@
         $(document).ready(function() {
             $('.js-select2').select2();
 
-            $('select[name="program_id"]').change(function() {
+            $('select[name="program_id[]"]').change(function() {
+                $('#class_id').prop('disabled', false)
+
                 var programId = $(this).val();
                 if (programId) {
                     $.ajax({
@@ -245,6 +252,43 @@
                     });
                 } else {
                     $('select[name="group_id"]').empty();
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#school_id').change(function() {
+                $('#stage_id').prop('disabled', false)
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#stage_id').change(function() {
+                $('#program_id').prop('disabled', false)
+                var stageId = $(this).val();
+                var schoolId = $('#school_id').val();
+                console.log(stageId);
+                if (stageId) {
+                    $.ajax({
+                        url: '/get-courses/' + stageId + '/' + schoolId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            console.log(data)
+                            $('#program_id').empty();
+                            $.each(data, function(key, value) {
+                                $('#program_id').append('<option value="' + value.id +
+                                    '">' + value.course.name + '</option>');
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error:', error);
+                        }
+                    });
+                } else {
+                    $('#program_id').empty();
                 }
             });
         });

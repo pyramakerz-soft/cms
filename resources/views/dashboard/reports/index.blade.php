@@ -70,7 +70,15 @@
                                                                     id="program_id">
                                                                     @foreach ($programs as $program)
                                                                         <option value="{{ $program->id }}">
-                                                                            {{ $program->name . ' / ' . $program->course->name . ' / ' . $program->stage->name }}
+                                                                            @if ($program->course)
+                                                                                {{ $program->name . '/' . $program->course->name }}
+                                                                                @if ($program->stage)
+                                                                                    {{ ' / ' . $program->stage->name }}
+                                                                                @endif
+                                                                            @else
+                                                                                {{ $program->name }}
+                                                                            @endif
+
                                                                         </option>
                                                                     @endforeach
                                                                 </select>
@@ -127,7 +135,15 @@
                                                                         program</option>
                                                                     @foreach ($programs as $program)
                                                                         <option value="{{ $program->id }}">
-                                                                            {{ $program->name . ' / ' . $program->course->name . ' / ' . $program->stage->name }}
+                                                                            @if ($program->course)
+                                                                                {{ $program->name . '/' . $program->course->name }}
+                                                                                @if ($program->stage)
+                                                                                    {{ ' / ' . $program->stage->name }}
+                                                                                @endif
+                                                                            @else
+                                                                                {{ $program->name }}
+                                                                            @endif
+
                                                                         </option>
                                                                     @endforeach
                                                                 </select>
@@ -184,7 +200,7 @@
                                                 </div>
                                                 <section class="mt-4">
                                                     <div class="containerchart">
-                                                        <h2>Chart.js Responsive Bar Chart Demo</h2>
+                                                        {{-- <h2>Chart.js Responsive Bar Chart Demo</h2> --}}
                                                         <div>
                                                             <canvas id="barChart"></canvas>
                                                         </div>
@@ -209,7 +225,15 @@
                                                                         program</option>
                                                                     @foreach ($programs as $program)
                                                                         <option value="{{ $program->id }}">
-                                                                            {{ $program->name . ' / ' . $program->course->name . ' / ' . $program->stage->name }}
+                                                                            @if ($program->course)
+                                                                                {{ $program->name . '/' . $program->course->name }}
+                                                                                @if ($program->stage)
+                                                                                    {{ ' / ' . $program->stage->name }}
+                                                                                @endif
+                                                                            @else
+                                                                                {{ $program->name }}
+                                                                            @endif
+
                                                                         </option>
                                                                     @endforeach
                                                                 </select>
@@ -233,7 +257,7 @@
                                                         </div> --}}
                                                     </form>
                                                 </div>
-                                                <section class="mt-4">
+                                                {{-- <section class="mt-4">
                                                     <div class="containerchart">
                                                         <h2>Chart.js Responsive Bar Chart Demo</h2>
                                                         <div>
@@ -241,7 +265,7 @@
                                                         </div>
 
                                                     </div>
-                                                </section>
+                                                </section> --}}
                                                 <div class="report-container mt-4"></div>
                                             </div>
 
@@ -258,7 +282,16 @@
                                                                     id="program_id">
                                                                     @foreach ($programs as $program)
                                                                         <option value="{{ $program->id }}">
-                                                                            {{ $program->name }}</option>
+                                                                            @if ($program->course)
+                                                                                {{ $program->name . '/' . $program->course->name }}
+                                                                                @if ($program->stage)
+                                                                                    {{ ' / ' . $program->stage->name }}
+                                                                                @endif
+                                                                            @else
+                                                                                {{ $program->name }}
+                                                                            @endif
+
+                                                                        </option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>

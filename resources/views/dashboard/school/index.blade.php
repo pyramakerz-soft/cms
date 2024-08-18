@@ -74,18 +74,20 @@
 
 
                                                     @can('school-delete')
-                                                        <form action="{{ route('schools.destroy', $school->id) }}"
-                                                            method="POST" style="display:inline-block;">
+                                                        <form id="delete-form-{{ $school->id }}"
+                                                            action="{{ route('schools.destroy', $school->id) }}" method="POST"
+                                                            style="display:inline-block;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger"
-                                                                onclick="return confirm('Are you sure you want to delete this school?')">Delete</button>
+
 
                                                             <div class="d-lg-flex d-none">
 
                                                             </div>
 
                                                         </form>
+                                                        <button type="submit" class="btn btn-danger"
+                                                            onclick="confirmDelete({{ $school->id }})">Delete</button>
                                                     @endcan
                                                 </td>
                                             </tr>
@@ -181,4 +183,23 @@
         </div>
     </div>
     </div>
+@endsection
+@section('page_js')
+    <script>
+        function confirmDelete(schoolId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + schoolId).submit();
+                }
+            })
+        }
+    </script>
 @endsection

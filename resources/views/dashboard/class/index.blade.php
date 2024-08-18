@@ -47,7 +47,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                     <table class="table">
+                                <table class="table">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th scope="col">#</th>
@@ -58,7 +58,7 @@
                                             <th scope="col">Teacher</th>
                                             <th scope="col">School</th>
                                             <th scope="col" class="text-center">Action</th>
-                                            
+
 
 
 
@@ -70,7 +70,7 @@
                                                 <th scope="row">{{ $class->id }}</th>
                                                 <td>{{ $class->name }}</td>
                                                 <td>{{ $class->sec_name }}</td>
-                                                <td>{{ $class->program->name  }}</td>
+                                                <td>{{ $class->program->name }}</td>
                                                 <td>{{ $class->stage->name }}</td>
                                                 <td>{{ $class->teacher->name ?? 'Na' }}</td>
                                                 <td>{{ $class->school->name }}</td>
@@ -81,18 +81,20 @@
                                                             class="btn btn-warning me-1">Edit</a>
                                                     @endcan
                                                     @can('class-delete')
-                                                        <form action="{{ route('classes.destroy', $class->id) }}"
-                                                            method="POST" style="display:inline-block;">
+                                                        <form id="delete-form-{{ $class->id }}"
+                                                            action="{{ route('classes.destroy', $class->id) }}" method="POST"
+                                                            style="display:inline-block;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger"
-                                                                onclick="return confirm('Are you sure you want to delete this class?')">Delete</button>
+
 
                                                             <div class="d-lg-flex d-none">
 
                                                             </div>
 
                                                         </form>
+                                                        <button type="submit" class="btn btn-danger"
+                                                            onclick="confirmDelete({{ $class->id }})">Delete</button>
                                                     @endcan
                                                 </td>
                                             </tr>
@@ -116,4 +118,23 @@
         </div>
     </div>
     </div>
+@endsection
+@section('page_js')
+    <script>
+        function confirmDelete(classId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + classId).submit();
+                }
+            })
+        }
+    </script>
 @endsection

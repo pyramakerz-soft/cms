@@ -18,7 +18,8 @@
                                             <div class="modal-body modal-body-md">
                                                 <h5 class="title">Add Teachers</h5>
 
-                                                <form method="POST" action="{{ route('instructors.update', $instructor->id) }}"
+                                                <form method="POST"
+                                                    action="{{ route('instructors.update', $instructor->id) }}"
                                                     enctype="multipart/form-data">
                                                     @csrf
                                                     @method('put')
@@ -51,8 +52,10 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group"><label class="form-label"
-                                                                            for="phone-no">Phone Number</label><input
-                                                                            type="text" class="form-control"
+                                                                            for="phone-no">Phone Number</label>
+                                                                        <span>(Optional)</span>
+
+                                                                        <input type="text" class="form-control"
                                                                             id="phone-no" placeholder="Phone Number"
                                                                             name="phone" value="{{ $instructor->phone }}">
                                                                         @error('phone')
@@ -82,26 +85,6 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="form-group"><label
-                                                                            class="form-label">Program</label>
-                                                                        <div class="form-control-wrap"><select
-                                                                                class="form-select js-select2"
-                                                                                name="program_id"
-                                                                                data-placeholder="Select multiple options">
-                                                                                @foreach ($programs as $program)
-                                                                                    <option value="{{ $program->id }}"
-                                                                                        {{ $instructor->teacher_programs[0]->program->id == $program->id ? 'selected' : '' }}>
-                                                                                        {{ $program->name }}</option>
-                                                                                @endforeach
-                                                                            </select>
-                                                                            @error('program_id')
-                                                                                <div class="text-danger">{{ $message }}
-                                                                                </div>
-                                                                            @enderror
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group"><label
                                                                             class="form-label">Grade</label>
                                                                         <div class="form-control-wrap"><select
                                                                                 class="form-select js-select2"
@@ -110,7 +93,8 @@
                                                                                 @foreach ($stages as $stage)
                                                                                     <option value="{{ $stage->id }}"
                                                                                         {{ $instructor->details[0]->stage->id == $stage->id ? 'selected' : '' }}>
-                                                                                        {{ $stage->name }}</option>
+                                                                                        {{ $stage->name }}
+                                                                                    </option>
                                                                                 @endforeach
                                                                             </select>
                                                                             @error('stage_id')
@@ -120,6 +104,35 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group"><label
+                                                                            class="form-label">Program</label>
+                                                                        <div class="form-control-wrap"><select
+                                                                                class="form-select js-select2"
+                                                                                name="program_id"
+                                                                                data-placeholder="Select multiple options">
+                                                                                @foreach ($programs as $program)
+                                                                                    <option value="{{ $program->id }}"
+                                                                                        {{ $instructor->teacher_programs[0]->program->id == $program->id ? 'selected' : '' }}>
+
+                                                                                        @if ($program->course)
+                                                                                            {{ $program->name . '/' . $program->course->name }}
+                                                                                        @else
+                                                                                            {{ $program->name }}
+                                                                                        @endif
+                                                                                        {{-- {{ $program->name }} --}}
+
+                                                                                    </option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            @error('program_id')
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                
                                                                 <div class="col-md-6">
                                                                     <div class="form-group"><label
                                                                             class="form-label">Class</label>
@@ -165,6 +178,8 @@
                                                                 <div class="col-md-12">
                                                                     <div class="form-group"><label class="form-label"
                                                                             for="profile-picture">Profile Picture</label>
+                                                                        <span>(Optional)</span>
+                                                                        <br>
                                                                         <input type="file" id="profile-picture"
                                                                             name="parent_image">
                                                                         @error('parent_image')

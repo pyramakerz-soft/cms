@@ -33,8 +33,8 @@ Route::middleware('guest')->group(function () {
     Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
 });
 
-Route::get('get-courses/{id}', [StudentController::class, 'getCourses']);
-Route::get('get-groups/{program_id}', [InstructorController::class, 'getGroups'])->name('getGroups');
+Route::get('get-courses/{id}/{schoolId}', [StudentController::class, 'getCourses']);
+Route::get('get-groups/{program_id}/{stageId}', [InstructorController::class, 'getGroups'])->name('getGroups');
 Route::get('get-stages/{program_id}', [ClassController::class, 'getStages']);
 // Authenticated Routes
 Route::middleware('auth')->group(function () {

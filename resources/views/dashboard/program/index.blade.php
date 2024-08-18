@@ -55,17 +55,22 @@
                                     <tbody>
                                         @foreach ($programs as $programName => $groupedPrograms)
                                             {{-- @if (!isset($groupedPrograms->first()->school->name))
-                                        @dd($groupedPrograms)
-                                        @endif --}}
+                                                @dd($groupedPrograms)
+                                            @endif --}}
                                             <tr>
                                                 <th scope="row">{{ $groupedPrograms->first()->id }}</th>
                                                 <td>{{ $programName }}</td>
                                                 <td>{{ $groupedPrograms->first()->school ? $groupedPrograms->first()->school->name : '-' }}
                                                 </td>
                                                 <td>
+
                                                     @foreach ($groupedPrograms->take(1) as $program)
-                                                        {{ $program->course->name }}/{{ $program->stage->name }}
+                                                        @if (isset($program->course) && isset($program->stage))
+                                                            {{ $program->course->name }}/{{ $program->stage->name }}<br>
+                                                       
+                                                        @endif
                                                     @endforeach
+
                                                     @if ($groupedPrograms->count() > 1)
                                                         <button
                                                             class="btn btn-gray view-more d-flex flex-row justify-content-end "
@@ -73,28 +78,29 @@
                                                     @endif
                                                     <div class="more-courses d-none"
                                                         @if (isset($groupedPrograms)) data-program-name="{{ $programName }}">
-        @foreach ($groupedPrograms->skip(1) as $program)
-            @if (isset($program->course) && isset($program->stage))
-                {{ $program->course->name }}/{{ $program->stage->name }}<br>
-            @else
-                <span>N/A</span> @endif
+                                                            @foreach ($groupedPrograms->skip(1) as $program)
+                                                                @if (isset($program->course) && isset($program->stage))
+                                                                    {{ $program->course->name }}/{{ $program->stage->name }}<br>
+                                                                 @endif
                                                         @endforeach
                                                     @else
-                                                        <span>N/A</span>
+                                                        <span>-</span>
                                         @endif
                             </div>
                             </td>
                             <td class="">
                                 {{-- <a href="{{ route('programs.edit', $groupedPrograms->first()->id) }}"
-                                                        class="btn btn-warning me-1">Edit</a> --}}
+                                                                            class="btn btn-warning me-1">Edit</a> --}}
                                 @can('program-delete')
-                                    <form action="{{ route('programs.destroy', $groupedPrograms->first()->id) }}"
-                                        method="POST" style="display:inline-block;">
+                                    <form id="delete-form-{{ $groupedPrograms->first()->id }}"
+                                        action="{{ route('programs.destroy', $groupedPrograms->first()->id) }}" method="POST"
+                                        style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"
-                                            onclick="return confirm('Are you sure you want to delete this program?')">Delete</button>
+
                                     </form>
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="confirmDelete({{ $groupedPrograms->first()->id }})">Delete</button>
                                 @endcan
                             </td>
                             </tr>
@@ -135,5 +141,22 @@
                 }
             });
         });
+    </script>
+    <script>
+        function confirmDelete(programId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + programId).submit();
+                }
+            })
+        }
     </script>
 @endsection

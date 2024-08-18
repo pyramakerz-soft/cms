@@ -268,9 +268,9 @@ class StudentController extends Controller
 
     ///////////////////////////////////
     //Getters
-    public function getCourses($id)
+    public function getCourses($id, $schoolId)
     {
-        $courses = Program::where('stage_id', $id)->get(['id', 'name']);
+        $courses = Program::with('course')->where('stage_id', $id)->where('school_id', $schoolId)->get();
         return response()->json($courses);
     }
     ///////////////////////////////////

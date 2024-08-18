@@ -29,7 +29,7 @@
                                                                         <label class="form-label"
                                                                             for="full-name">Name</label>
                                                                         <input type="text" class="form-control"
-                                                                            id="full-name" placeholder="First name"
+                                                                            id="full-name" placeholder="Name" value="{{old('name')}}"
                                                                             name="name">
                                                                         @error('name')
                                                                             <div class="text-danger">{{ $message }}</div>
@@ -42,7 +42,7 @@
                                                                             Address</label>
                                                                         <input type="email" class="form-control"
                                                                             id="email" name="email"
-                                                                            placeholder="Email Address">
+                                                                            placeholder="Email Address" value="{{old('email')}}">
                                                                         @error('email')
                                                                             <div class="text-danger">{{ $message }}</div>
                                                                         @enderror
@@ -54,7 +54,7 @@
                                                                             Number</label>
                                                                         <input type="text" class="form-control"
                                                                             id="phone-no" placeholder="Phone Number"
-                                                                            name="phone">
+                                                                            name="phone" value="{{old('phone')}}">
                                                                         @error('phone')
                                                                             <div class="text-danger">{{ $message }}</div>
                                                                         @enderror
@@ -65,8 +65,10 @@
                                                                         <label class="form-label">School</label>
                                                                         <div class="form-control-wrap">
                                                                             <select class="form-select js-select2"
-                                                                                name="school_id"
+                                                                                name="school_id" id="school_id"
                                                                                 data-placeholder="Select multiple options">
+                                                                                <option>
+                                                                                </option>
                                                                                 @foreach ($schools as $school)
                                                                                     <option value="{{ $school->id }}">
                                                                                         {{ $school->name }}</option>
@@ -83,7 +85,7 @@
                                                                     <div class="form-group">
                                                                         <label class="form-label">Grade</label>
                                                                         <div class="form-control-wrap">
-                                                                            <select class="form-select js-select2"
+                                                                            <select class="form-select js-select2" disabled
                                                                                 name="stage_id" id="stage_id"
                                                                                 data-placeholder="Select a stage">
                                                                                 <option value="" selected disabled>
@@ -104,7 +106,7 @@
                                                                     <div class="form-group">
                                                                         <label class="form-label">Program</label>
                                                                         <div class="form-control-wrap">
-                                                                            <select class="form-select js-select2"
+                                                                            <select class="form-select js-select2" disabled
                                                                                 name="program_id[]" id="program_id" multiple
                                                                                 data-placeholder="Select multiple options">
                                                                                 <!-- Options will be populated by AJAX -->
@@ -121,7 +123,7 @@
                                                                         <label class="form-label">Class</label>
                                                                         <div class="form-control-wrap">
                                                                             <select class="form-select js-select2"
-                                                                                name="group_id"
+                                                                                name="group_id" disabled id="class_id"
                                                                                 data-placeholder="Select multiple options">
                                                                                 @foreach ($groups as $group)
                                                                                     <option value="{{ $group->id }}">
@@ -224,19 +226,25 @@
 @section('page_js')
     <script>
         $(document).ready(function() {
+            $('#school_id').change(function() {
+                $('#stage_id').prop('disabled', false)
+            });
             $('#stage_id').change(function() {
+                $('#program_id').prop('disabled', false)
                 var stageId = $(this).val();
+                var schoolId = $('#school_id').val();
                 console.log(stageId);
                 if (stageId) {
                     $.ajax({
-                        url: '/get-courses/' + stageId,
+                        url: '/get-courses/' + stageId + '/' + schoolId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
+                            console.log(data)
                             $('#program_id').empty();
                             $.each(data, function(key, value) {
                                 $('#program_id').append('<option value="' + value.id +
-                                    '">' + value.name + '</option>');
+                                    '">' + value.course.name + '</option>');
                             });
                         },
                         error: function(xhr, status, error) {
@@ -245,6 +253,33 @@
                     });
                 } else {
                     $('#program_id').empty();
+                }
+            });
+            $('.js-select2').select2();
+
+            $('select[name="program_id[]"]').change(function() {
+                $('#class_id').prop('disabled', false)
+
+                var programId = $(this).val();
+                var stageId = $('#stage_id').val();
+
+                if (programId) {
+                    $.ajax({
+                        url: '/get-groups/' + programId+ '/' + stageId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('select[name="group_id"]').empty();
+                            $('select[name="group_id"]').append(
+                                '<option value="">Select a class</option>');
+                            $.each(data, function(key, value) {
+                                $('select[name="group_id"]').append('<option value="' +
+                                    value.id + '">' + value.sec_name + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('select[name="group_id"]').empty();
                 }
             });
         });

@@ -90,7 +90,7 @@
                                                                                 @foreach ($programs as $program)
                                                                                     <option value="{{ $program->id }}"
                                                                                         @if (isset($student->userCourses[0]) && $student->userCourses[0]->program->id == $program->id) selected @endif>
-                                                                                        {{ $program->name.' / '.$program->course->name }}
+                                                                                        {{ $program->name . ' / ' . $program->course->name }}
                                                                                     </option>
                                                                                 @endforeach
                                                                             </select>
@@ -164,7 +164,7 @@
                                                                         @enderror
                                                                     </div>
                                                                 </div>
-                                                                
+
                                                                 <div class="col-md-12">
                                                                     <div class="form-group"><label class="form-label"
                                                                             for="profile-picture">Profile Picture</label>

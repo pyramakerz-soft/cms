@@ -77,9 +77,9 @@ class InstructorController extends Controller
 
         return view('dashboard.instructors.create', compact('schools', 'programs', 'stages', 'groups'));
     }
-    public function getGroups($program_id)
+    public function getGroups($program_id, $stage_id)
     {
-        $groups = Group::where('program_id', $program_id)->get();
+        $groups = Group::where('program_id', $program_id)->where('stage_id', $stage_id)->get();
         return response()->json($groups);
     }
 
@@ -164,15 +164,18 @@ class InstructorController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'phone' => 'required|string|max:15',
+            'phone' => 'nullable|string|max:15',
             'school_id' => 'required|exists:schools,id',
             'program_id' => 'required|exists:programs,id',
             'stage_id' => 'required|exists:stages,id',
             'group_id' => 'required|exists:groups,id',
             'parent_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+        ], [
+            'parent_image.image' => 'The image field must be an image jpg , jpeg , png .'
         ]);
 
         $instructor = User::findOrFail($id);

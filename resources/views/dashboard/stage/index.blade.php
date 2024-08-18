@@ -39,12 +39,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                     <table class="table">
+                                <table class="table">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Stage</th>
-                                            <th class="text-center" >Action</th>
+                                            <th class="text-center">Action</th>
 
                                         </tr>
                                     </thead>
@@ -52,25 +52,27 @@
                                         @foreach ($stages as $stage)
                                             <tr>
                                                 <th scope="row">{{ $stage->id }}</th>
-                                                <td >{{ $stage->name }}</td>
+                                                <td>{{ $stage->name }}</td>
                                                 <td class="d-flex flex-row justify-content-center">
                                                     <a href="{{ route('stages.edit', $stage->id) }}"
                                                         class="btn btn-warning me-1">Edit</a>
 
 
 
-                                                    <form action="{{ route('stages.destroy', $stage->id) }}" method="POST"
+                                                    <form id="delete-form-{{ $stage->id }}"
+                                                        action="{{ route('stages.destroy', $stage->id) }}" method="POST"
                                                         style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Are you sure you want to delete this course?')">Delete</button>
+
 
                                                         <div class="d-lg-flex d-none">
 
                                                         </div>
 
                                                     </form>
+                                                    <button type="submit" class="btn btn-danger"
+                                                        onclick="confirmDelete({{ $stage->id }})">Delete</button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -160,4 +162,23 @@
         </div>
     </div>
     </div>
+@endsection
+@section('page_js')
+    <script>
+        function confirmDelete(stageId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + stageId).submit();
+                }
+            })
+        }
+    </script>
 @endsection

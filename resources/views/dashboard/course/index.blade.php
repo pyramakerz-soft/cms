@@ -59,18 +59,19 @@
 
 
 
-                                                    <form action="{{ route('courses.destroy', $course->id) }}"
+                                                    <form id="delete-form-{{ $course->id }}" action="{{ route('courses.destroy', $course->id) }}"
                                                         method="POST" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Are you sure you want to delete this course?')">Delete</button>
+                                                        
 
                                                         <div class="d-lg-flex d-none">
 
                                                         </div>
 
                                                     </form>
+                                                    <button type="submit" class="btn btn-danger"
+                                                        onclick="confirmDelete({{ $course->id }})">Delete</button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -160,4 +161,23 @@
         </div>
     </div>
     </div>
+@endsection
+@section('page_js')
+    <script>
+        function confirmDelete(courseId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + courseId).submit();
+                }
+            })
+        }
+    </script>
 @endsection
