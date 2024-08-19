@@ -55,7 +55,7 @@
         @include('dashboard.layouts.sidebar')
         <div class="container">
             <div class="row">
-                <div class="col-6 mx-auto">
+                <div class="col-10 mx-auto">
                     <h1 style="font-size: 35px; margin-top: 15px">Class Completion Report</h1>
 
                     <form method="GET" action="{{ route('reports.classCompletionReportWeb') }}">
@@ -142,16 +142,16 @@
                     </ul>
 
                     <h2 style="font-size: 25px; margin-top: 15px">Tests</h2>
-                       <table class="table">
-                                    <thead class="thead-dark">
-                        <thead>
-                            <tr>
-                                <th>Test Name</th>
-                                <th>Start Date</th>
-                                <th>Due Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <thead>
+                                <tr>
+                                    <th>Test Name</th>
+                                    <th>Start Date</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
                         <tbody>
                             @foreach ($tests as $test)
                                 <tr>
