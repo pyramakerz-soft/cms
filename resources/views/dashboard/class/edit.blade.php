@@ -80,10 +80,20 @@
                                                                             <option value="0" selected disabled>Select
                                                                                 Program</option>
                                                                             @foreach ($programs as $program)
-                                                                                <option value="{{ $program->id }}"
+                                                                                @foreach ($programs as $program)
+                                                                                    <option value="{{ $program->id }}"
+                                                                                        {{ $class->program_id == $program->id ? 'selected' : '' }}>
+                                                                                        {{ $program->name ?? '-' }} /
+                                                                                        {{ $program->course->name ?? '-' }}
+                                                                                        /
+                                                                                        {{ $program->stage->name ?? '-' }}
+
+                                                                                    </option>
+                                                                                @endforeach
+                                                                                {{-- <option value="{{ $program->id }}"
                                                                                     {{ $class->program_id == $program->id ? 'selected' : '' }}>
                                                                                     {{ $program->name . '/' . $program->course->name }}
-                                                                                </option>
+                                                                                </option> --}}
                                                                             @endforeach
                                                                         </select>
                                                                         @error('program_id')
@@ -92,7 +102,20 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-6" style="display:none;">
+                                                                <div class="form-group">
+                                                                    <label class="form-label" for="stage-name">Stage</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="stage-name" disabled>
+                                                                    <input type="hidden"
+                                                                        value="{{ $class->stage_id }}"id="stage-id"
+                                                                        name="stage_id">
+                                                                    @error('stage_id')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
+                                                                </div>
+                                                            </div>
+                                                            {{-- <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label" for="stage-name">Stage</label>
                                                                     <input type="text" class="form-control"
@@ -103,7 +126,7 @@
                                                                         <div class="text-danger">{{ $message }}</div>
                                                                     @enderror
                                                                 </div>
-                                                            </div>
+                                                            </div> --}}
 
                                                             <div class="col-md-12">
                                                                 <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
