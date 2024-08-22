@@ -236,7 +236,7 @@
                 console.log(stageId);
                 if (stageId) {
                     $.ajax({
-                        url: '/get-courses/' + stageId + '/' + schoolId,
+                        url: 'https://ambernoak.co.uk/cms/public/get-courses/' + stageId + '/' + schoolId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
@@ -265,7 +265,7 @@
 
                 if (programId) {
                     $.ajax({
-                        url: '/get-groups/' + programId+ '/' + stageId,
+                        url: 'https://ambernoak.co.uk/cms/public/get-groups/' + programId+ '/' + stageId,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {

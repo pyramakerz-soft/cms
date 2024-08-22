@@ -43,12 +43,12 @@ class ClassController extends Controller
         if ($user->hasRole('school')) {
             $schoolId = $user->school->id;
             $schools = School::where('id', $schoolId)->get();
-            $programs = Program::where('school_id', $schoolId)->get();
+            $programs = Program::with('course')->where('school_id', $schoolId)->get();
 
 
         } else {
             $schools = School::all();
-            $programs = Program::all();
+            $programs = Program::with('course')->get();
             $classes = Group::simplePaginate(10);
 
 

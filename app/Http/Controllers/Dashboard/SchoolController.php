@@ -44,7 +44,7 @@ class SchoolController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'phone' => 'required|numeric|max:15',
+            'phone' => 'required',
             'type' => 'required|string|in:national,international',
             'password' => 'required|string|min:6',
         ]);

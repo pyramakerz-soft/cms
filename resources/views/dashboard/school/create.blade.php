@@ -55,7 +55,7 @@
                                                                         for="phone-no">Phone
                                                                         Number</label>
                                                                     <input type="text" class="form-control"
-                                                                        id="phone-no" placeholder="Phone Number"
+                                                                         placeholder="Phone Number"
                                                                         name="phone" required>
                                                                     @error('phone')
                                                                         <div class="text-danger">{{ $message }}</div>

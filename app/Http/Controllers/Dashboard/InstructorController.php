@@ -69,10 +69,21 @@ class InstructorController extends Controller
      */
     public function create()
     {
-        $schools = School::all();
-        $programs = Program::all();
+        $user = auth()->user();
+        // $schools = School::all();
+        // $programs = Program::all();
         $stages = Stage::all();
         $groups = Group::all();
+        
+        if ($user->hasRole('school')) {
+            $schoolId = $user->school->id;
+            $programs = Program::where('school_id', $schoolId)->get();
+            $schools = School::where('id', $schoolId)->get();
+        } else {
+            $schools = School::all();
+            $programs = Program::all();
+
+        }
         // $roles = Role::all();
 
         return view('dashboard.instructors.create', compact('schools', 'programs', 'stages', 'groups'));
@@ -109,12 +120,13 @@ class InstructorController extends Controller
             'role' => '1',
             'is_student' => 0
         ]);
-
+foreach($request->program_id as $program_id){
         TeacherProgram::create([
             'teacher_id' => $user->id,
-            'program_id' => $request->program_id,
+            'program_id' => $program_id,
             'grade_id' => $request->stage_id
         ]);
+}
 
         UserDetails::create([
             'user_id' => $user->id,
@@ -152,10 +164,24 @@ class InstructorController extends Controller
     public function edit(string $id)
     {
         $instructor = User::findOrFail($id);
-        $schools = School::all();
-        $programs = Program::all();
+        $user = User::findOrFail($id);
+        // $schools = School::all();
+        // $programs = Program::all();
         $stages = Stage::all();
         $groups = Group::all();
+        
+        $stages = Stage::all();
+        $groups = Group::all();
+        
+        if ($user->hasRole('school')) {
+            $schoolId = $user->school->id;
+            $programs = Program::where('school_id', $schoolId)->get();
+            $schools = School::where('id', $schoolId)->get();
+        } else {
+            $schools = School::all();
+            $programs = Program::all();
+}
+
         return view('dashboard.instructors.edit', compact('instructor', 'schools', 'programs', 'stages', 'groups'));
     }
 
@@ -186,10 +212,17 @@ class InstructorController extends Controller
             'school_id' => $request->school_id
         ]);
 
-        TeacherProgram::where('teacher_id', $instructor->id)->update([
-            'program_id' => $request->program_id,
-            'grade_id' => $request->grade_id
+TeacherProgram::where('teacher_id', $instructor->id)->delete();
+foreach($request->program_id as $program_id){
+        TeacherProgram::create([
+            'teacher_id' => $instructor->id,
+            'program_id' => $program_id,
+            'grade_id' => $request->stage_id
         ]);
+}
+
+
+        // TeacherProgram::where('teacher_id', $instructor->id)->delete();
 
         UserDetails::where('user_id', $instructor->id)->update([
             'school_id' => $request->school_id,

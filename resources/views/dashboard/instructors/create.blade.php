@@ -227,44 +227,11 @@
     </div>
 @endsection
 @section('page_js')
-    <script>
-        $(document).ready(function() {
-            $('.js-select2').select2();
-
-            $('select[name="program_id[]"]').change(function() {
-                $('#class_id').prop('disabled', false)
-
-                var programId = $(this).val();
-                if (programId) {
-                    $.ajax({
-                        url: '/get-groups/' + programId,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            $('select[name="group_id"]').empty();
-                            $('select[name="group_id"]').append(
-                                '<option value="">Select a class</option>');
-                            $.each(data, function(key, value) {
-                                $('select[name="group_id"]').append('<option value="' +
-                                    value.id + '">' + value.sec_name + '</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('select[name="group_id"]').empty();
-                }
-            });
-        });
-    </script>
-    <script>
+   <script>
         $(document).ready(function() {
             $('#school_id').change(function() {
                 $('#stage_id').prop('disabled', false)
             });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
             $('#stage_id').change(function() {
                 $('#program_id').prop('disabled', false)
                 var stageId = $(this).val();
@@ -272,7 +239,7 @@
                 console.log(stageId);
                 if (stageId) {
                     $.ajax({
-                        url: '/get-courses/' + stageId + '/' + schoolId,
+                        url: 'https://ambernoak.co.uk/cms/public/get-courses/' + stageId + '/' + schoolId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
@@ -289,6 +256,33 @@
                     });
                 } else {
                     $('#program_id').empty();
+                }
+            });
+            $('.js-select2').select2();
+
+            $('select[name="program_id[]"]').change(function() {
+                $('#class_id').prop('disabled', false)
+
+                var programId = $(this).val();
+                var stageId = $('#stage_id').val();
+
+                if (programId) {
+                    $.ajax({
+                        url: 'https://ambernoak.co.uk/cms/public/get-groups/' + programId+ '/' + stageId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function(data) {
+                            $('select[name="group_id"]').empty();
+                            $('select[name="group_id"]').append(
+                                '<option value="">Select a class</option>');
+                            $.each(data, function(key, value) {
+                                $('select[name="group_id"]').append('<option value="' +
+                                    value.id + '">' + value.sec_name + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('select[name="group_id"]').empty();
                 }
             });
         });

@@ -104,17 +104,44 @@
                                                                     @enderror
                                                                 </div>
                                                             </div>
-                                                           
 
-                                                            <div class="col-md-12">
-                                                                <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                                                                    <li>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Create</button>
-                                                                    </li>
-                                                                </ul>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                
+                                                                <label class="form-label">Program</label>
+                                                                <div class="form-control-wrap">
+                                                                    <select class="form-select js-select2" id="program_id" data-placeholder="Select multiple options" name="program_id" required>
+                                                                        <option value="0" selected disabled>Select Program</option>
+                                                                        @foreach ($programs as $program)
+                                                                            <option value="{{ $program->id }}">{{ $program->name ?? '-' }}   /  {{ $program->course->name ?? '-' }} /  {{ $program->stage->name ?? '-' }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @error('program_id')
+                                                                        <div class="text-danger">{{ $message }}</div>
+                                                                    @enderror
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-6" style="display:none;">
+                                                            <div class="form-group">
+                                                                <label class="form-label" for="stage-name">Stage</label>
+                                                                <input type="text" class="form-control" id="stage-name" disabled>
+                                                                <input type="hidden" id="stage-id" name="stage_id">
+                                                                @error('stage_id')
+                                                                    <div class="text-danger">{{ $message }}</div>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                       
+                                                        <div class="col-md-12">
+                                                            <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                                                <li>
+                                                                    <button type="submit" class="btn btn-primary">Create</button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+
                                                     </div>
                                                 </form>
                                             </div>
@@ -132,6 +159,7 @@
 @endsection
 
 @section('page_js')
+<<<<<<< HEAD
     <script>
         $(document).ready(function() {
             $('#program_id').change(function() {
@@ -158,6 +186,32 @@
                     $('#stage-id').val(''); // Clear the hidden input
                 }
             });
+=======
+<script>
+    $(document).ready(function() {
+        $('#program_id').change(function() {
+            var programId = $(this).val();
+            console.log(programId);
+            if (programId) {
+                $.ajax({
+                    url: 'https://ambernoak.co.uk/cms/public/get-stages/' + programId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#stage-name').val(data.name);
+                        $('#stage-id').val(data.id); // Set the hidden input with the stage_id
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                        $('#stage-name').val('');
+                        $('#stage-id').val(''); // Clear the hidden input
+                    }
+                });
+            } else {
+                $('#stage-name').val('');
+                $('#stage-id').val(''); // Clear the hidden input
+            }
+>>>>>>> 2074526 (edit from server by shrief)
         });
     </script>
 @endsection
