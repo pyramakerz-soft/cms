@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::post('import-users', [StudentController::class, 'import'])->name('import.users');
     Route::resource('instructors', InstructorController::class);
     Route::resource('schools', SchoolController::class);
-    Route::resource('courses', CourseController::class);
+    // Route::resource('courses', CourseController::class);
     Route::resource('stages', StageController::class);
     Route::resource('classes', ClassController::class);
     Route::resource('programs', ProgramController::class);

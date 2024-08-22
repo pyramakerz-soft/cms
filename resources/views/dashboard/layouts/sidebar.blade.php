@@ -58,7 +58,7 @@
                         </li>
 
                     @endcan
-                    @can('course-list')
+                    {{-- @can('course-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
                                     class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span><span
                                     class="nk-menu-text">Courses</span></a>
@@ -73,7 +73,7 @@
                                 @endcan
                             </ul>
                         </li>
-                    @endcan
+                    @endcan --}}
                     @can('role-list')
                         <li class="nk-menu-item has-sub"><a href="#" class="nk-menu-link nk-menu-toggle"><span
                                     class="nk-menu-icon"><em class="icon ni ni-book-fill"></em></span><span

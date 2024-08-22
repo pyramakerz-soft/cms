@@ -104,6 +104,18 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                onClick: function(evt, item) {
+                    if (item.length) {
+                        var index = item[0].index;
+                        if (index === 0) {
+                           
+                            window.location.href = "{{ route('students.index') }}";
+                        } else if (index === 1) {
+                            
+                            window.location.href = "{{ route('instructors.index') }}";
+                        }
+                    }
+                }
             }
         });
 
@@ -123,6 +135,20 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                onClick: function(evt, item) {
+                    if (item.length) {
+                        var index = item[0].index;
+                        if (index === 0) {
+                            
+                            window.location.href =
+                                "{{ route('schools.index') }}"; 
+                        } else if (index === 1) {
+                            
+                            window.location.href =
+                                "{{ route('schools.index') }}"; 
+                        }
+                    }
+                }
             }
         });
     </script>
