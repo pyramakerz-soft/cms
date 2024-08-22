@@ -14,16 +14,16 @@
                             <div class="nk-content-body">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5 class="title">Select Group for Reports</h5>
+                                        <h5 class="title">Select class for reports</h5>
                                     </div>
                                     <div class="card-body">
                                         <form method="GET" action="{{ route('reports.classCompletionReportWeb') }}">
                                             <div class="form-row">
                                                 <div class="col-md-6">
-                                                    <label for="group_id">Select Group</label>
+                                                    <label for="group_id">Select class</label>
                                                     <select class="form-select js-select2" name="group_id" id="group_id"
                                                         required>
-                                                        <option value="" disabled selected>Choose a group</option>
+                                                        <option value="" disabled selected>Choose a class</option>
                                                         @foreach ($groups as $group)
                                                             <option value="{{ $group->id }}">{{ $group->name }}</option>
                                                         @endforeach

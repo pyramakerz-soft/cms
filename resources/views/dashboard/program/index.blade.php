@@ -67,7 +67,7 @@
                                                     @foreach ($groupedPrograms->take(1) as $program)
                                                         @if (isset($program->course) && isset($program->stage))
                                                             {{ $program->course->name }}/{{ $program->stage->name }}<br>
-                                                       
+
                                                         @endif
                                                     @endforeach
 
@@ -80,8 +80,7 @@
                                                         @if (isset($groupedPrograms)) data-program-name="{{ $programName }}">
                                                             @foreach ($groupedPrograms->skip(1) as $program)
                                                                 @if (isset($program->course) && isset($program->stage))
-                                                                    {{ $program->course->name }}/{{ $program->stage->name }}<br>
-                                                                 @endif
+                                                                    {{ $program->course->name }}/{{ $program->stage->name }}<br> @endif
                                                         @endforeach
                                                     @else
                                                         <span>-</span>
@@ -89,6 +88,10 @@
                             </div>
                             </td>
                             <td class="">
+                                <a
+                                    href="{{ route('add-curriculum', $groupedPrograms->first()->id) }}"class="btn btn-warning me-1">Add
+                                    curriculum</a>
+
                                 {{-- <a href="{{ route('programs.edit', $groupedPrograms->first()->id) }}"
                                                                             class="btn btn-warning me-1">Edit</a> --}}
                                 @can('program-delete')

@@ -63,6 +63,8 @@ Route::middleware('auth')->group(function () {
         Route::get('class-num-of-trials-report', [ReportController::class, 'classNumOfTrialsReportWeb'])->name('classNumOfTrialsReportWeb');
     });
     Route::get('/reports/fetch-mastery-data', [ReportController::class, 'fetchMasteryData'])->name('reports.fetchMasteryData');
+    Route::post('/get-lessons-by-units', [ProgramController::class, 'getLessonsByUnits'])->name('get.lessons.by.units');
+    Route::post('/get-units-by-program', [ProgramController::class, 'getUnitsByProgram'])->name('get.units.by.program');
 
     Route::resource('students', StudentController::class);
     Route::post('import-users', [StudentController::class, 'import'])->name('import.users');
@@ -72,6 +74,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('stages', StageController::class);
     Route::resource('classes', ClassController::class);
     Route::resource('programs', ProgramController::class);
+    Route::any('programs.addcurriculum/{id}', [ProgramController::class, 'addcurriculum'])->name('add-curriculum');
+    Route::get('/edit-curriculum/{id}', [ProgramController::class, 'editCurriculum'])->name('edit-curriculum');
+
     Route::resource('roles', RoleController::class);
 
 

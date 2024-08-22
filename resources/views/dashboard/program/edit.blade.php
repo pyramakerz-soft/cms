@@ -23,7 +23,6 @@
                                             @endif
                                             <div class="modal-body modal-body-md">
                                                 <h5 class="title">Edit Cluster</h5>
-
                                                 <form action="{{ route('programs.update', $program->id) }}" method="POST"
                                                     enctype="multipart/form-data" class="tab-content">
                                                     @csrf

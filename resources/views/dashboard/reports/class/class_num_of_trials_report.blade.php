@@ -13,9 +13,9 @@
                     <div class="row">
                         <!-- Group Filter -->
                         <div class="col-md-4">
-                            <label for="group_id">Select Group</label>
+                            <label for="group_id">Select class</label>
                             <select class="form-select js-select2" name="group_id" id="group_id" required>
-                                <option value="" disabled selected>Choose a group</option>
+                                <option value="" disabled selected>Choose a class</option>
                                 @foreach ($groups as $group)
                                     <option value="{{ $group->id }}">{{ $group->name . ' / ' . $group->stage->name }}
                                     </option>
