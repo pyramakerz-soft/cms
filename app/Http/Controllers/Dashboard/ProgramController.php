@@ -5,15 +5,19 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Choice;
 use App\Models\Course;
+use App\Models\Ebook;
 use App\Models\Game;
 use App\Models\GameImage;
 use App\Models\GameLetter;
 use App\Models\GameSkills;
 use App\Models\Lesson;
+use App\Models\LessonPlan;
+use App\Models\PPT;
 use App\Models\Program;
 use App\Models\School;
 use App\Models\Stage;
 use App\Models\Unit;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -123,6 +127,33 @@ class ProgramController extends Controller
                 $new_unit = Unit::find($unit_id)->replicate();
                 $new_unit->program_id = $getProgramIds[0];
                 $new_unit->save();
+                $pptRecords = PPT::where('unit_id', $unit_id)->get();
+                foreach ($pptRecords as $ppt) {
+                    $newPpt = $ppt->replicate();
+                    $newPpt->unit_id = $new_unit->id;
+                    $newPpt->save();
+                }
+
+                $lessonPlans = LessonPlan::where('unit_id', $unit_id)->get();
+                foreach ($lessonPlans as $plan) {
+                    $newPlan = $plan->replicate();
+                    $newPlan->unit_id = $new_unit->id;
+                    $newPlan->save();
+                }
+
+                $ebooks = Ebook::where('unit_id', $unit_id)->get();
+                foreach ($ebooks as $ebook) {
+                    $newEbook = $ebook->replicate();
+                    $newEbook->unit_id = $new_unit->id;
+                    $newEbook->save();
+                }
+
+                $videos = Video::where('unit_id', $unit_id)->get();
+                foreach ($videos as $video) {
+                    $newVideo = $video->replicate();
+                    $newVideo->unit_id = $new_unit->id;
+                    $newVideo->save();
+                }
 
                 foreach ($request->lesson_id as $lesson_id) {
                     if (Lesson::find($lesson_id)->unit_id == Unit::find($unit_id)->id) {
@@ -194,15 +225,12 @@ class ProgramController extends Controller
         }
         return view('dashboard.program.curriculum', compact(['programs', 'program', 'getProgramIds', 'units']))->with('success', 'Curriculum created successfully!');
     }
-
-    public function editCurriculum($id)
+    private function replicateUnitData($unit_id, $new_unit_id)
     {
-        $program = Program::findOrFail($id);
-        $units = Unit::where('program_id', $program->id)->get();
-        $lessons = Lesson::whereIn('unit_id', $units->pluck('id'))->get();
 
-        return view('dashboard.program.edit-curriculum', compact('program', 'units', 'lessons'));
     }
+
+
 
 
     public function getUnitsByProgram(Request $request)

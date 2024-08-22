@@ -75,7 +75,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('classes', ClassController::class);
     Route::resource('programs', ProgramController::class);
     Route::any('programs.addcurriculum/{id}', [ProgramController::class, 'addcurriculum'])->name('add-curriculum');
-    Route::get('/edit-curriculum/{id}', [ProgramController::class, 'editCurriculum'])->name('edit-curriculum');
 
     Route::resource('roles', RoleController::class);
 
