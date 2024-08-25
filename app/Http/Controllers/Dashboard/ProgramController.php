@@ -106,125 +106,306 @@ class ProgramController extends Controller
         return view('dashboard.program.edit', compact(['program', 'schools', 'courses', 'stages']));
     }
 
+//     public function addcurriculum($id, Request $request)
+//     {
+//         $program = Program::findOrFail($id);
+//         $programs_c = Program::where('school_id', $program->school_id)->pluck('course_id');
+//         $programs_s = Program::where('school_id', $program->school_id)->pluck('stage_id');
+//         $programs = Program::where('name', 'Mindbuzz')->whereIn('course_id', $programs_c)->whereIn('stage_id', $programs_s)->get();
+//         $selectedCourseId = $program->course_id;
+//         $selectedStageId = $program->stage_id;
+
+//         $getProgramIds = Program::whereHas('course', function ($query) use ($selectedCourseId) {
+//             $query->where('course_id', $selectedCourseId);
+//         })->whereHas('stage', function ($query) use ($selectedStageId) {
+//             $query->where('id', $selectedStageId);
+//         })->where('name', 'Mindbuzz')->pluck('id');
+// if($request->program_id){
+//     // dd($request->program_id,Program::where('school_id',$program->school_id)->where('course_id',Program::find($request->program_id)->course_id)->first(),$programs,$program);
+//     $real_p = Program::where('school_id',$program->school_id)->where('course_id',Program::find($request->program_id)->course_id)->first()->id;
+    
+// }
+//         $units = Unit::where('program_id', $request->program_id)->get();
+//         if (isset($request->unit_id)) {
+//             foreach ($request->unit_id as $unit_id) {
+//                 $new_unit = Unit::find($unit_id)->replicate();
+//                 $new_unit->program_id = $real_p;
+//                 $new_unit->save();
+//                 $pptRecords = PPT::where('unit_id', $unit_id)->get();
+//                 foreach ($pptRecords as $ppt) {
+//                     $newPpt = $ppt->replicate();
+//                     $newPpt->unit_id = $new_unit->id;
+//                     $newPpt->save();
+//                 }
+
+//                 $lessonPlans = LessonPlan::where('unit_id', $unit_id)->get();
+//                 foreach ($lessonPlans as $plan) {
+//                     $newPlan = $plan->replicate();
+//                     $newPlan->unit_id = $new_unit->id;
+//                     $newPlan->save();
+//                 }
+
+//                 $ebooks = Ebook::where('unit_id', $unit_id)->get();
+//                 foreach ($ebooks as $ebook) {
+//                     $newEbook = $ebook->replicate();
+//                     $newEbook->unit_id = $new_unit->id;
+//                     $newEbook->save();
+//                 }
+
+//                 $videos = Video::where('unit_id', $unit_id)->get();
+//                 foreach ($videos as $video) {
+//                     $newVideo = $video->replicate();
+//                     $newVideo->unit_id = $new_unit->id;
+//                     $newVideo->save();
+//                 }
+
+//                 foreach ($request->lesson_id as $lesson_id) {
+//                     // dd($request->lesson_id);
+//                     if (Lesson::find($lesson_id)->unit_id == Unit::find($unit_id)->id) {
+//                         $new_lesson = Lesson::find($lesson_id)->replicate();
+//                         $new_lesson->unit_id = $new_unit->id;
+//                         $new_lesson->save();
+
+//                         $games = Game::where('lesson_id', $lesson_id)->get();
+//                         $oldToNewGameIds = [];
+//                         foreach ($games as $game) {
+//                             $newGame = $game->replicate();
+//                             $newGame->lesson_id = $new_lesson->id;
+//                             $newGame->next_game_id = NULL;
+//                             $newGame->prev_game_id = NULL;
+//                             $newGame->save();
+//                             $oldToNewGameIds[$game->id] = $newGame->id;
+//                         }
+//                         foreach ($games as $game) {
+//                             $dest_game_id = $oldToNewGameIds[$game->id];
+//                             $oldToNewLetterIds = [];
+//                             $oldToNewImageIds = [];
+
+//                             $gameLetters = GameLetter::where('game_id', $game->id)->get();
+//                             foreach ($gameLetters as $letter) {
+//                                 $newLetter = $letter->replicate();
+//                                 $newLetter->game_id = $dest_game_id;
+//                                 $newLetter->save();
+
+//                                 $oldToNewLetterIds[$letter->id] = $newLetter->id;
+//                             }
+
+//                             $gameImages = GameImage::where('game_id', $game->id)->get();
+//                             foreach ($gameImages as $image) {
+//                                 $newImage = $image->replicate();
+//                                 $newImage->game_id = $dest_game_id;
+
+//                                 if (isset($oldToNewLetterIds[$image->game_letter_id])) {
+//                                     $newImage->game_letter_id = $oldToNewLetterIds[$image->game_letter_id];
+//                                 }
+
+//                                 $newImage->save();
+
+//                                 $oldToNewImageIds[$image->id] = $newImage->id;
+//                             }
+
+//                             $gameChoices = Choice::where('game_id', $game->id)->get();
+//                             foreach ($gameChoices as $choice) {
+//                                 $newChoice = $choice->replicate();
+//                                 $newChoice->game_id = $dest_game_id;
+
+//                                 if (isset($oldToNewLetterIds[$choice->question_id])) {
+//                                     $newChoice->question_id = $oldToNewLetterIds[$choice->question_id];
+//                                 }
+
+//                                 $newChoice->save();
+//                             }
+
+
+//                             $gameSkills = GameSkills::where('lesson_id', $lesson_id)
+//                                 ->get();
+//                             foreach ($gameSkills as $skill) {
+//                                 $newSkill = $skill->replicate();
+//                                 $newSkill->lesson_id = $new_lesson->id;
+//                                 $newSkill->save();
+//                             }
+//                         }
+
+//                     }
+//                 }
+//             }
+//         }
+//         return view('dashboard.program.curriculum', compact(['programs', 'program', 'getProgramIds', 'units']))->with('success', 'Curriculum created successfully!');
+//     }
+    
+    
     public function addcurriculum($id, Request $request)
-    {
-        $program = Program::findOrFail($id);
-        $programs_c = Program::where('school_id', $program->school_id)->pluck('course_id');
-        $programs_s = Program::where('school_id', $program->school_id)->pluck('stage_id');
-        $programs = Program::where('name', 'Mindbuzz')->whereIn('course_id', $programs_c)->whereIn('stage_id', $programs_s)->get();
-        $selectedCourseId = $program->course_id;
-        $selectedStageId = $program->stage_id;
+{
+    $program = Program::findOrFail($id);
+    $programs_c = Program::where('school_id', $program->school_id)->pluck('course_id');
+    $programs_s = Program::where('school_id', $program->school_id)->pluck('stage_id');
+    $programs = Program::where('name', 'Mindbuzz')->whereIn('course_id', $programs_c)->whereIn('stage_id', $programs_s)->get();
+    $selectedCourseId = $program->course_id;
+    $selectedStageId = $program->stage_id;
 
-        $getProgramIds = Program::whereHas('course', function ($query) use ($selectedCourseId) {
-            $query->where('course_id', $selectedCourseId);
-        })->whereHas('stage', function ($query) use ($selectedStageId) {
-            $query->where('id', $selectedStageId);
-        })->where('name', 'Mindbuzz')->pluck('id');
+    $getProgramIds = Program::whereHas('course', function ($query) use ($selectedCourseId) {
+        $query->where('course_id', $selectedCourseId);
+    })->whereHas('stage', function ($query) use ($selectedStageId) {
+        $query->where('id', $selectedStageId);
+    })->where('name', 'Mindbuzz')->pluck('id');
+    
+    if($request->program_id) {
+        $real_p = Program::where('school_id',$program->school_id)->where('course_id',Program::find($request->program_id)->course_id)->first()->id;
+    }
+    
+    $units = Unit::where('program_id', $request->program_id)->get();
+    if (isset($request->unit_id)) {
+        foreach ($request->unit_id as $unit_id) {
+            $new_unit = Unit::find($unit_id)->replicate();
+            $new_unit->program_id = $real_p;
+            $new_unit->save();
+            
+            // Replicate related tables
+            $this->replicateRelatedTables($unit_id, $new_unit->id);
 
-        $units = Unit::where('program_id', $getProgramIds[0])->get();
-        if (isset($request->unit_id)) {
-            foreach ($request->unit_id as $unit_id) {
-                $new_unit = Unit::find($unit_id)->replicate();
-                $new_unit->program_id = $getProgramIds[0];
-                $new_unit->save();
-                $pptRecords = PPT::where('unit_id', $unit_id)->get();
-                foreach ($pptRecords as $ppt) {
-                    $newPpt = $ppt->replicate();
-                    $newPpt->unit_id = $new_unit->id;
-                    $newPpt->save();
-                }
+            foreach ($request->lesson_id as $lesson_id) {
+                if (Lesson::find($lesson_id)->unit_id == Unit::find($unit_id)->id) {
+                    $new_lesson = Lesson::find($lesson_id)->replicate();
+                    $new_lesson->unit_id = $new_unit->id;
+                    $new_lesson->save();
 
-                $lessonPlans = LessonPlan::where('unit_id', $unit_id)->get();
-                foreach ($lessonPlans as $plan) {
-                    $newPlan = $plan->replicate();
-                    $newPlan->unit_id = $new_unit->id;
-                    $newPlan->save();
-                }
+                    // Replicate games and their components
+                    $this->replicateGames($lesson_id, $new_lesson->id);
 
-                $ebooks = Ebook::where('unit_id', $unit_id)->get();
-                foreach ($ebooks as $ebook) {
-                    $newEbook = $ebook->replicate();
-                    $newEbook->unit_id = $new_unit->id;
-                    $newEbook->save();
-                }
-
-                $videos = Video::where('unit_id', $unit_id)->get();
-                foreach ($videos as $video) {
-                    $newVideo = $video->replicate();
-                    $newVideo->unit_id = $new_unit->id;
-                    $newVideo->save();
-                }
-
-                foreach ($request->lesson_id as $lesson_id) {
-                    if (Lesson::find($lesson_id)->unit_id == Unit::find($unit_id)->id) {
-                        $new_lesson = Lesson::find($lesson_id)->replicate();
-                        $new_lesson->unit_id = $new_unit->id;
-                        $new_lesson->save();
-
-                        $games = Game::where('lesson_id', $lesson_id)->get();
-                        $oldToNewGameIds = [];
-                        foreach ($games as $game) {
-                            $newGame = $game->replicate();
-                            $newGame->lesson_id = $new_lesson->id;
-                            $newGame->save();
-                            $oldToNewGameIds[$game->id] = $newGame->id;
-                        }
-                        foreach ($games as $game) {
-                            $dest_game_id = $oldToNewGameIds[$game->id];
-                            $oldToNewLetterIds = [];
-                            $oldToNewImageIds = [];
-
-                            $gameLetters = GameLetter::where('game_id', $game->id)->get();
-                            foreach ($gameLetters as $letter) {
-                                $newLetter = $letter->replicate();
-                                $newLetter->game_id = $dest_game_id;
-                                $newLetter->save();
-
-                                $oldToNewLetterIds[$letter->id] = $newLetter->id;
-                            }
-
-                            $gameImages = GameImage::where('game_id', $game->id)->get();
-                            foreach ($gameImages as $image) {
-                                $newImage = $image->replicate();
-                                $newImage->game_id = $dest_game_id;
-
-                                if (isset($oldToNewLetterIds[$image->game_letter_id])) {
-                                    $newImage->game_letter_id = $oldToNewLetterIds[$image->game_letter_id];
-                                }
-
-                                $newImage->save();
-
-                                $oldToNewImageIds[$image->id] = $newImage->id;
-                            }
-
-                            $gameChoices = Choice::where('game_id', $game->id)->get();
-                            foreach ($gameChoices as $choice) {
-                                $newChoice = $choice->replicate();
-                                $newChoice->game_id = $dest_game_id;
-
-                                if (isset($oldToNewLetterIds[$choice->question_id])) {
-                                    $newChoice->question_id = $oldToNewLetterIds[$choice->question_id];
-                                }
-
-                                $newChoice->save();
-                            }
-
-
-                            $gameSkills = GameSkills::where('lesson_id', $lesson_id)
-                                ->get();
-                            foreach ($gameSkills as $skill) {
-                                $newSkill = $skill->replicate();
-                                $newSkill->lesson_id = $new_lesson->id;
-                                $newSkill->save();
-                            }
-                        }
-
-                    }
+                    // Replicate skills with the new lesson ID
+                    $this->replicateSkills($lesson_id, $new_lesson->id);
                 }
             }
         }
-        return view('dashboard.program.curriculum', compact(['programs', 'program', 'getProgramIds', 'units']))->with('success', 'Curriculum created successfully!');
     }
+    
+    return view('dashboard.program.curriculum', compact(['programs', 'program', 'getProgramIds', 'units']))->with('success', 'Curriculum created successfully!');
+}
+
+private function replicateRelatedTables($old_unit_id, $new_unit_id)
+{
+    // Replicate ppt
+    $pptRecords = PPT::where('unit_id', $old_unit_id)->get();
+    foreach ($pptRecords as $ppt) {
+        $newPpt = $ppt->replicate();
+        $newPpt->unit_id = $new_unit_id;
+        $newPpt->save();
+    }
+
+    // Replicate lesson_plan
+    $lessonPlans = LessonPlan::where('unit_id', $old_unit_id)->get();
+    foreach ($lessonPlans as $plan) {
+        $newPlan = $plan->replicate();
+        $newPlan->unit_id = $new_unit_id;
+        $newPlan->save();
+    }
+
+    // Replicate ebook
+    $ebooks = Ebook::where('unit_id', $old_unit_id)->get();
+    foreach ($ebooks as $ebook) {
+        $newEbook = $ebook->replicate();
+        $newEbook->unit_id = $new_unit_id;
+        $newEbook->save();
+    }
+
+    // Replicate video
+    $videos = Video::where('unit_id', $old_unit_id)->get();
+    foreach ($videos as $video) {
+        $newVideo = $video->replicate();
+        $newVideo->unit_id = $new_unit_id;
+        $newVideo->save();
+    }
+}
+
+private function replicateGames($old_lesson_id, $new_lesson_id)
+{
+    $games = Game::where('lesson_id', $old_lesson_id)->get();
+    $oldToNewGameIds = [];
+    
+    // First pass: replicate games
+    foreach ($games as $game) {
+        $newGame = $game->replicate();
+        $newGame->lesson_id = $new_lesson_id;
+        $newGame->prev_game_id = null; // Set to null initially
+        $newGame->next_game_id = null; // Set to null initially
+        $newGame->save();
+        $oldToNewGameIds[$game->id] = $newGame->id;
+    }
+
+    // Second pass: update prev_game_id and next_game_id
+    foreach ($games as $game) {
+        $newGame = Game::find($oldToNewGameIds[$game->id]);
+        if ($game->prev_game_id && isset($oldToNewGameIds[$game->prev_game_id])) {
+            $newGame->prev_game_id = $oldToNewGameIds[$game->prev_game_id];
+        }
+        if ($game->next_game_id && isset($oldToNewGameIds[$game->next_game_id])) {
+            $newGame->next_game_id = $oldToNewGameIds[$game->next_game_id];
+        }
+        $newGame->save();
+    }
+
+    foreach ($games as $game) {
+        $dest_game_id = $oldToNewGameIds[$game->id];
+        $this->replicateGameComponents($game->id, $dest_game_id);
+    }
+}
+
+private function replicateGameComponents($old_game_id, $new_game_id)
+{
+    $oldToNewLetterIds = [];
+    $oldToNewImageIds = [];
+
+    $gameLetters = GameLetter::where('game_id', $old_game_id)->get();
+    foreach ($gameLetters as $letter) {
+        $newLetter = $letter->replicate();
+        $newLetter->game_id = $new_game_id;
+        $newLetter->save();
+
+        $oldToNewLetterIds[$letter->id] = $newLetter->id;
+    }
+
+    $gameImages = GameImage::where('game_id', $old_game_id)->get();
+    foreach ($gameImages as $image) {
+        $newImage = $image->replicate();
+        $newImage->game_id = $new_game_id;
+
+        if (isset($oldToNewLetterIds[$image->game_letter_id])) {
+            $newImage->game_letter_id = $oldToNewLetterIds[$image->game_letter_id];
+        }
+
+        $newImage->save();
+
+        $oldToNewImageIds[$image->id] = $newImage->id;
+    }
+
+    $gameChoices = Choice::where('game_id', $old_game_id)->get();
+    foreach ($gameChoices as $choice) {
+        $newChoice = $choice->replicate();
+        $newChoice->game_id = $new_game_id;
+
+        if (isset($oldToNewLetterIds[$choice->question_id])) {
+            $newChoice->question_id = $oldToNewLetterIds[$choice->question_id];
+        }
+
+        $newChoice->save();
+    }
+}
+
+private function replicateSkills($old_lesson_id, $new_lesson_id)
+{
+    $gameSkills = GameSkills::where('lesson_id', $old_lesson_id)->get();
+    foreach ($gameSkills as $skill) {
+        $newSkill = $skill->replicate();
+        $newSkill->lesson_id = $new_lesson_id;
+        $newSkill->save();
+    }
+}
+
+
+
+
+
+
     private function replicateUnitData($unit_id, $new_unit_id)
     {
 

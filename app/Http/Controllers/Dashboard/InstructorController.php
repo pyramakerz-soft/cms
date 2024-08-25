@@ -74,7 +74,7 @@ class InstructorController extends Controller
         // $programs = Program::all();
         $stages = Stage::all();
         $groups = Group::all();
-        
+
         if ($user->hasRole('school')) {
             $schoolId = $user->school->id;
             $programs = Program::where('school_id', $schoolId)->get();
@@ -82,18 +82,30 @@ class InstructorController extends Controller
         } else {
             $schools = School::all();
             $programs = Program::all();
-
         }
         // $roles = Role::all();
 
         return view('dashboard.instructors.create', compact('schools', 'programs', 'stages', 'groups'));
     }
-    public function getGroups($program_id, $stage_id)
+    // public function getGroups($program_id, $stage_id)
+    // {
+    //     $groups = Group::where('program_id', $program_id)->where('stage_id', $stage_id)->get();
+    //     return response()->json($groups);
+    // }
+    public function getGroups($school_id, $stage_id)
     {
-        $groups = Group::where('program_id', $program_id)->where('stage_id', $stage_id)->get();
+        $groups = Group::where('school_id', $school_id)
+            ->where('stage_id', $stage_id)
+            ->get();
+
         return response()->json($groups);
     }
 
+    public function getPrograms($school_id, $stage_id)
+    {
+        $programs = Program::with('course')->where('school_id', $school_id)->where('stage_id', $stage_id)->get();
+        return response()->json($programs);
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -102,16 +114,18 @@ class InstructorController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'required|string|max:15',
+            'phone' => 'nullable|string|max:15',
             'password' => 'required|string|confirmed|min:6',
             'school_id' => 'required|exists:schools,id',
-            'program_id' => 'required|exists:programs,id',
+            'program_id' => 'required|array',
+            'program_id.*' => 'exists:programs,id',
             'stage_id' => 'required|exists:stages,id',
-            'group_id' => 'nullable|exists:groups,id',
+            'group_id' => 'nullable|array',
+            'group_id.*' => 'exists:groups,id',
             'parent_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
-        $teacher = $user = User::create([
+        $teacher = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -120,35 +134,39 @@ class InstructorController extends Controller
             'role' => '1',
             'is_student' => 0
         ]);
-foreach($request->program_id as $program_id){
-        TeacherProgram::create([
-            'teacher_id' => $user->id,
-            'program_id' => $program_id,
-            'grade_id' => $request->stage_id
-        ]);
-}
+
+        foreach ($request->program_id as $program_id) {
+            TeacherProgram::create([
+                'teacher_id' => $teacher->id,
+                'program_id' => $program_id,
+                'grade_id' => $request->stage_id
+            ]);
+        }
 
         UserDetails::create([
-            'user_id' => $user->id,
+            'user_id' => $teacher->id,
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
         ]);
-        $group = Group::findOrFail($request->group_id);
-        $group->update([
-            'teacher_id' => $teacher->id,
 
-        ]);
+        if ($request->filled('group_id')) {
+            foreach ($request->group_id as $group_id) {
+                $group = Group::findOrFail($group_id);
+                $group->update(['teacher_id' => $teacher->id]);
+            }
+        }
+
         $teacher->assignRole('teacher');
-
 
         if ($request->hasFile('parent_image')) {
             $imagePath = $request->file('parent_image')->store('images', 'public');
-            $user->parent_image = $imagePath;
-            $user->save();
+            $teacher->update(['parent_image' => $imagePath]);
         }
 
         return redirect()->route('instructors.index')->with('success', 'Teacher created successfully.');
     }
+
+
 
     /**
      * Display the specified resource.
@@ -169,10 +187,10 @@ foreach($request->program_id as $program_id){
         // $programs = Program::all();
         $stages = Stage::all();
         $groups = Group::all();
-        
+
         $stages = Stage::all();
         $groups = Group::all();
-        
+
         if ($user->hasRole('school')) {
             $schoolId = $user->school->id;
             $programs = Program::where('school_id', $schoolId)->get();
@@ -180,7 +198,7 @@ foreach($request->program_id as $program_id){
         } else {
             $schools = School::all();
             $programs = Program::all();
-}
+        }
 
         return view('dashboard.instructors.edit', compact('instructor', 'schools', 'programs', 'stages', 'groups'));
     }
@@ -190,18 +208,17 @@ foreach($request->program_id as $program_id){
      */
     public function update(Request $request, string $id)
     {
-
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
             'phone' => 'nullable|string|max:15',
             'school_id' => 'required|exists:schools,id',
-            'program_id' => 'required|exists:programs,id',
+            'program_id' => 'required|array',
+            'program_id.*' => 'exists:programs,id',
             'stage_id' => 'required|exists:stages,id',
-            'group_id' => 'required|exists:groups,id',
+            'group_id' => 'nullable|array',
+            'group_id.*' => 'exists:groups,id',
             'parent_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-        ], [
-            'parent_image.image' => 'The image field must be an image jpg , jpeg , png .'
         ]);
 
         $instructor = User::findOrFail($id);
@@ -212,32 +229,36 @@ foreach($request->program_id as $program_id){
             'school_id' => $request->school_id
         ]);
 
-TeacherProgram::where('teacher_id', $instructor->id)->delete();
-foreach($request->program_id as $program_id){
-        TeacherProgram::create([
-            'teacher_id' => $instructor->id,
-            'program_id' => $program_id,
-            'grade_id' => $request->stage_id
-        ]);
-}
-
-
-        // TeacherProgram::where('teacher_id', $instructor->id)->delete();
+        TeacherProgram::where('teacher_id', $instructor->id)->delete();
+        foreach ($request->program_id as $program_id) {
+            TeacherProgram::create([
+                'teacher_id' => $instructor->id,
+                'program_id' => $program_id,
+                'grade_id' => $request->stage_id
+            ]);
+        }
 
         UserDetails::where('user_id', $instructor->id)->update([
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
         ]);
 
+        // Update groups
+        if ($request->filled('group_id')) {
+            foreach ($request->group_id as $group_id) {
+                $group = Group::findOrFail($group_id);
+                $group->update(['teacher_id' => $instructor->id]);
+            }
+        }
 
         if ($request->hasFile('parent_image')) {
             $imagePath = $request->file('parent_image')->store('images', 'public');
-            $instructor->parent_image = $imagePath;
-            $instructor->save();
+            $instructor->update(['parent_image' => $imagePath]);
         }
 
         return redirect()->route('instructors.index')->with('success', 'Teacher updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.

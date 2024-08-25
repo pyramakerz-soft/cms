@@ -58,10 +58,6 @@
                                             <th scope="col">Teacher</th>
                                             <th scope="col">School</th>
                                             <th scope="col" class="text-center">Action</th>
-
-
-
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -70,10 +66,10 @@
                                                 <th scope="row">{{ $class->id }}</th>
                                                 <td>{{ $class->name }}</td>
                                                 <td>{{ $class->sec_name }}</td>
-                                                <td>{{ $class->program->name }}</td>
-                                                <td>{{ $class->stage->name }}</td>
-                                                <td>{{ $class->teacher->name ?? 'Na' }}</td>
-                                                <td>{{ $class->school->name }}</td>
+                                                <td>{{ optional($class->program)->name }} {{ $class->program ? \App\Models\Program::join('courses','programs.course_id','courses.id')->where('programs.id',$class->program->id ?? '0')->select('courses.name as name')->first()->name : '-' }}</td>
+                                                <td>{{ optional($class->stage)->name }}</td>
+                                                <td>{{ optional($class->teacher)->name ?? 'Na' }}</td>
+                                                <td>{{ optional($class->school)->name }}</td>
 
                                                 <td class="d-flex flex-row justify-content-center">
                                                     @can('class-edit')
@@ -87,11 +83,7 @@
                                                             @csrf
                                                             @method('DELETE')
 
-
-                                                            <div class="d-lg-flex d-none">
-
-                                                            </div>
-
+                                                            <div class="d-lg-flex d-none"></div>
                                                         </form>
                                                         <button type="submit" class="btn btn-danger"
                                                             onclick="confirmDelete({{ $class->id }})">Delete</button>
@@ -99,7 +91,6 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-
                                     </tbody>
                                 </table>
                                 <div class="card-inner">
@@ -107,18 +98,16 @@
                                         {!! $classes->links() !!}
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             @include('dashboard.layouts.footer')
-
         </div>
     </div>
-    </div>
 @endsection
+
 @section('page_js')
     <script>
         function confirmDelete(classId) {

@@ -123,8 +123,8 @@
                                                                         <label class="form-label">Class</label>
                                                                         <div class="form-control-wrap">
                                                                             <select class="form-select js-select2"
-                                                                                name="group_id" disabled id="class_id"
-                                                                                data-placeholder="Select multiple options">
+                                                                                name="group_id[]" disabled id="class_id"
+                                                                                data-placeholder="Select multiple options" multiple>
                                                                                 @foreach ($groups as $group)
                                                                                     <option value="{{ $group->id }}">
                                                                                         {{ $group->name }}</option>
@@ -236,7 +236,7 @@
                 console.log(stageId);
                 if (stageId) {
                     $.ajax({
-                        url: 'https://ambernoak.co.uk/cms/public/get-courses/' + stageId + '/' + schoolId,
+                        url: '/cms/public/get-courses/' + stageId + '/' + schoolId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
@@ -265,7 +265,7 @@
 
                 if (programId) {
                     $.ajax({
-                        url: 'https://ambernoak.co.uk/cms/public/get-groups/' + programId+ '/' + stageId,
+                        url: '/cms/public/get-groups/' + programId+ '/' + stageId,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {

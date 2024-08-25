@@ -138,11 +138,16 @@ class StudentController extends Controller
             'school_id' => $request->school_id,
             'stage_id' => $request->stage_id
         ]);
+        if ($request->has('group_id')) {
+        foreach ($request->group_id as $group_id) {
+            GroupStudent::create([
+                'group_id' => $group_id,
+                'student_id' => $user->id
+            ]);
+        }
+    }
 
-        GroupStudent::create([
-            'group_id' => $request->group_id,
-            'student_id' => $user->id
-        ]);
+        
         // $user->assignRole($request->input('roles'));
 
         if ($request->hasFile('parent_image')) {
@@ -177,81 +182,84 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        $student = User::findOrFail($id);
-        $schools = School::all();
-        $userDetails = UserDetails::where('user_id', $id)->first();
-        if ($userDetails && $userDetails->stage_id) {
-
-            $programs = Program::where('stage_id', $userDetails->stage_id)->get();
-        } else {
-
-            $programs = Program::all();
-        }
-        // $programs = Program::where('stage_id', UserDetails::where('user_id', $id)->first()->stage_id)->get();
-        $stages = Stage::all();
-        $groups = Group::all();
-        // $roles = Role::pluck('name', 'name')->all();
-        return view('dashboard.students.edit', compact('student', 'schools', 'programs', 'stages', 'groups'));
-
+     public function edit(string $id)
+{
+    $student = User::findOrFail($id);
+    $schools = School::all();
+    $userDetails = UserDetails::where('user_id', $id)->first();
+    
+    if ($userDetails && $userDetails->stage_id) {
+        $programs = Program::where('stage_id', $userDetails->stage_id)->get();
+    } else {
+        $programs = Program::all();
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'phone' => 'required|string|max:15',
-            'school_id' => 'required|exists:schools,id',
-            'program_id' => 'required|exists:programs,id',
-            'stage_id' => 'required|exists:stages,id',
-            'group_id' => 'required|exists:groups,id',
-            'parent_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-        ]);
+    $stages = Stage::all();
+    $groups = Group::all();
+    $selectedGroups = GroupStudent::where('student_id', $id)->pluck('group_id')->toArray(); // Retrieve selected groups
 
-        $student = User::findOrFail($id);
-        $student->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'school_id' => $request->school_id
+    return view('dashboard.students.edit', compact('student', 'schools', 'programs', 'stages', 'groups', 'selectedGroups'));
+}
+
+public function update(Request $request, string $id)
+{
+    // Validate the input
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+        'phone' => 'required|string|max:15',
+        'school_id' => 'required|exists:schools,id',
+        'program_id' => 'required|exists:programs,id',
+        'stage_id' => 'required|exists:stages,id',
+        'group_id' => 'nullable|array', // Accept multiple group IDs
+        'group_id.*' => 'exists:groups,id', // Validate each group ID
+        'parent_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+    ]);
+
+    // Find the student
+    $student = User::findOrFail($id);
+    $student->update([
+        'name' => $request->name,
+        'email' => $request->email,
+        'phone' => $request->phone,
+        'school_id' => $request->school_id
+    ]);
+
+    // Update programs
+    UserCourse::where('user_id', $student->id)->delete();
+    foreach ($request->program_id as $program_id) {
+        UserCourse::create([
+            'program_id' => $program_id,
+            'user_id' => $student->id
         ]);
-        UserCourse::where('user_id', $student->id)->delete();
-        foreach ($request->program_id as $program_id) {
-            // if(!UserCourse::where('user_id',$student->id)->where('program_id',$program_id)->first()){
-            UserCourse::create([
-                'program_id' => $program_id,
-                'user_id' => $student->id
+    }
+
+    // Update user details
+    UserDetails::where('user_id', $student->id)->update([
+        'school_id' => $request->school_id,
+        'stage_id' => $request->stage_id
+    ]);
+
+    // Update the student's group associations
+    GroupStudent::where('student_id', $student->id)->delete(); // Remove old associations
+    if ($request->has('group_id')) {
+        foreach ($request->group_id as $group_id) {
+            GroupStudent::create([
+                'group_id' => $group_id,
+                'student_id' => $student->id
             ]);
-            // }
-            //         else{
-            //     UserCourse::where('user_id', $student->id)->where('program_id','!=',$program_id)->update([
-            //         'program_id' => $program_id
-            //     ]);
-            // }
         }
-        UserDetails::where('user_id', $student->id)->update([
-            'school_id' => $request->school_id,
-            'stage_id' => $request->stage_id
-        ]);
-
-        GroupStudent::where('student_id', $student->id)->update([
-            'group_id' => $request->group_id
-        ]);
-
-        if ($request->hasFile('parent_image')) {
-            $imagePath = $request->file('parent_image')->store('images', 'public');
-            $student->parent_image = $imagePath;
-            $student->save();
-        }
-
-        return redirect()->route('students.index')->with('success', 'Student updated successfully.');
-
     }
+
+    // Handle image upload
+    if ($request->hasFile('parent_image')) {
+        $imagePath = $request->file('parent_image')->store('images', 'public');
+        $student->parent_image = $imagePath;
+        $student->save();
+    }
+
+    return redirect()->route('students.index')->with('success', 'Student updated successfully.');
+}
 
     /**
      * Remove the specified resource from storage.

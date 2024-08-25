@@ -65,22 +65,23 @@ class ClassController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'sec_name' => 'nullable|string|max:255',
-            'school_id' => 'required|exists:schools,id',
-            'stage_id' => 'required|exists:stages,id',
-            'program_id' => 'required|exists:programs,id',
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'sec_name' => 'nullable|string|max:255',
+        'school_id' => 'required|exists:schools,id',
+        'program_id' => 'required|exists:programs,id',
+    ]);
 
-        ]);
-        // dd($request);
-        $class = Group::create([
-            'name' => $request->name,
-            'sec_name' => $request->sec_name,
-            'school_id' => $request->school_id,
-            'stage_id' => $request->stage_id,
-            'program_id' => $request->program_id,
-        ]);
+    $program = Program::findOrFail($request->program_id);
+    $stage_id = $program->stage_id;
+
+    $class = Group::create([
+        'name' => $request->name,
+        'sec_name' => $request->sec_name,
+        'school_id' => $request->school_id,
+        'stage_id' => $stage_id, // Set the stage_id from the program
+        'program_id' => $request->program_id,
+    ]);
 
         return redirect()->route('classes.create')->with('success', 'Class created successfully.');
     }
@@ -112,21 +113,24 @@ class ClassController extends Controller
     public function update(Request $request, string $id)
     {
 
-        $request->validate([
+           $request->validate([
             'name' => 'required|string|max:255',
             'sec_name' => 'nullable|string|max:255',
             'school_id' => 'required|exists:schools,id',
-            'stage_id' => 'required|exists:stages,id',
+            'stage_id' => 'nullable',
             'program_id' => 'required|exists:programs,id',
         ]);
+
+        $program = Program::findOrFail($request->program_id);
+        $stage_id = $program->stage_id;
 
         $class = Group::findOrFail($id);
         $class->update([
             'name' => $request->name,
             'sec_name' => $request->sec_name,
             'school_id' => $request->school_id,
-            'stage_id' => $request->stage_id,
             'program_id' => $request->program_id,
+            'stage_id' => $stage_id,
         ]);
 
 

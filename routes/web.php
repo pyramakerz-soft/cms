@@ -34,8 +34,10 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::get('get-courses/{id}/{schoolId}', [StudentController::class, 'getCourses']);
+Route::get('/get-groups/{school_id}/{stage_id}', [InstructorController::class, 'getGroups']);
 Route::get('get-groups/{program_id}/{stageId}', [InstructorController::class, 'getGroups'])->name('getGroups');
 Route::get('get-stages/{program_id}', [ClassController::class, 'getStages']);
+Route::get('/get-programs/{school_id}/{stage_id}', [InstructorController::class, 'getPrograms']);
 // Authenticated Routes
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');

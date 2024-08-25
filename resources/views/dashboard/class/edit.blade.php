@@ -161,7 +161,7 @@
                 console.log(programId);
                 if (programId) {
                     $.ajax({
-                        url: '/get-stages/' + programId,
+                        url: '/cms/public/get-stages/' + programId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {

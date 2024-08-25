@@ -127,11 +127,11 @@
                                                                             class="form-label">Class</label>
                                                                         <div class="form-control-wrap"><select
                                                                                 class="form-select js-select2"
-                                                                                name="group_id"
-                                                                                data-placeholder="Select multiple options">
+                                                                                name="group_id[]" 
+                                                                                data-placeholder="Select multiple options" multiple> 
                                                                                 @foreach ($groups as $group)
                                                                                     <option value="{{ $group->id }}">
-                                                                                        {{ $group->sec_name }}</option>
+                                                                                        {{ $group->sec_name }} {{\App\Models\Program::find($group->program_id)->name ?? '-'}} {{ \App\Models\Course::find(\App\Models\Program::find($group->program_id ?? 0)->course_id ?? 0)->name ?? '-'  }}</option>
                                                                                 @endforeach
                                                                             </select>
                                                                             @error('group_id')

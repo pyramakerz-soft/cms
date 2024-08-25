@@ -66,9 +66,9 @@
                                                                         <div class="form-control-wrap">
                                                                             <select class="form-select js-select2"
                                                                                 name="school_id" id="school_id"
-                                                                                data-placeholder="Select multiple options">
-                                                                                <option value="">
-                                                                                    Select School</option>
+                                                                                data-placeholder="Select School">
+                                                                                <option value="">Select School
+                                                                                </option>
                                                                                 @foreach ($schools as $school)
                                                                                     <option value="{{ $school->id }}">
                                                                                         {{ $school->name }}</option>
@@ -87,9 +87,8 @@
                                                                         <div class="form-control-wrap">
                                                                             <select class="form-select js-select2"
                                                                                 name="stage_id" id="stage_id"
-                                                                                data-placeholder="Select a stage" disabled>
-                                                                                <option value="" selected disabled>
-                                                                                    Select stage</option>
+                                                                                data-placeholder="Select Stage" disabled>
+                                                                                <option value="">Select Stage</option>
                                                                                 @foreach ($stages as $stage)
                                                                                     <option value="{{ $stage->id }}">
                                                                                         {{ $stage->name }}</option>
@@ -108,9 +107,8 @@
                                                                         <div class="form-control-wrap">
                                                                             <select class="form-select js-select2"
                                                                                 name="program_id[]" id="program_id" multiple
-                                                                                data-placeholder="Select multiple options"
-                                                                                disabled>
-                                                                                <!-- Options will be populated by AJAX -->
+                                                                                data-placeholder="Select Program" disabled>
+
                                                                             </select>
                                                                             @error('program_id')
                                                                                 <div class="text-danger">{{ $message }}
@@ -122,15 +120,12 @@
                                                                 <div class="col-md-6">
                                                                     <div class="form-group"><label
                                                                             class="form-label">Class</label>
-                                                                        <div class="form-control-wrap"><select
-                                                                                class="form-select js-select2"
-                                                                                id="class_id" name="group_id"
-                                                                                data-placeholder="Select multiple options"
-                                                                                disabled>
-                                                                                {{-- @foreach ($groups as $group)
-                                                                                    <option value="{{ $group->id }}">
-                                                                                        {{ $group->name }}</option>
-                                                                                @endforeach --}}
+                                                                        <div class="form-control-wrap">
+
+                                                                            <select class="form-select js-select2"
+                                                                                id="class_id" name="group_id[]" multiple
+                                                                                data-placeholder="Select Classes" disabled>
+
                                                                             </select>
                                                                             @error('group_id')
                                                                                 <div class="text-danger">{{ $message }}
@@ -227,27 +222,34 @@
     </div>
 @endsection
 @section('page_js')
-   <script>
+    <script>
         $(document).ready(function() {
             $('#school_id').change(function() {
-                $('#stage_id').prop('disabled', false)
+                $('#stage_id').prop('disabled', false);
+                $('#program_id').empty().prop('disabled', true);
+                $('#class_id').empty().prop('disabled', true);
             });
+
             $('#stage_id').change(function() {
-                $('#program_id').prop('disabled', false)
+                $('#program_id').prop('disabled', false);
                 var stageId = $(this).val();
                 var schoolId = $('#school_id').val();
-                console.log(stageId);
-                if (stageId) {
+                if (schoolId && stageId) {
+                    // Fetch programs based on selected school and stage
                     $.ajax({
-                        url: 'https://ambernoak.co.uk/cms/public/get-courses/' + stageId + '/' + schoolId,
+                        
+                        url: ' /cms/public/get-programs/' + schoolId + '/' + stageId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
-                            console.log(data)
                             $('#program_id').empty();
                             $.each(data, function(key, value) {
+                                var programName = value.name;
+                                var courseName = value.course ? value.course.name :
+                                    'No Course'; // Check if course exists
                                 $('#program_id').append('<option value="' + value.id +
-                                    '">' + value.course.name + '</option>');
+                                    '">' + programName + ' / ' + courseName +
+                                    '</option>');
                             });
                         },
                         error: function(xhr, status, error) {
@@ -258,31 +260,36 @@
                     $('#program_id').empty();
                 }
             });
-            $('.js-select2').select2();
 
             $('select[name="program_id[]"]').change(function() {
-                $('#class_id').prop('disabled', false)
+                $('#class_id').prop('disabled', false);
 
                 var programId = $(this).val();
                 var stageId = $('#stage_id').val();
+                var schoolId = $('#school_id').val();
 
-                if (programId) {
+                if (programId && stageId && schoolId) {
+                    // Fetch groups based on selected program, stage, and school
                     $.ajax({
-                        url: 'https://ambernoak.co.uk/cms/public/get-groups/' + programId+ '/' + stageId,
+                        url: ' /cms/public/get-groups/' + schoolId + '/' + stageId,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
-                            $('select[name="group_id"]').empty();
-                            $('select[name="group_id"]').append(
+                            $('select[name="group_id[]"]').empty();
+                            $('select[name="group_id[]"]').append(
                                 '<option value="">Select a class</option>');
                             $.each(data, function(key, value) {
-                                $('select[name="group_id"]').append('<option value="' +
-                                    value.id + '">' + value.sec_name + '</option>');
+                                $('select[name="group_id[]"]').append(
+                                    '<option value="' + value.id + '">' + value
+                                    .name + '</option>');
                             });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error:', error);
                         }
                     });
                 } else {
-                    $('select[name="group_id"]').empty();
+                    $('select[name="group_id[]"]').empty();
                 }
             });
         });

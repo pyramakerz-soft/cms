@@ -36,7 +36,9 @@
                                                                     <div class="form-control-wrap">
                                                                         <select class="form-select js-select2"
                                                                             name="program_id" id="program-select" required>
-
+<option value="" disabled selected>Select cluster
+                                                                                    
+                                                                                </option>
                                                                             @foreach ($programs as $program)
                                                                                 <option value="{{ $program->id }}">
                                                                                     {{ $program->name }}
